@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<distribution>
+	<row n="11"><element>0.345</element><element>0.418</element><element>0.491</element><element>0.564</element><element>0.600</element></row>
+	<row n="12"><element>0.308</element><element>0.394</element><element>0.455</element><element>0.545</element><element>0.576</element></row>
+	<row n="13"><element>0.303</element><element>0.363</element><element>0.436</element><element>0.513</element><element>0.564</element></row>
+	<row n="14"><element>0.276</element><element>0.359</element><element>0.407</element><element>0.473</element><element>0.516</element></row>
+	<row n="15"><element>0.275</element><element>0.333</element><element>0.390</element><element>0.467</element><element>0.505</element></row>
+	<row n="16"><element>0.250</element><element>0.317</element><element>0.383</element><element>0.433</element><element>0.483</element></row>
+	<row n="17"><element>0.250</element><element>0.309</element><element>0.368</element><element>0.426</element><element>0.471</element></row>
+	<row n="18"><element>0.242</element><element>0.294</element><element>0.346</element><element>0.412</element><element>0.451</element></row>
+	<row n="19"><element>0.228</element><element>0.287</element><element>0.333</element><element>0.392</element><element>0.439</element></row>
+	<row n="20"><element>0.221</element><element>0.274</element><element>0.326</element><element>0.379</element><element>0.421</element></row>
+	<row n="21"><element>0.210</element><element>0.267</element><element>0.314</element><element>0.371</element><element>0.410</element></row>
+	<row n="22"><element>0.203</element><element>0.264</element><element>0.307</element><element>0.359</element><element>0.394</element></row>
+	<row n="23"><element>0.202</element><element>0.257</element><element>0.296</element><element>0.352</element><element>0.391</element></row>
+	<row n="24"><element>0.196</element><element>0.246</element><element>0.290</element><element>0.341</element><element>0.377</element></row>
+	<row n="25"><element>0.193</element><element>0.240</element><element>0.287</element><element>0.333</element><element>0.367</element></row>
+	<row n="26"><element>0.188</element><element>0.237</element><element>0.280</element><element>0.329</element><element>0.360</element></row>
+	<row n="27"><element>0.180</element><element>0.231</element><element>0.271</element><element>0.322</element><element>0.356</element></row>
+	<row n="28"><element>0.179</element><element>0.228</element><element>0.265</element><element>0.312</element><element>0.344</element></row>
+	<row n="29"><element>0.172</element><element>0.222</element><element>0.261</element><element>0.310</element><element>0.340</element></row>
+	<row n="30"><element>0.172</element><element>0.218</element><element>0.255</element><element>0.301</element><element>0.333</element></row>
+</distribution>

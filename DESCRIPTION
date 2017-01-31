@@ -1,0 +1,23 @@
+Package: rNPBST
+Title: Non-Parametric Tests in R
+Version: 0.1
+Date: 2016-10-01
+Authors@R: c(person("Jacinto", "Carrasco", role = c("aut", "cre"),
+                     email = "jacintocc@correo.ugr.es"),
+              person("Joaquin", "Derrac", role = "aut"),
+              person("Salvador", "García", role = "aut"),
+              person("Francisco", "Herrera", role = "aut"))
+Description: This package is a wrapper of the Java package JavaNPTS for R and
+    Bayesian tests based on Benavoli work.
+License: GPL-2
+Imports:
+   rJava,
+   MCMCpack,
+   ggplot2,
+   ggtern,
+   XML,
+   EnvStats,
+   rmutil,
+   devtools
+RoxygenNote: 5.0.1
+LazyData: true

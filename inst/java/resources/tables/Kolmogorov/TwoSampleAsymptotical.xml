@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<distribution>
+	<row n="9"><element>45</element><element>54</element><element>54</element><element>63</element><element>63</element></row>
+	<row n="10"><element>50</element><element>60</element><element>70</element><element>70</element><element>80</element></row>
+	<row n="11"><element>66</element><element>66</element><element>77</element><element>88</element><element>88</element></row>
+	<row n="12"><element>72</element><element>72</element><element>84</element><element>96</element><element>96</element></row>
+	<row n="13"><element>78</element><element>91</element><element>91</element><element>104</element><element>117</element></row>
+	<row n="14"><element>84</element><element>98</element><element>112</element><element>112</element><element>128</element></row>
+	<row n="15"><element>90</element><element>105</element><element>120</element><element>135</element><element>135</element></row>
+	<row n="16"><element>112</element><element>112</element><element>128</element><element>144</element><element>160</element></row>
+	<row n="17"><element>119</element><element>136</element><element>136</element><element>153</element><element>170</element></row>
+	<row n="18"><element>126</element><element>144</element><element>162</element><element>180</element><element>180</element></row>
+	<row n="19"><element>133</element><element>152</element><element>171</element><element>190</element><element>190</element></row>
+	<row n="20"><element>140</element><element>160</element><element>180</element><element>200</element><element>220</element></row>
+</distribution>
