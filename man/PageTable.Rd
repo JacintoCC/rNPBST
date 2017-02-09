@@ -3,13 +3,13 @@
 \docType{data}
 \name{PageTable}
 \alias{PageTable}
-\title{Table for PageTable}
+\title{Distribution table for Page test}
 \format{An object of class \code{data.frame} with 198 rows and 4 columns.}
 \usage{
 PageTable
 }
 \description{
-Table for PageTable
+Distribution table for Page test
 }
 \keyword{datasets}
 

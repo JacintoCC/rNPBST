@@ -3,13 +3,13 @@
 \docType{data}
 \name{KolmogorovTable}
 \alias{KolmogorovTable}
-\title{Table for KolmogorovTable}
+\title{Distribution table for Kolmogorov test}
 \format{An object of class \code{matrix} with 40 rows and 5 columns.}
 \usage{
 KolmogorovTable
 }
 \description{
-Table for KolmogorovTable
+Distribution table for Kolmogorov test
 }
 \keyword{datasets}
 

@@ -1,27 +1,7 @@
-#' @title Auxiliar function to get the difference between observations and
-#         make checkings
+#' @title Bayesian Sign test
 #'
 #' @export
-#' @description This function returns the difference between two vectors if they have the same length. If the second vector is missing, the first one is returned
-#' @param x First vector
-#' @param y Second vector
-getDiff <- function(x, y){
-  # Check if the data corresponds with a pair of
-  # observations or the difference between observations
-  if(is.null(y))
-    diff <- x
-  else if(length(x) != length(y))
-    stop("X and Y must be of the same length")
-  else
-    diff <- x - y
-
-  return(diff)
-}
-
-#' @title Bayesian sign test
-#'
-#' @export
-#' @description This function performs the bayesian sign test
+#' @description This function performs the Bayesian Sign test
 #' @param x First vector of observations
 #' @param y Second vector of observations
 #' @param z_0 Prior pseudo-observation
@@ -75,13 +55,13 @@ bayesianSign.test <- function(x, y = NULL, s = 1, z_0 = 0,
   probabilities <- c(n.left, n.diff - n.left - n.right, n.right)/n.diff
 
   return(list(probabilities = probabilities,
-            sample = sample))
+              sample = sample))
 }
 
-#' @title Bayesian signed rank test
+#' @title Bayesian Signed-Rank test
 #'
 #' @export
-#' @description This function performs the bayesian signed rank test
+#' @description This function performs the Bayesian Signed-Rank test
 #' @param x First vector of observations
 #' @param y Second vector of observations
 #' @param z_0 Prior pseudo-observation

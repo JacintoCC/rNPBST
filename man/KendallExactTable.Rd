@@ -3,13 +3,13 @@
 \docType{data}
 \name{KendallExactTable}
 \alias{KendallExactTable}
-\title{Table for Kendall test}
+\title{Distribution table for Kendall test}
 \format{An object of class \code{data.frame} with 88 rows and 3 columns.}
 \usage{
 KendallExactTable
 }
 \description{
-Table for Kendall test
+Distribution table for Kendall exact test
 }
 \keyword{datasets}
 

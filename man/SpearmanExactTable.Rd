@@ -3,13 +3,13 @@
 \docType{data}
 \name{SpearmanExactTable}
 \alias{SpearmanExactTable}
-\title{Table for SpearmanExactTable}
+\title{Exact distribution table for Spearman test}
 \format{An object of class \code{data.frame} with 253 rows and 3 columns.}
 \usage{
 SpearmanExactTable
 }
 \description{
-Table for SpearmanExactTable
+Exact distribution table for Spearman test
 }
 \keyword{datasets}
 

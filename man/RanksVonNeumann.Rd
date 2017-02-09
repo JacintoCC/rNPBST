@@ -3,13 +3,13 @@
 \docType{data}
 \name{RanksVonNeumann}
 \alias{RanksVonNeumann}
-\title{Table for RanksVonNeumann}
+\title{Distribution table for Von Neumann test}
 \format{An object of class \code{matrix} with 41 rows and 5 columns.}
 \usage{
 RanksVonNeumann
 }
 \description{
-Table for RanksVonNeumann
+Distribution table for Von Neumann test
 }
 \keyword{datasets}
 

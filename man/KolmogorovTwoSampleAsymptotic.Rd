@@ -3,13 +3,13 @@
 \docType{data}
 \name{KolmogorovTwoSampleAsymptotic}
 \alias{KolmogorovTwoSampleAsymptotic}
-\title{Table for KolmogorovTwoSampleAsymptotic}
+\title{Distribution table for asymptotic two samples Kolmogorov test}
 \format{An object of class \code{matrix} with 12 rows and 5 columns.}
 \usage{
 KolmogorovTwoSampleAsymptotic
 }
 \description{
-Table for KolmogorovTwoSampleAsymptotic
+Distribution table for asymptotic two samples Kolmogorov test
 }
 \keyword{datasets}
 

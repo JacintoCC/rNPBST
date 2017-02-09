@@ -30,3 +30,22 @@ getdata <- function(...)
    name <- utils::data(..., envir = e)[1]
    e[[name]]
 }
+
+#' @title Auxiliar function to get the difference between observations and
+#         make checkings
+#'
+#' @description This function returns the difference between two vectors if they have the same length. If the second vector is missing, the first one is returned
+#' @param x First vector
+#' @param y Second vector
+getDiff <- function(x, y){
+   # Check if the data corresponds with a pair of
+   # observations or the difference between observations
+   if(is.null(y))
+      diff <- x
+   else if(length(x) != length(y))
+      stop("X and Y must be of the same length")
+   else
+      diff <- x - y
+
+   return(diff)
+}

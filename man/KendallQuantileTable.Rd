@@ -3,13 +3,13 @@
 \docType{data}
 \name{KendallQuantileTable}
 \alias{KendallQuantileTable}
-\title{Table forKendallQuantileTable}
+\title{Distribution table for aproximate version of Kendall test}
 \format{An object of class \code{matrix} with 20 rows and 5 columns.}
 \usage{
 KendallQuantileTable
 }
 \description{
-Table for KendallQuantileTable
+Distribution table for aproximate version of Kendall test
 }
 \keyword{datasets}
 

@@ -1,111 +1,109 @@
-#'  Table for Kendall test
+#'  Distribution table for Kendall test
 #'
-#' @description Table for Kendall test
+#' @description Distribution table for Kendall exact test
 "KendallExactTable"
 
 
-#'  Table forKendallQuantileTable
+#'  Distribution table for aproximate version of Kendall test
 #'
-#' @description Table for KendallQuantileTable
+#' @description Distribution table for aproximate version of Kendall test
 "KendallQuantileTable"
 
-#'  Table for KolmogorovTable
+#'  Distribution table for Kolmogorov test
 #'
-#' @description Table for KolmogorovTable
+#' @description Distribution table for Kolmogorov test
 "KolmogorovTable"
 
-#'  Table for KolmogorovTwoSample
+#'  Distribution table for two samples Kolmogorov test
 #'
-#' @description Table for KolmogorovTwoSample
+#' @description Distribution table for two samples Kolmogorov test
 "KolmogorovTwoSample"
 
-#'  Table for KolmogorovTwoSampleAsymptotic
+#'  Distribution table for asymptotic two samples Kolmogorov test
 #'
-#' @description Table for KolmogorovTwoSampleAsymptotic
+#' @description Distribution table for asymptotic two samples Kolmogorov test
 "KolmogorovTwoSampleAsymptotic"
 
 
 
 
-#'  Table for NMRanksLeft
+#'  Left distribution table for exact Von Neumann test
 #'
-#' @description Table for NMRanksLeft
+#' @description Left distribution table for exact Von Neumann test
 "NMRanksLeft"
 
 
 
 
-#'  Table for NMRanksRight
+#'  Right distribution table for exact Von Neumann test
 #'
-#' @description Table for NMRanksRight
+#' @description Right distribution table for exact Von Neumann test
 "NMRanksRight"
 
 
 
 
-#'  Table for PageTable
+#'  Distribution table for Page test
 #'
-#' @description Table for PageTable
+#' @description Distribution table for Page test
 "PageTable"
 
 
 
 
-#'  Table for PartialCorrelationTable
+#'  Distribution table for Partial Correlation test
 #'
-#' @description Table for PartialCorrelationTable
+#' @description Distribution table for Partial Correlation test
 "PartialCorrelationTable"
 
 
-#'  Table for RanksVonNeumann
+#'  Distribution table for Von Neumann test
 #'
-#' @description Table for RanksVonNeumann
+#' @description Distribution table for Von Neumann test
 "RanksVonNeumann"
 
 
-#'  Table for RunsUpDown
+#'  Distribution table for Runs Up and Down test
 #'
-#' @description Table for RunsUpDown
+#' @description Distribution table for Runs Up and Down test
 "RunsUpDown"
 
 
-
-
-#'  Table for SpearmanExactTable
+#'  Exact distribution table for Spearman test
 #'
-#' @description Table for SpearmanExactTable
+#' @description Exact distribution table for Spearman test
 "SpearmanExactTable"
 
 
-#'  Table for SpearmanQuantileTable
+#'  Quantile distribution table for Spearman test
 #'
-#' @description Table for SpearmanQuantileTable
+#' @description Quantile distribution table for Spearman test
 "SpearmanQuantileTable"
 
 
-#'  Table for TotalNumberOfRuns.Left
+#'  Left distribution table for total number of runs test
 #'
-#' @description Table for TotalNumberOfRuns.Left
+#' @description Left distribution table for total number of runs test
 "TotalNumberOfRuns.Left"
 
 
 
-#'  Table for TotalNumberOfRuns.Right
+#'  Right distribution table for total number of runs test
 #'
-#' @description Table for TotalNumberOfRuns.Right
+#' @description Right distribution table for total number of runs test
 "TotalNumberOfRuns.Right"
 
 
 
-#'  Table for WilcoxonRanksSumTable
+#' Distribution table for Wilcoxon Ranks Sum test
 #'
-#' @description Table for WilcoxonRanksSumTable
+#' @description Distribution table for Wilcoxon Ranks Sum test
 "WilcoxonRanksSumTable"
 
 
 
 
-#'  Table for WilcoxonTable
+#'  Distribution table for Wilcoxon test
 #'
-#' @description Table for WilcoxonTable
+#' @description Distribution table for Wilcoxon test
 "WilcoxonTable"

@@ -3,13 +3,13 @@
 \docType{data}
 \name{WilcoxonRanksSumTable}
 \alias{WilcoxonRanksSumTable}
-\title{Table for WilcoxonRanksSumTable}
+\title{Distribution table for Wilcoxon Ranks Sum test}
 \format{An object of class \code{data.frame} with 900 rows and 4 columns.}
 \usage{
 WilcoxonRanksSumTable
 }
 \description{
-Table for WilcoxonRanksSumTable
+Distribution table for Wilcoxon Ranks Sum test
 }
 \keyword{datasets}
 

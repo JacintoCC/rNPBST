@@ -3,13 +3,13 @@
 \docType{data}
 \name{KolmogorovTwoSample}
 \alias{KolmogorovTwoSample}
-\title{Table for KolmogorovTwoSample}
+\title{Distribution table for two samples Kolmogorov test}
 \format{An object of class \code{data.frame} with 196 rows and 4 columns.}
 \usage{
 KolmogorovTwoSample
 }
 \description{
-Table for KolmogorovTwoSample
+Distribution table for two samples Kolmogorov test
 }
 \keyword{datasets}
 

@@ -3,13 +3,13 @@
 \docType{data}
 \name{RunsUpDown}
 \alias{RunsUpDown}
-\title{Table for RunsUpDown}
+\title{Distribution table for Runs Up and Down test}
 \format{An object of class \code{data.frame} with 299 rows and 3 columns.}
 \usage{
 RunsUpDown
 }
 \description{
-Table for RunsUpDown
+Distribution table for Runs Up and Down test
 }
 \keyword{datasets}
 

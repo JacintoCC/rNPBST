@@ -3,13 +3,13 @@
 \docType{data}
 \name{PartialCorrelationTable}
 \alias{PartialCorrelationTable}
-\title{Table for PartialCorrelationTable}
+\title{Distribution table for Partial Correlation test}
 \format{An object of class \code{matrix} with 20 rows and 4 columns.}
 \usage{
 PartialCorrelationTable
 }
 \description{
-Table for PartialCorrelationTable
+Distribution table for Partial Correlation test
 }
 \keyword{datasets}
 

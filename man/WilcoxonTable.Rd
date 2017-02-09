@@ -3,13 +3,13 @@
 \docType{data}
 \name{WilcoxonTable}
 \alias{WilcoxonTable}
-\title{Table for WilcoxonTable}
+\title{Distribution table for Wilcoxon test}
 \format{An object of class \code{matrix} with 504 rows and 47 columns.}
 \usage{
 WilcoxonTable
 }
 \description{
-Table for WilcoxonTable
+Distribution table for Wilcoxon test
 }
 \keyword{datasets}
 

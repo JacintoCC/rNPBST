@@ -3,13 +3,13 @@
 \docType{data}
 \name{NMRanksLeft}
 \alias{NMRanksLeft}
-\title{Table for NMRanksLeft}
+\title{Left distribution table for exact Von Neumann test}
 \format{An object of class \code{data.frame} with 49 rows and 3 columns.}
 \usage{
 NMRanksLeft
 }
 \description{
-Table for NMRanksLeft
+Left distribution table for exact Von Neumann test
 }
 \keyword{datasets}
 

@@ -3,13 +3,13 @@
 \docType{data}
 \name{SpearmanQuantileTable}
 \alias{SpearmanQuantileTable}
-\title{Table for SpearmanQuantileTable}
+\title{Quantile distribution table for Spearman test}
 \format{An object of class \code{matrix} with 20 rows and 6 columns.}
 \usage{
 SpearmanQuantileTable
 }
 \description{
-Table for SpearmanQuantileTable
+Quantile distribution table for Spearman test
 }
 \keyword{datasets}
 

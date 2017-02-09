@@ -3,13 +3,13 @@
 \docType{data}
 \name{TotalNumberOfRuns.Left}
 \alias{TotalNumberOfRuns.Left}
-\title{Table for TotalNumberOfRuns.Left}
+\title{Left distribution table for total number of runs test}
 \format{An object of class \code{data.frame} with 457 rows and 4 columns.}
 \usage{
 TotalNumberOfRuns.Left
 }
 \description{
-Table for TotalNumberOfRuns.Left
+Left distribution table for total number of runs test
 }
 \keyword{datasets}
 
