@@ -39,11 +39,11 @@ danielTrend.test <- function(matrix){
 
    # Compute P-Values
    if(n <= 10){
-      SpearmanExactTable <- getdata("data/SpearmanExactTable.rda")
+      SpearmanExactTable <- getData("SpearmanExactTable")
       pvalue <- computeExactProbability(SpearmanExactTable, n, R)
    }
    else if(n <= 30){
-      SpearmanQuantileTable <-  getdata("data/SpearmanQuantileTable.rda")
+      SpearmanQuantileTable <-  getData("SpearmanQuantileTable")
       pvalue <- computeAproximatedProbability(SpearmanQuantileTable, n, R)
    }
 
@@ -116,12 +116,12 @@ kendall.test <- function(matrix){
 
    # Compute P-Values
    if(n <= 10){
-      KendallExactTable <- getdata("data/KendallExactTable.rda")
+      KendallExactTable <- getData("KendallExactTable")
       pvalue <- computeExactProbability(KendallExactTable, n, T)
       print(pvalue)
    }
    else if(n <= 30){
-      KendallQuantileTable <- getdata("data/KendallQuantileTable.rda")
+      KendallQuantileTable <- getData("KendallQuantileTable")
       pvalue <- computeAproximatedProbability(KendallQuantileTable, n, T)
    }
 

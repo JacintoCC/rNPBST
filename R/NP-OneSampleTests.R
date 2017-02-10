@@ -8,7 +8,7 @@ computeWilcoxonExactProbability <- function(n, R){
   if(n > 50)
     return(-1)
   else{
-    WilcoxonTable <- getdata("WilcoxonTable.rda")
+    WilcoxonTable <- getData("WilcoxonTable")
     if(R - floor(R) == 0){
       pvalue <- unname(WilcoxonTable[R,n])
       pvalue <- ifelse(pvalue == -1, 1, pvalue)
