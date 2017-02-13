@@ -110,6 +110,8 @@ computeTotalNumberOfRunsAsymptoticProbability <- function(n1, n2, runs){
 #' @export
 #' @description This function performs the Number of runs
 #' @param sequence Sequence of data
+#' @examples
+#' numberRuns.test(c("b","a","a","a","a","a","b","a","a","a"))
 #' @return A htest object with pvalues and statistics
 numberRuns.test <- function(sequence){
   data.name <- deparse(substitute(sequence))
@@ -150,6 +152,8 @@ numberRuns.test <- function(sequence){
 #' @export
 #' @description This function performs the Number of runs up and down median test
 #' @param sequence Sequence of data
+#' @examples
+#'  numberRunsUpDownMedian.test(c(23,99,89,36,1,64,14,28,2,81))
 #' @return A htest object with pvalues and statistics
 numberRunsUpDownMedian.test <- function(sequence){
   n <- length(sequence)
@@ -255,6 +259,8 @@ computeNumberOfUpDownRunsAsymptoticProbability <- function(n, R){
 #' @export
 #' @description This function performs the Number of runs up and down  test
 #' @param sequence Sequence of data
+#' @examples
+#'  numberRunsUpDown.test(c(23,99,89,36,1,64,14,28,2,81))
 #' @return A htest object with pvalues and statistics
 numberRunsUpDown.test <- function(sequence){
   n <- length(sequence)
@@ -335,6 +341,8 @@ computeVonNewmannExactProbability <- function(n, NM, RVN){
 #' @export
 #' @description This function performs the Von Neumann
 #' @param sequence Sequence of data
+#' @examples
+#'  vonNeumann.test(c(23,99,89,36,1,64,14,28,2,81))
 #' @return A htest object with pvalues and statistics
 vonNeumann.test <- function(sequence){
   n <- length(sequence)

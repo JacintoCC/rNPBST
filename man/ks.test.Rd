@@ -19,4 +19,8 @@ A htest object with pvalues and statistics
 \description{
 This function performs the Kolmogorov-Smirnov test
 }
+\examples{
+ks.test(rnorm(100, mean=0.5))
+ks.test(rnorm(100, mean=0.5), mean = 0.5)
+}
 

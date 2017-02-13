@@ -15,4 +15,7 @@ A htest object with pvalues and statistics
 \description{
 This function performs the Chakraborti and Desu test
 }
+\examples{
+cd.test(results)
+}
 

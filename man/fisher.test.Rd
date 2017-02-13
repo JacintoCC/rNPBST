@@ -15,4 +15,7 @@ A htest object with pvalues and statistics
 \description{
 This function performs the Fisher test
 }
+\examples{
+fisher.test(matrix(c(10,4,2,7), ncol=2))
+}
 

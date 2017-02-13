@@ -17,4 +17,8 @@ A htest object with pvalues and statistics
 \description{
 This function performs the Lilliefors test
 }
+\examples{
+lilliefors.test(rnorm(100))
+lilliefors.test(rexp(100, rate=5), distribution = "EXPONENTIAL")
+}
 

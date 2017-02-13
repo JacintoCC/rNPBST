@@ -15,4 +15,8 @@ A htest object with pvalues and statistics
 \description{
 This function performs the Siegel Tukey test
 }
+\examples{
+x <- cbind(rnorm(10, sd=1), rnorm(10, sd=3))
+siegelTukey.test(x)
+}
 

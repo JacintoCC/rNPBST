@@ -18,7 +18,14 @@ correlatedBayesianT.test(x, y = NULL, rho = 1/length(x), rope.min = -0.01,
 
 \item{rope.max}{Upper limit of the rope considered}
 }
+\value{
+List with probabilities for each region and a sample of posterior distribution.
+}
 \description{
 This function performs the bayesian signed rank test
+}
+\examples{
+correlatedBayesianT.test(results.rf[1, ], results.knn[1, ])
+correlatedBayesianT.test(results.rf[5, ], results.knn[5, ], rope.min=-0.05, rope.max = 0.05)
 }
 

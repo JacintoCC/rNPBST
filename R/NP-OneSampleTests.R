@@ -55,6 +55,8 @@ computeWilcoxonAsymptoticProbability <- function(n, R, ties){
 #' @export
 #' @description This function performs the Wilcoxon test
 #' @param matrix matrix of data
+#' @examples
+#' wilcoxon.test(results[ ,c(1,2)])
 #' @return A htest object with pvalues and statistics
 wilcoxon.test <- function(matrix){
   if(ncol(matrix) != 2)

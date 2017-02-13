@@ -24,7 +24,7 @@ locate.max <- function(x){
 #' @description  Function to get a data file and assign it to a variable
 #' @param ... Parameters to data function
 #' @return Data to assign it to a variable
-getdata <- function(...)
+getData <- function(...)
 {
    e <- new.env()
    name <- utils::data(..., envir = e)[1]

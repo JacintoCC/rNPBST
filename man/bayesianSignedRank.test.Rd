@@ -2,7 +2,7 @@
 % Please edit documentation in R/bayesian.R
 \name{bayesianSignedRank.test}
 \alias{bayesianSignedRank.test}
-\title{Bayesian signed rank test}
+\title{Bayesian Signed-Rank test}
 \usage{
 bayesianSignedRank.test(x, y = NULL, s = 0.5, z_0 = 0, rope.min = -0.01,
   rope.max = 0.01, weights = c(s, rep(1, length(x))), samples = 30000)
@@ -24,7 +24,14 @@ bayesianSignedRank.test(x, y = NULL, s = 0.5, z_0 = 0, rope.min = -0.01,
 
 \item{samples}{Number of samples of the distribution}
 }
+\value{
+List with probabilities for each region and a sample of posterior distribution.
+}
 \description{
-This function performs the bayesian signed rank test
+This function performs the Bayesian Signed-Rank test
+}
+\examples{
+bsr <- bayesianSignedRank.test(results$random.forest, results$KNN)
+bsr.stronger.prior <- bayesianSignedRank.test(results$random.forest, results$KNN, s=3, z_0 = 0.5)
 }
 

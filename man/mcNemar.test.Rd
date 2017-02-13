@@ -15,4 +15,7 @@ A htest object with pvalues and statistics
 \description{
 This function performs the McNemar test
 }
+\examples{
+mcNemar.test(matrix(c(10,4,2,7), ncol=2))
+}
 

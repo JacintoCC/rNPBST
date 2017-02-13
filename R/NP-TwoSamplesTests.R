@@ -5,7 +5,6 @@
 
 #' @title Exact p values for Kolmogorov-Smirnov test for compare two samples
 #'
-#' @export
 #' @description This function compute the exact pvalue for the Kolmogorov-Smirnov test for two samples
 #' @param n Size of distribution
 #' @param Dn Statistic
@@ -26,7 +25,6 @@ computeKolmogorovExactProbability <- function(n, Dn){
 
 #' @title Asymptotic p values for Kolmogorov-Smirnov test for compare two samples
 #'
-#' @export
 #' @description This function compute the asymptotic pvalue for the Kolmogorov-Smirnov test for two samples
 #' @param n Size of distribution
 #' @param Dn Statistic
@@ -160,6 +158,8 @@ waldWolfowitzSequence <- function(sample1, sample2){
 #' @export
 #' @description This function performs the Wald-Wolfowitz test for two samples
 #' @param matrix Matrix of data
+#' @examples
+#' waldWolfowitz.test(results[ ,c(1,2)])
 #' @return A htest object with pvalues and statistics
 waldWolfowitz.test <- function(matrix){
    if(ncol(matrix) != 2)

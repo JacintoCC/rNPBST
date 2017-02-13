@@ -5,6 +5,9 @@
 #' @param sequence Secuence of data
 #' @param distribution Distribution name to perform test
 #' @param ... Parameters for the distribution
+#' @examples
+#' ks.test(rnorm(100, mean=0.5))
+#' ks.test(rnorm(100, mean=0.5), mean = 0.5)
 #' @return A htest object with pvalues and statistics
 ks.test <- function(sequence, distribution = "NORMAL", ...){
   data.name <-  deparse(substitute(sequence))
@@ -35,6 +38,9 @@ ks.test <- function(sequence, distribution = "NORMAL", ...){
 #' @description This function performs the Lilliefors test
 #' @param sequence Secuence of data
 #' @param distribution Distribution name to perform test
+#' @examples
+#' lilliefors.test(rnorm(100))
+#' lilliefors.test(rexp(100, rate=5), distribution = "EXPONENTIAL")
 #' @return A htest object with pvalues and statistics
 lilliefors.test <- function(sequence, distribution = "NORMAL"){
   # Order sequence

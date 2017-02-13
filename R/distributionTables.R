@@ -130,7 +130,7 @@ computeAproximatedProbability <- function(table, n, T){
 #' @param Dn Kolmogorov statistic
 #' @return p-value computed
 pkolmogorov <- function(n, Dn){
-   KolmogorovTable <- getdata("KolmogorovTable")
+   KolmogorovTable <- getData("KolmogorovTable")
    asymptoticValues <- c(1.07,1.22,1.36,1.52,1.63)
 
    if(n <= 40){

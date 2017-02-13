@@ -36,6 +36,8 @@ computeCDAsymtoticProbability <- function(W, N, populations, length){
 #' @export
 #' @description This function performs the Chakraborti and Desu test
 #' @param matrix Matrix of data
+#' @examples
+#' cd.test(results)
 #' @return A htest object with pvalues and statistics
 cd.test <- function(matrix){
   if(ncol(matrix) < 3)

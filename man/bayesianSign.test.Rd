@@ -2,7 +2,7 @@
 % Please edit documentation in R/bayesian.R
 \name{bayesianSign.test}
 \alias{bayesianSign.test}
-\title{Bayesian sign test}
+\title{Bayesian Sign test}
 \usage{
 bayesianSign.test(x, y = NULL, s = 1, z_0 = 0, rope.min = -0.01,
   rope.max = 0.01, weights = c(s/2, rep(1, length(x))), n.samples = 1e+05)
@@ -22,9 +22,16 @@ bayesianSign.test(x, y = NULL, s = 1, z_0 = 0, rope.min = -0.01,
 
 \item{weights}{A priori weights}
 
-\item{n.samples}{Number of samples of the distribution}
+\item{n.samples}{Number of samples of the distributio}
+}
+\value{
+List with probabilities for each region and a sample of posterior distribution.
 }
 \description{
-This function performs the bayesian sign test
+This function performs the Bayesian Sign test
+}
+\examples{
+bs <- bayesianSign.test(results$random.forest, results$KNN)
+bs.stronger.prior <- bayesianSign.test(results$random.forest, results$KNN, s=3, z_0 = 0.5)
 }
 

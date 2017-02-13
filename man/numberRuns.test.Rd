@@ -15,4 +15,7 @@ A htest object with pvalues and statistics
 \description{
 This function performs the Number of runs
 }
+\examples{
+numberRuns.test(c("b","a","a","a","a","a","b","a","a","a"))
+}
 

@@ -15,4 +15,9 @@ A htest object with pvalues and statistics
 \description{
 This function performs the Kendall test
 }
+\examples{
+x <- 1:10
+m <- matrix(c(x, 2*x+rnorm(length(x))), ncol = 2)
+kendall.test(m)
+}
 

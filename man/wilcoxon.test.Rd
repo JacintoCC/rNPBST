@@ -15,4 +15,7 @@ A htest object with pvalues and statistics
 \description{
 This function performs the Wilcoxon test
 }
+\examples{
+wilcoxon.test(results[ ,c(1,2)])
+}
 

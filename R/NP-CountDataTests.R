@@ -49,6 +49,8 @@ computeFisherRightExactProbability <- function(N, n1, n2, Y, n00){
 #' @export
 #' @description This function performs the Fisher test
 #' @param matrix Matrix of data
+#' @examples
+#' fisher.test(matrix(c(10,4,2,7), ncol=2))
 #' @return A htest object with pvalues and statistics
 fisher.test <- function(matrix){
 
@@ -91,6 +93,8 @@ fisher.test <- function(matrix){
 #' @export
 #' @description This function performs the McNemar test
 #' @param matrix Matrix of data
+#' @examples
+#' mcNemar.test(matrix(c(10,4,2,7), ncol=2))
 #' @return A htest object with pvalues and statistics
 mcNemar.test <- function(matrix){
   checkCountDataConditions(matrix)

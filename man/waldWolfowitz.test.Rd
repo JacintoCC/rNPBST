@@ -15,4 +15,7 @@ A htest object with pvalues and statistics
 \description{
 This function performs the Wald-Wolfowitz test for two samples
 }
+\examples{
+waldWolfowitz.test(results[ ,c(1,2)])
+}
 

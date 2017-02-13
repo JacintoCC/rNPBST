@@ -16,4 +16,8 @@ plotPosterior(data, names, dataset)
 \description{
 This function plots the posterior distribution of the parameter
 }
+\examples{
+cbt <- correlatedBayesianT.test(results.rf[1, ], results.knn[1, ])
+plotPosterior(cbt, names = c("Random Forest", "KNN"), dataset = "abalone")
+}
 

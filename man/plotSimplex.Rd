@@ -4,12 +4,21 @@
 \alias{plotSimplex}
 \title{Projection of 3-simplex points}
 \usage{
-plotSimplex(points)
+plotSimplex(points, num.points = nrow(points))
 }
 \arguments{
 \item{points}{Simplex points to be projected}
+
+\item{num.points}{Number of points to be shown}
 }
 \description{
 This function projects 3-simplex points to a 2D triangle
+}
+\examples{
+bs <- bayesianSign.test(results$random.forest, results$KNN)
+plotSimplex(bs$sample, num.points = 5000)
+
+bsr <- bayesianSignedRank.test(results$random.forest, results$KNN)
+plotSimplex(bsr$sample, num.points = 5000)
 }
 

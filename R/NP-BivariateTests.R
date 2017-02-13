@@ -20,6 +20,10 @@ checkBivariateConditions <- function(matrix){
 #' @export
 #' @description This function performs the Daniel Trend test
 #' @param matrix Matrix of data
+#' @examples
+#' x <- 1:10
+#' m <- matrix(c(x, 2*x+rnorm(length(x))), ncol = 2)
+#' danielTrend.test(m)
 #' @return A htest object with pvalues and statistics
 danielTrend.test <- function(matrix){
    # Check Conditions
@@ -80,6 +84,10 @@ danielTrend.test <- function(matrix){
 #' @export
 #' @description This function performs the Kendall test
 #' @param matrix Matrix of data
+#' @examples
+#' x <- 1:10
+#' m <- matrix(c(x, 2*x+rnorm(length(x))), ncol = 2)
+#' kendall.test(m)
 #' @return A htest object with pvalues and statistics
 kendall.test <- function(matrix){
    checkBivariateConditions(matrix)
