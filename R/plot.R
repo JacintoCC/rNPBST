@@ -17,15 +17,15 @@ plotSimplex <- function(points){
    borders <- data.frame(x = c(1,0,0), y=c(0,1,0), z=c(0,0,1),
                          xend = c(0,1,0), yend=c(0,0,1), zend=c(1,0,0))
 
-   ggtern::ggtern(data = df.points, ggplot2::aes(L, rope, R)) +
+   ggtern::ggtern(data = df.points, ggtern::aes(L, rope, R)) +
       ggplot2::geom_point(color = df.points$d) +
       ggplot2::geom_segment(data = lines,
-                            ggplot2::aes(x = c(0.5, 0, 0.5), y = c(0, 0.5, 0.5),
+                            ggtern::aes(x = c(0.5, 0, 0.5), y = c(0, 0.5, 0.5),
                                          z = c(0.5, 0.5, 0), xend = c(1,1,1)/3,
                                          yend = c(1,1,1)/3, zend = c(1,1,1)/3),
                             color = 'orange', size = 0.5) +
       ggplot2::geom_segment(data = borders,
-                            ggplot2::aes(x = c(1,0,0), y=c(0,1,0), z=c(0,0,1),
+                            ggtern::aes(x = c(1,0,0), y=c(0,1,0), z=c(0,0,1),
                                          xend = c(0,1,0), yend=c(0,0,1),
                                          zend=c(1,0,0)),
                             color = 'orange', size = 1)
@@ -39,15 +39,16 @@ plotSimplex <- function(points){
 #' @param names Names of the algorithms
 #' @param dataset Names of the dataset
 plotPosterior <- function (data, names, dataset) {
-   ggplot2::qplot(data$x, data$y, geom = "line") +
+   ggplot2::qplot(data$dist$x, data$dist$y, geom = "line") +
       ggplot2::ggtitle(paste(names[1], "vs.", names[2], "\nDataset:", dataset)) +
       ggplot2::xlab("Difference") +
       ggplot2::ylab("Value") +
       ggplot2::geom_area(ggplot2::aes(fill="distribution"), fill = "lightblue") +
       ggplot2::geom_line(color="darkblue") +
-      ggplot2::geom_vline(xintercept = -0.01, color = "orange") +
-      ggplot2::geom_vline(xintercept = 0.01, color = "orange") +
-      ggplot2::geom_segment(data = data.frame(x = -0.01, y = 0, xend=0.01, yend = 0),
-                            ggplot2::aes(x = -0.01, y = 0, xend=0.01, yend = 0), color = "orange")
+      ggplot2::geom_vline(xintercept = data$rope[1], color = "orange") +
+      ggplot2::geom_vline(xintercept = data$rope[2], color = "orange") +
+      ggplot2::geom_segment(data = data.frame(x = data$rope[1], y = 0, data$rope[2], yend = 0),
+                            ggplot2::aes(x = data$rope[1], y = 0, xend=data$rope[2], yend = 0),
+                            color = "orange")
 
 }

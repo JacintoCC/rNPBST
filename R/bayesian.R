@@ -52,7 +52,7 @@ bayesianSign.test <- function(x, y = NULL, s = 1, z_0 = 0,
   # Take a sample from Dirichlet distribution
   sample <- MCMCpack::rdirichlet(n.samples, weights)
   # Compute probabilities based on data
-  probabilities <- c(n.left, n.diff - n.left - n.right, n.right)/n.diff
+  probabilities <- c("left" = n.left,"rope" =  n.diff - n.left - n.right, "right" = n.right)/n.diff
 
   return(list(probabilities = probabilities,
               sample = sample))
@@ -141,7 +141,8 @@ correlatedBayesianT.test <- function(x, y = NULL, rho = 1/length(x),
   x <- seq(min(delta-3*stdX, -0.02), max(delta+3*stdX, 0.02), by = 0.001)
   y <- sapply(x, function(t) stats::dt((t - delta)/sp, df))
 
-  results <- list('left' = p.left, 'rope' = p.rope, 'right'= 1 - p.left-p.rope,
+  results <- list('probabilities' = c('left' = p.left, 'rope' = p.rope, 'right'= 1 - p.left-p.rope),
+                  'rope' = c(rope.min, rope.max),
                   'dist' = data.frame(x = x, y = y))
   return (results)
 }
