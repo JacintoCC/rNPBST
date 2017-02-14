@@ -40,7 +40,7 @@ computePageAsymptoticProbability <- function(N, k, L){
 #' @export
 #' @description This function performs the Page test
 #' @param matrix Matrix of data
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 page.test <- function(matrix){
   if(ncol(matrix) < 3)
     stop("Extended median test only can be employed with more than two samples")
@@ -68,7 +68,7 @@ page.test <- function(matrix){
 #' @export
 #' @description This function performs the Partial correlation test
 #' @param matrix Matrix of data
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 partialcorrelation.test <- function(matrix){
   if(nrow(matrix) != 3)
     stop("Partial correlation test only can be employed with three variables: X, Y and Z")

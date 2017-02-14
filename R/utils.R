@@ -49,3 +49,55 @@ getDiff <- function(x, y){
 
    return(diff)
 }
+
+
+#' @title Test object to table in LaTeX format
+#'
+#' @export
+#' @description Transform a test object to table in LaTeX format
+#' @param test Test object with pvalue(s), test name and statistic(s)
+#' @examples
+#' htest2Tex(cd.test(results))
+#' @return This method prints the necessary code for include a table with the information provided by the test.
+htest2Tex <- function(test){
+   tex.string <- paste("\\begin{table}[] \n\\centering \\caption{",
+                       test$method,
+                       " test} \n\\begin{tabular}{lll} \n\\hline\n",
+                       sep = "")
+
+   tex.string <- paste(tex.string,
+                       "\\multicolumn{3}{c}{",
+                       test$method, " test} \\\\ \\hline\n",
+                       sep = "")
+
+   names.items <- names(test)
+   tex.items <- lapply(1:(length(test)-1),
+                       function(i){
+                          item <- test[[i]]
+                          tex.item <- paste("\\multirow{",
+                                            length(item),
+                                            "}{*}{",
+                                            names.items[i],
+                                            "} \t & \t",
+                                            sep = "")
+                          names.subitems <- names(item)
+                          tex.item.subitems <- rbind(names.subitems,
+                                                     rep("\t & \t", length(item)),
+                                                     format(item, digits = 4,
+                                                            nsmall = 2),
+                                                     c(rep("\t\\\\\n \t & \t",
+                                                           length(item)-1),
+                                                       "\t \\\\ \\hline"))
+                          return(paste(tex.item,
+                                       paste(tex.item.subitems,
+                                             collapse = ""),
+                                       sep = ""))
+                       })
+
+   cat(paste(tex.string,
+             paste(tex.items, collapse = "\n"),
+             "\\end{tabular}",
+             "\\end{table}",
+             sep="\n"))
+}
+

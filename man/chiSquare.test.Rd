@@ -14,7 +14,7 @@ chiSquare.test(matrix, n, p = NULL)
 \item{p}{P parameter for uniform distribution}
 }
 \value{
-A htest object with pvalues and statistics
+A list with pvalues for alternative hypothesis, statistics, method and data name
 }
 \description{
 This function performs the Chi square test

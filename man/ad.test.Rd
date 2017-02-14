@@ -32,7 +32,7 @@ ad.test(sequence, distribution = "NORMAL", mean = NULL, sd = NULL,
 \item{s}{Distribution s - Use if mean is a parameter of the distribution}
 }
 \value{
-A htest object with pvalues and statistics
+A list with pvalues for alternative hypothesis, statistics, method and data name
 }
 \description{
 This function performs the Anderson-Darling test

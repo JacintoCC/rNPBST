@@ -12,7 +12,7 @@ lilliefors.test(sequence, distribution = "NORMAL")
 \item{distribution}{Distribution name to perform test}
 }
 \value{
-A htest object with pvalues and statistics
+A list with pvalues for alternative hypothesis, statistics, method and data name
 }
 \description{
 This function performs the Lilliefors test

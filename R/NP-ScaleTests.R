@@ -6,7 +6,7 @@
 #' @examples
 #' x <- cbind(rnorm(10, sd=1), rnorm(10, sd=3))
 #' siegelTukey.test(x)
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 siegelTukey.test <- function(matrix){
   if(ncol(matrix) != 2)
     stop("Siegel-Tukey test only can be employed with two samples")

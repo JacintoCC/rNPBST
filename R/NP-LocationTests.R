@@ -132,7 +132,7 @@ computeWilcoxonRankPValues <- function(combined, n1, n2, WRank){
 #' @param matrix Matrix of data
 #' @examples
 #' wilcoxonRankSum.test(results[ ,1:2])
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 wilcoxonRankSum.test <- function(matrix){
 
    if(ncol(matrix) != 2)

@@ -38,7 +38,7 @@ computeCDAsymtoticProbability <- function(W, N, populations, length){
 #' @param matrix Matrix of data
 #' @examples
 #' cd.test(results)
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 cd.test <- function(matrix){
   if(ncol(matrix) < 3)
     stop("Extended median test only can be employed with more than two samples")
@@ -61,4 +61,39 @@ cd.test <- function(matrix){
                 statistic = statistic, p.value = pvalues,
                 method = "Chakraborti and Desu")
   return(htest)
+}
+
+
+
+#' @title Friedman Aligned-Rank
+#'
+#' @export
+#' @description This function performs the Friedman Aligned-Rank test
+#' @param matrix Matrix of data
+#' @examples
+#' friedmanAR.test(results)
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
+friedmanAR.test <- function(matrix){
+   n <- nrow(matrix)
+   k <- ncol(matrix)
+
+   if(k < 3)
+      stop("Extended median test only can be employed with more than two samples")
+
+   if(anyNA(matrix))
+      stop("No null values allowed in this test.")
+
+   aligned.obs <- matrix - matrix(rep(rowMeans(matrix), k), nrow = n)
+   ranked.obs <- matrix(rank(aligned.obs, ties.method = "average"), nrow = n)
+
+   T <- (k-1) * (sum(colSums(ranked.obs)^2) - k*n^2*(k*n+1)^2/4) /
+      (k*n*(k*n+1)*(2*k*n+1)/6 - sum(rowSums(ranked.obs)^2) / k )
+   statistic <- c(T = T)
+   pvalues <- doubleTailProbability(stats::pchisq(T, k-1),
+                                    1-stats::pchisq(T, k-1))
+
+   htest <- list(data.name = deparse(substitute(matrix)),
+                 statistic = statistic, p.value = pvalues,
+                 method = "Friedman Aligned-Rank")
+   return(htest)
 }

@@ -28,7 +28,7 @@ make.htest <- function(...){
 #' @export
 #' @description This function performs the Contingency Coefficient test
 #' @param matrix Matrix of data
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 contingency.coeff.test <- function(matrix){
    java.test.object <- rJava::.jnew("javanpst.tests.countData.contingencyCoefficient.ContingencyCoefficient",
                                     dataTable(matrix))
@@ -39,10 +39,10 @@ contingency.coeff.test <- function(matrix){
    estimate <- c("C contingency coefficient" = c,
                  "Phi contingency coefficient" = phi)
    pvalue <- rJava::.jcall(java.test.object, "D", "getPValue")
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
-                       statistic = c(Q = q), p.value = pvalue,
-                       estimate = estimate,
-                       method = "contingency coeff")
+   htest <- list(data.name = deparse(substitute(matrix)),
+                 statistic = c(Q = q), p.value = pvalue,
+                 estimate = estimate,
+                 method = "contingency coeff")
    return(htest)
 }
 
@@ -51,14 +51,14 @@ contingency.coeff.test <- function(matrix){
 #' @export
 #' @description This function performs the Multinomial equality test
 #' @param matrix Matrix of data
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 multinomialEq.test <- function(matrix){
    java.test.object <- rJava::.jnew("javanpst.tests.countData.multinomialEqualityTest.MultinomialEqualityTest",
                                     dataTable(matrix))
    rJava::.jcall(java.test.object, "V", "doTest")
    q <- rJava::.jcall(java.test.object, "D", "getQ")
    pvalue <- rJava::.jcall(java.test.object, "D", "getPValue")
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
+   htest <- list(data.name = deparse(substitute(matrix)),
                        statistic = q, p.value = pvalue,
                        method = "multinomial equality")
    return(htest)
@@ -69,7 +69,7 @@ multinomialEq.test <- function(matrix){
 #' @export
 #' @description This function performs the Ordered equality test
 #' @param matrix Matrix of data
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 orderedEq.test <- function(matrix){
    java.test.object <- rJava::.jnew("javanpst.tests.countData.orderedEqualityTest.OrderedEqualityTest",
                                     dataTable(matrix))
@@ -79,7 +79,7 @@ orderedEq.test <- function(matrix){
    pvalue <- c(right = rJava::.jcall(java.test.object, "D", "getRightPValue"),
                left = rJava::.jcall(java.test.object, "D", "getLeftPValue"),
                double = rJava::.jcall(java.test.object, "D", "getDoublePValue"))
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
+   htest <- list(data.name = deparse(substitute(matrix)),
                        statistic = statistic, p.value = pvalue,
                        method = "ordered equality")
    return(htest)
@@ -91,7 +91,7 @@ orderedEq.test <- function(matrix){
 #' @export
 #' @description This function performs the extended median test
 #' @param matrix Matrix of data
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 extendedMedian.test <- function(matrix){
    java.test.object <- rJava::.jnew("javanpst.tests.equality.extendedMedianTest.ExtendedMedianTest",
                                     dataTable(matrix))
@@ -100,7 +100,7 @@ extendedMedian.test <- function(matrix){
                   "Q" = rJava::.jcall(java.test.object, "D", "getQ"),
                   "Improved Q" = rJava::.jcall(java.test.object, "D", "getImprovedQ"))
    pvalue <- rJava::.jcall(java.test.object, "D", "getPValue")
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
+   htest <- list(data.name = deparse(substitute(matrix)),
                        statistic = statistic, p.value = pvalue,
                        method = "Exteded median")
    return(htest)
@@ -111,7 +111,7 @@ extendedMedian.test <- function(matrix){
 #' @export
 #' @description This function performs the Jonckheere and Terpstra test
 #' @param matrix Matrix of data
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 jt.test <- function(matrix){
    java.test.object <- rJava::.jnew("javanpst.tests.equality.JTTest.JTTest",
                                     dataTable(matrix))
@@ -119,7 +119,7 @@ jt.test <- function(matrix){
    statistic <- c(b = rJava::.jcall(java.test.object, "D", "getB"),
                   z = rJava::.jcall(java.test.object, "D", "getZ"))
    pvalue <- rJava::.jcall(java.test.object, "D", "getPValue")
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
+   htest <- list(data.name = deparse(substitute(matrix)),
                        statistic = statistic, p.value = pvalue,
                        method = "JT")
    return(htest)
@@ -131,7 +131,7 @@ jt.test <- function(matrix){
 #' @description This function performs the Kruskal-Wallis test
 #' @param matrix Matrix of data
 #' @param print.multiple If True, prints
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 kruskalWallis.test <- function(matrix, print.multiple = F){
    java.test.object <- rJava::.jnew("javanpst.tests.equality.kruskalWallisTest.KruskalWallisTest",
                                     dataTable(matrix))
@@ -142,7 +142,7 @@ kruskalWallis.test <- function(matrix, print.multiple = F){
    if(print.multiple)
       cat(rJava::.jcall(java.test.object, "S", "printMultipleComparisonsProcedureReport"))
 
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
+   htest <- list(data.name = deparse(substitute(matrix)),
                        statistic = c("H" = H), p.value = pvalue,
                        method = "Kruskal Wallis")
    return(htest)
@@ -163,7 +163,7 @@ kruskalWallis.test <- function(matrix, print.multiple = F){
 #' @param lambda Distribution lambda - Use if mean is a parameter of the distribution
 #' @param scale Distribution scale - Use if mean is a parameter of the distribution
 #' @param s Distribution s - Use if mean is a parameter of the distribution
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 ad.test <- function(sequence, distribution = "NORMAL", mean = NULL, sd = NULL,
                     start = NULL, end = NULL, freedom = NULL, k = NULL,
                     lambda = NULL, scale = NULL, s = NULL){
@@ -212,7 +212,7 @@ ad.test <- function(sequence, distribution = "NORMAL", mean = NULL, sd = NULL,
    w2 <- rJava::.jcall(java.test.object, "D", "W2")
    a <- rJava::.jcall(java.test.object, "D", "getA")
    pvalue <- rJava::.jcall(java.test.object, "D", "getPValue")
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
+   htest <- list(data.name = deparse(substitute(matrix)),
                        statistic = c("A" = a, "W2" = w2),
                        parameters = c("Mean" = mean, "Var" = sd,
                                       "Start" = start, "End" = end,
@@ -231,7 +231,7 @@ ad.test <- function(sequence, distribution = "NORMAL", mean = NULL, sd = NULL,
 #' @param matrix Matrix of data
 #' @param n N parameter for Uniform distribution
 #' @param p P parameter for uniform distribution
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 chiSquare.test <- function(matrix, n, p = NULL){
    java.test.object <- rJava::.jnew("javanpst.tests.goodness.chiSquareTest.ChiSquareTest",
                                     dataTable(matrix))
@@ -245,7 +245,7 @@ chiSquare.test <- function(matrix, n, p = NULL){
    rJava::.jcall(java.test.object, "V", "doTest")
    q <- rJava::.jcall(java.test.object, "D", "getQ")
    pvalue <- rJava::.jcall(java.test.object, "D", "getPValue")
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
+   htest <- list(data.name = deparse(substitute(matrix)),
                        statistic = c("Q" = q), p.value = pvalue,
                        method = "chi square",
                        parameters = c("N" = n),
@@ -259,7 +259,7 @@ chiSquare.test <- function(matrix, n, p = NULL){
 #' @export
 #' @description This function performs the normal scores test
 #' @param matrix Matrix of data
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 normalScores.test <- function(matrix){
    java.test.object <- rJava::.jnew("javanpst.tests.location.normalScoresTest.NormalScoresTest",
                                     dataTable(matrix))
@@ -269,7 +269,7 @@ normalScores.test <- function(matrix){
    pvalue <- c(left = rJava::.jcall(java.test.object, "D", "getLeftPValue"),
                right = rJava::.jcall(java.test.object, "D", "getRightPValue"),
                double = rJava::.jcall(java.test.object, "D", "getDoublePValue"))
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
+   htest <- list(data.name = deparse(substitute(matrix)),
                        statistic = statistic, p.value = pvalue,
                        method = "normal scores")
    return(htest)
@@ -281,7 +281,7 @@ normalScores.test <- function(matrix){
 #' @export
 #' @description This function performs the Concordance Coefficient test
 #' @param matrix Matrix of data
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 concordanceCoeff.test <- function(matrix){
    java.test.object <- rJava::.jnew("javanpst.tests.multiple.concordanceCoefficient.ConcordanceCoefficient",
                                     dataTable(matrix))
@@ -290,7 +290,7 @@ concordanceCoeff.test <- function(matrix){
                   q = rJava::.jcall(java.test.object, "D", "getQ"),
                   w = rJava::.jcall(java.test.object, "D", "getW"))
    pvalue <- rJava::.jcall(java.test.object, "D", "getPValue")
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
+   htest <- list(data.name = deparse(substitute(matrix)),
                        statistic = statistic, p.value = pvalue,
                        method = "concordance coeff")
    return(htest)
@@ -301,7 +301,7 @@ concordanceCoeff.test <- function(matrix){
 #' @export
 #' @description This function performs the Friedman test
 #' @param matrix Matrix of data
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 friedman.test <- function(matrix){
    java.test.object <- rJava::.jnew("javanpst.tests.multiple.friedmanTest.FriedmanTest",
                                     dataTable(matrix))
@@ -309,7 +309,7 @@ friedman.test <- function(matrix){
    statistic <- c(s = rJava::.jcall(java.test.object, "D", "getS"),
                   q = rJava::.jcall(java.test.object, "D", "getQ"))
    pvalue <- rJava::.jcall(java.test.object, "D", "getPValue")
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
+   htest <- list(data.name = deparse(substitute(matrix)),
                        statistic = statistic, p.value = pvalue,
                        method = "Friedman test")
    return(htest)
@@ -321,7 +321,7 @@ friedman.test <- function(matrix){
 #' @description This function performs the Incomplete Concordance test
 #' @param matrix Matrix of data
 #' @param lambda Parameter of the test
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 incompleteConcordance.test <- function(matrix, lambda){
    java.test.object <- rJava::.jnew("javanpst.tests.multiple.incompleteConcordance.IncompleteConcordance",
                                     dataTable(matrix), lambda)
@@ -329,7 +329,7 @@ incompleteConcordance.test <- function(matrix, lambda){
    statistic <- c(q = rJava::.jcall(java.test.object, "D", "getQ"),
                   w = rJava::.jcall(java.test.object, "D", "getW"))
    pvalue <- rJava::.jcall(java.test.object, "D", "getPValue")
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
+   htest <- list(data.name = deparse(substitute(matrix)),
                        statistic = statistic, p.value = pvalue,
                        method = "incomplete concordance")
    return(htest)
@@ -366,7 +366,7 @@ populationQuantile.test <- function(sequence, quantile, value){
    pvalue <- c("Exact Left" = rJava::.jcall(java.test.object, "D", "getExactLeftPValue"),
                "Exact Right" = rJava::.jcall(java.test.object, "D", "getExactRightPValue"),
                "Exact Double" = rJava::.jcall(java.test.object, "D", "getExactDoublePValue"))
-   htest <- make.htest(data.name = deparse(substitute(sequence)),
+   htest <- list(data.name = deparse(substitute(sequence)),
                        statistic = c("K" = k), p.value = pvalue,
                        method = "population quantile")
    return(htest)
@@ -377,7 +377,7 @@ populationQuantile.test <- function(sequence, quantile, value){
 #' @export
 #' @description This function performs the Sign test
 #' @param matrix Sequence of data
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 binomialSign.test <- function(matrix){
    if(length(dim(matrix)) == 1 || is.vector(matrix)){
       java.test.object <- rJava::.jnew("javanpst.tests.oneSample.signTest.SignTest",
@@ -399,7 +399,7 @@ binomialSign.test <- function(matrix){
                "Asymptotic P-Value (Left tail, Y > X)" = rJava::.jcall(java.test.object, "D", "getLeftPValue"),
                "Asymptotic P-Value (Right tail, Y < X)" = rJava::.jcall(java.test.object, "D", "getRightPValue"),
                "Asymptotic P-Value (Double tail, Y != X)" = rJava::.jcall(java.test.object, "D", "getDoublePValue"))
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
+   htest <- list(data.name = deparse(substitute(matrix)),
                        statistic = statistic, p.value = pvalue,
                        method = method)
    return(htest)
@@ -410,7 +410,7 @@ binomialSign.test <- function(matrix){
 #' @export
 #' @description This function performs the David Barton test
 #' @param matrix Matrix of data
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 davidBarton.test <- function(matrix){
    java.test.object <- rJava::.jnew("javanpst.tests.scale.david_BartonTest.David_BartonTest",
                                     dataTable(matrix))
@@ -420,7 +420,7 @@ davidBarton.test <- function(matrix){
    pvalue <- c(asymptotic.left = rJava::.jcall(java.test.object, "D", "getLeftPValue"),
                asymptotic.right = rJava::.jcall(java.test.object, "D", "getRightPValue"),
                asymptotic.double = rJava::.jcall(java.test.object, "D", "getDoublePValue"))
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
+   htest <- list(data.name = deparse(substitute(matrix)),
                        statistic = statistic, p.value = pvalue,
                        method = "david barton")
    return(htest)
@@ -431,7 +431,7 @@ davidBarton.test <- function(matrix){
 #' @export
 #' @description This function performs the Freund Ansari Bradley test
 #' @param matrix Matrix of data
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 freundAnsariBradley.test <- function(matrix){
    java.test.object <- rJava::.jnew("javanpst.tests.scale.freund_Ansari_BradleyTest.Freund_Ansari_BradleyTest",
                                     dataTable(matrix))
@@ -441,7 +441,7 @@ freundAnsariBradley.test <- function(matrix){
    pvalue <- c(asymptotic.left = rJava::.jcall(java.test.object, "D", "getLeftPValue"),
                asymptotic.right = rJava::.jcall(java.test.object, "D", "getRightPValue"),
                asymptotic.double = rJava::.jcall(java.test.object, "D", "getDoublePValue"))
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
+   htest <- list(data.name = deparse(substitute(matrix)),
                        statistic = statistic, p.value = pvalue,
                        method = "freund ansari bradley")
    return(htest)
@@ -452,7 +452,7 @@ freundAnsariBradley.test <- function(matrix){
 #' @export
 #' @description This function performs the Klotz test
 #' @param matrix Matrix of data
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 klotz.test <- function(matrix){
    java.test.object <- rJava::.jnew("javanpst.tests.scale.klotzTest.KlotzTest",
                                     dataTable(matrix))
@@ -461,7 +461,7 @@ klotz.test <- function(matrix){
                   MNy = rJava::.jcall(java.test.object, "D", "getTestStatistic2"))
    pvalue <- c(x.pvalue = rJava::.jcall(java.test.object, "D", "getPValue1"),
                y.pvalue = rJava::.jcall(java.test.object, "D", "getPValue2"))
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
+   htest <- list(data.name = deparse(substitute(matrix)),
                        statistic = statistic, p.value = pvalue,
                        method = "klotz")
    return(htest)
@@ -472,7 +472,7 @@ klotz.test <- function(matrix){
 #' @export
 #' @description This function performs the Mood test
 #' @param matrix Matrix of data
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 mood.test <- function(matrix){
    java.test.object <- rJava::.jnew("javanpst.tests.scale.moodTest.MoodTest",
                                     dataTable(matrix))
@@ -481,7 +481,7 @@ mood.test <- function(matrix){
                   MNy = rJava::.jcall(java.test.object, "D", "getTestStatistic2"))
    pvalue <- c(x.pvalue = rJava::.jcall(java.test.object, "D", "getPValue1"),
                y.pvalue = rJava::.jcall(java.test.object, "D", "getPValue2"))
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
+   htest <- list(data.name = deparse(substitute(matrix)),
                        statistic = statistic, p.value = pvalue,
                        method = "mood")
    return(htest)
@@ -492,7 +492,7 @@ mood.test <- function(matrix){
 #' @export
 #' @description This function performs the Sukhatme test
 #' @param matrix Matrix of data
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 sukhatme.test <- function(matrix){
    java.test.object <- rJava::.jnew("javanpst.tests.scale.sukhatmeTest.SukhatmeTest",
                                     dataTable(matrix))
@@ -501,7 +501,7 @@ sukhatme.test <- function(matrix){
    pvalue <- c(asymptotic.left = rJava::.jcall(java.test.object, "D", "getLeftPValue"),
                asymptotic.right = rJava::.jcall(java.test.object, "D", "getRightPValue"),
                asymptotic.double = rJava::.jcall(java.test.object, "D", "getDoublePValue"))
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
+   htest <- list(data.name = deparse(substitute(matrix)),
                        statistic = c("Sukhatme statistic" = sukhatme),
                        p.value = pvalue,
                        method = "Sukhatme")
@@ -513,7 +513,7 @@ sukhatme.test <- function(matrix){
 #' @export
 #' @description This function performs the Control Median test
 #' @param matrix Matrix of data
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 controlMedian.test <- function(matrix){
    java.test.object <- rJava::.jnew("javanpst.tests.twoSample.controlMedianTest.ControlMedianTest",
                                     dataTable(matrix))
@@ -528,7 +528,7 @@ controlMedian.test <- function(matrix){
                asymptotic.left = rJava::.jcall(java.test.object, "D", "getLeftPValue"),
                asymptotic.right = rJava::.jcall(java.test.object, "D", "getRightPValue"),
                asymptotic.double = rJava::.jcall(java.test.object, "D", "getDoublePValue"))
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
+   htest <- list(data.name = deparse(substitute(matrix)),
                        statistic = statistic, p.value = pvalue,
                        method = "control median")
    return(htest)
@@ -539,7 +539,7 @@ controlMedian.test <- function(matrix){
 #' @export
 #' @description This function performs the Median test
 #' @param matrix Matrix of data
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 twoSamplesMedian.test <- function(matrix){
    java.test.object <- rJava::.jnew("javanpst.tests.twoSample.medianTest.MedianTest",
                                     dataTable(matrix))
@@ -553,7 +553,7 @@ twoSamplesMedian.test <- function(matrix){
                asymptotic.left = rJava::.jcall(java.test.object, "D", "getLeftPValue"),
                asymptotic.right = rJava::.jcall(java.test.object, "D", "getRightPValue"),
                asymptotic.double = rJava::.jcall(java.test.object, "D", "getDoublePValue"))
-   htest <- make.htest(data.name = deparse(substitute(matrix)),
+   htest <- list(data.name = deparse(substitute(matrix)),
                        statistic = statistic, p.value = pvalue,
                        method = "Two Samples Median test")
    return(htest)

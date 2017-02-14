@@ -24,7 +24,7 @@ checkBivariateConditions <- function(matrix){
 #' x <- 1:10
 #' m <- matrix(c(x, 2*x+rnorm(length(x))), ncol = 2)
 #' danielTrend.test(m)
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 danielTrend.test <- function(matrix){
    # Check Conditions
    checkBivariateConditions(matrix)
@@ -88,7 +88,7 @@ danielTrend.test <- function(matrix){
 #' x <- 1:10
 #' m <- matrix(c(x, 2*x+rnorm(length(x))), ncol = 2)
 #' kendall.test(m)
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 kendall.test <- function(matrix){
    checkBivariateConditions(matrix)
 

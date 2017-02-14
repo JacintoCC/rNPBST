@@ -64,7 +64,7 @@ computeKolmogorovAsymptoticProbability <- function(n, Dn){
 #' @export
 #' @description This function performs the Kolmogorov-Smirnov test for two samples
 #' @param matrix Matrix of data
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 ksTwoSamples.test <- function(matrix){
    if(ncol(matrix) != 2)
       stop("Kolmogorov-Smirnov test only can be employed with two samples")
@@ -160,7 +160,7 @@ waldWolfowitzSequence <- function(sample1, sample2){
 #' @param matrix Matrix of data
 #' @examples
 #' waldWolfowitz.test(results[ ,c(1,2)])
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 waldWolfowitz.test <- function(matrix){
    if(ncol(matrix) != 2)
       stop("Wald-Wolfowitz test only can be employed with two samples")

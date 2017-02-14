@@ -12,7 +12,7 @@ kruskalWallis.test(matrix, print.multiple = F)
 \item{print.multiple}{If True, prints}
 }
 \value{
-A htest object with pvalues and statistics
+A list with pvalues for alternative hypothesis, statistics, method and data name
 }
 \description{
 This function performs the Kruskal-Wallis test

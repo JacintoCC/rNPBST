@@ -8,7 +8,7 @@
 #' @examples
 #' ks.test(rnorm(100, mean=0.5))
 #' ks.test(rnorm(100, mean=0.5), mean = 0.5)
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 ks.test <- function(sequence, distribution = "NORMAL", ...){
   data.name <-  deparse(substitute(sequence))
   # Order sequence
@@ -41,7 +41,7 @@ ks.test <- function(sequence, distribution = "NORMAL", ...){
 #' @examples
 #' lilliefors.test(rnorm(100))
 #' lilliefors.test(rexp(100, rate=5), distribution = "EXPONENTIAL")
-#' @return A htest object with pvalues and statistics
+#' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 lilliefors.test <- function(sequence, distribution = "NORMAL"){
   # Order sequence
   sequence <- sequence[order(sequence)]

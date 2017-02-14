@@ -10,7 +10,7 @@ binomialSign.test(matrix)
 \item{matrix}{Sequence of data}
 }
 \value{
-A htest object with pvalues and statistics
+A list with pvalues for alternative hypothesis, statistics, method and data name
 }
 \description{
 This function performs the Sign test
