@@ -1,0 +1,43 @@
+#' @title Bayesian Test for Multiple Performance Measures Comparison
+#'
+#' @export
+#' @description Performs the GLRT for the joint analysis of multiple
+#'     performance measures.
+#' @param x Performance matrix of first algorithm
+#' @param y Performance matrix of second algorithm
+#' @param n.samples Size of Monte Carlo sampling
+#' @param prior Prior distribution parameters
+#' @return List with the probabilites of each possible dominance
+#'     configuration.
+bayesian.MultipleConditions <- function(x, y,
+                                        n.samples = 10000,
+                                        prior = rep(2^-ncol(x), ncol(x))){
+    checkMultipleMeasuresConditions(x, y)
+    
+    # Get the number of measures
+    n.measures <- ncol(x)
+
+    # Build the dominance matrix
+    dominance.matrix <- x > y
+
+    # Get the number of occurences of each dominance configuration
+    count.vector <- occurencesDominanceConfiguration(dominance.matrix)
+    count.proportion <-  count.vector / n.measures
+
+    # Posterior distribution
+    posterior.distribution <- count.vector + prior
+
+    # Sampling from Dirichlet distribution
+    mc.sampling <- MCMCpack:rdirichlet(n.samples,
+                                       posterior.distribution)
+
+    # Compute posterior probabilities
+    posterior.probabilities <- sapply(1:(2^n.measures),
+           function(i){
+               max.by.sample <- apply(mc.sampling[ ,-i], 1, max)
+               mean(count.proportion[i] > max.by.sample)
+           })
+
+    return(list(probabilities = posterior.probabilities,
+                sample = mc.sample))
+}

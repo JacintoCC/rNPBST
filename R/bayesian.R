@@ -13,7 +13,8 @@
 #' @examples
 #' bs <- bayesianSign.test(results$random.forest, results$KNN)
 #' bs.stronger.prior <- bayesianSign.test(results$random.forest, results$KNN, s=3, z_0 = 0.5)
-#' @return List with probabilities for each region and a sample of posterior distribution.
+#' @return List with probabilities for each region and a sample of
+#'     posterior distribution.
 bayesianSign.test <- function(x, y = NULL, s = 1, z_0 = 0,
                              rope.min = -0.01, rope.max = 0.01,
                              weights = c(s/2, rep(1, length(x))),
@@ -77,7 +78,8 @@ bayesianSign.test <- function(x, y = NULL, s = 1, z_0 = 0,
 #' @examples
 #' bsr <- bayesianSignedRank.test(results$random.forest, results$KNN)
 #' bsr.stronger.prior <- bayesianSignedRank.test(results$random.forest, results$KNN, s=3, z_0 = 0.5)
-#' @return List with probabilities for each region and a sample of posterior distribution.
+#' @return List with probabilities for each region and a sample of
+#'     posterior distribution.
 bayesianSignedRank.test <- function(x, y = NULL, s = 0.5, z_0 = 0,
                                     rope.min = -0.01, rope.max = 0.01,
                                     weights = c(s, rep(1, length(x))),
@@ -134,7 +136,8 @@ bayesianSignedRank.test <- function(x, y = NULL, s = 0.5, z_0 = 0,
 #' @examples
 #' correlatedBayesianT.test(results.rf[1, ], results.knn[1, ])
 #' correlatedBayesianT.test(results.rf[5, ], results.knn[5, ], rope.min=-0.05, rope.max = 0.05)
-#' @return List with probabilities for each region and a sample of posterior distribution.
+#' @return List with probabilities for each region and a sample of
+#'     posterior distribution.
 correlatedBayesianT.test <- function(x, y = NULL, rho = 1/length(x),
                                     rope.min = -0.01, rope.max = 0.01){
   if(rope.min > rope.max)
