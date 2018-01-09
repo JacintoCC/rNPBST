@@ -12,7 +12,7 @@ bayesianSignedRank.test(x, y = NULL, s = 0.5, z_0 = 0, rope.min = -0.01,
 
 \item{y}{Second vector of observations}
 
-\item{s}{Prior pseudo-observation probabilitie}
+\item{s}{Prior pseudo-observation probability}
 
 \item{z_0}{Prior pseudo-observation}
 
@@ -25,7 +25,8 @@ bayesianSignedRank.test(x, y = NULL, s = 0.5, z_0 = 0, rope.min = -0.01,
 \item{samples}{Number of samples of the distribution}
 }
 \value{
-List with probabilities for each region and a sample of posterior distribution.
+List with probabilities for each region and a sample of
+posterior distribution.
 }
 \description{
 This function performs the Bayesian Signed-Rank test
@@ -34,4 +35,3 @@ This function performs the Bayesian Signed-Rank test
 bsr <- bayesianSignedRank.test(results$random.forest, results$KNN)
 bsr.stronger.prior <- bayesianSignedRank.test(results$random.forest, results$KNN, s=3, z_0 = 0.5)
 }
-

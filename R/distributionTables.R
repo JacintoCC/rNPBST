@@ -28,7 +28,7 @@ xmlDistributionToDataFrame <-function(xml.file, name.distribution){
     dist.data.frame <- transform(dist.data.frame,
                                  distribution = as.numeric(dist.data.frame$distribution),
                                  n = as.integer(dist.data.frame$n),
-                                 T = as.numeric(dist.data.frame$T))
+                                 t = as.numeric(dist.data.frame$t))
   }
   if(name.distribution == "RunsUpDown" |name.distribution == "NMRanksRight" |name.distribution == "NMRanksLeft"){
     colnames(dist.data.frame)[which(colnames(dist.data.frame) == "text")] <- "distribution"
@@ -84,11 +84,11 @@ xmlQuantileDistributionToMatrix <-function(xml.file, pvalues){
 #' @description Function to get the exact probability given a distribution table
 #' @param table Distribution table
 #' @param n Size of the exact distribution
-#' @param T Value of the statistic
+#' @param t Value of the statistic
 #' @param epsilon Threshold for compare the statistic
 #' @return p-value computed
-getFromDistributionTable <- function(table, n, T, epsilon = 0.002){
-  value <- table$distribution[table$n == n & abs(table$T - T) < epsilon]
+getFromDistributionTable <- function(table, n, t, epsilon = 0.002){
+  value <- table$distribution[table$n == n & abs(table$t - t) < epsilon]
   return(value)
 }
 
@@ -98,10 +98,10 @@ getFromDistributionTable <- function(table, n, T, epsilon = 0.002){
 #' @description Function to get the exact probability given a distribution table
 #' @param table Distribution table
 #' @param n Size of the exact distribution
-#' @param T Value of the statistic
+#' @param t Value of the statistic
 #' @return Exact p-value computed
-computeExactProbability <- function(table, n, T){
-  value <- getFromDistributionTable(table, n, abs(T))
+computeExactProbability <- function(table, n, t){
+  value <- getFromDistributionTable(table, n, abs(t))
   return(value)
 }
 
@@ -110,12 +110,12 @@ computeExactProbability <- function(table, n, T){
 #' @description Function to get the exact probability given a distribution table
 #' @param table Distribution table
 #' @param n Size of the exact distribution
-#' @param T Value of the statistic
+#' @param t Value of the statistic
 #' @return p-value computed
-computeAproximatedProbability <- function(table, n, T){
+computeAproximatedProbability <- function(table, n, t){
 
   for(i in 1:ncol(table)){
-    if(T >= table[as.character(n),i])
+    if(t >= table[as.character(n),i])
       return(colnames(table)[i])
   }
 
@@ -130,7 +130,6 @@ computeAproximatedProbability <- function(table, n, T){
 #' @param Dn Kolmogorov statistic
 #' @return p-value computed
 pkolmogorov <- function(n, Dn){
-   KolmogorovTable <- getData("KolmogorovTable")
    asymptoticValues <- c(1.07,1.22,1.36,1.52,1.63)
 
    if(n <= 40){

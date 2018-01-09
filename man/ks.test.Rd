@@ -23,4 +23,3 @@ This function performs the Kolmogorov-Smirnov test
 ks.test(rnorm(100, mean=0.5))
 ks.test(rnorm(100, mean=0.5), mean = 0.5)
 }
-

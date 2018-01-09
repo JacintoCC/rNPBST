@@ -17,4 +17,3 @@ Sequence to apply Wald-Wolfowitz test
 \description{
 Get sequence for Wald-Wolfowitz test
 }
-

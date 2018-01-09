@@ -17,4 +17,3 @@ computed pvalue
 \description{
 This function compute the asymptotic pvalue for the Kolmogorov-Smirnov test for two samples
 }
-

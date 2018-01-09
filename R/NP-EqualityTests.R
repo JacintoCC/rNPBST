@@ -86,11 +86,11 @@ friedmanAR.test <- function(matrix){
    aligned.obs <- matrix - matrix(rep(rowMeans(matrix), k), nrow = n)
    ranked.obs <- matrix(rank(aligned.obs, ties.method = "average"), nrow = n)
 
-   T <- (k-1) * (sum(colSums(ranked.obs)^2) - k*n^2*(k*n+1)^2/4) /
+   t <- (k-1) * (sum(colSums(ranked.obs)^2) - k*n^2*(k*n+1)^2/4) /
       (k*n*(k*n+1)*(2*k*n+1)/6 - sum(rowSums(ranked.obs)^2) / k )
-   statistic <- c(T = T)
-   pvalues <- doubleTailProbability(stats::pchisq(T, k-1),
-                                    1-stats::pchisq(T, k-1))
+   statistic <- c(t = t)
+   pvalues <- doubleTailProbability(stats::pchisq(t, k-1),
+                                    1-stats::pchisq(t, k-1))
 
    htest <- list(data.name = deparse(substitute(matrix)),
                  statistic = statistic, p.value = pvalues,

@@ -12,4 +12,3 @@ results.rf
 Results of Random Forest algorithm in different datasets
 }
 \keyword{datasets}
-

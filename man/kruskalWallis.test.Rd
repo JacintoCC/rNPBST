@@ -17,4 +17,3 @@ A list with pvalues for alternative hypothesis, statistics, method and data name
 \description{
 This function performs the Kruskal-Wallis test
 }
-

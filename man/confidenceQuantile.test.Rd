@@ -19,4 +19,3 @@ Report of the test in a string
 \description{
 This function performs the confidence quantile test
 }
-

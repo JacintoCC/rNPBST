@@ -18,4 +18,3 @@ This function performs the Wilcoxon test
 \examples{
 wilcoxon.test(results[ ,c(1,2)])
 }
-

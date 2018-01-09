@@ -15,4 +15,3 @@ Java String sequece object
 \description{
 Function to create a string sequence
 }
-

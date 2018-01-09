@@ -25,7 +25,8 @@ bayesianSign.test(x, y = NULL, s = 1, z_0 = 0, rope.min = -0.01,
 \item{n.samples}{Number of samples of the distributio}
 }
 \value{
-List with probabilities for each region and a sample of posterior distribution.
+List with probabilities for each region and a sample of
+posterior distribution.
 }
 \description{
 This function performs the Bayesian Sign test
@@ -34,4 +35,3 @@ This function performs the Bayesian Sign test
 bs <- bayesianSign.test(results$random.forest, results$KNN)
 bs.stronger.prior <- bayesianSign.test(results$random.forest, results$KNN, s=3, z_0 = 0.5)
 }
-

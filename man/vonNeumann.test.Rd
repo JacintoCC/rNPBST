@@ -18,4 +18,3 @@ This function performs the Von Neumann
 \examples{
  vonNeumann.test(c(23,99,89,36,1,64,14,28,2,81))
 }
-

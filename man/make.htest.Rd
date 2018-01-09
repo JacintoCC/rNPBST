@@ -15,4 +15,3 @@ htest object
 \description{
 This function takes the arguments, makes a list and assign the list the htest class
 }
-

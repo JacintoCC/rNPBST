@@ -19,4 +19,3 @@ This function performs the Siegel Tukey test
 x <- cbind(rnorm(10, sd=1), rnorm(10, sd=3))
 siegelTukey.test(x)
 }
-

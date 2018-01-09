@@ -18,4 +18,3 @@ This function performs the Wald-Wolfowitz test for two samples
 \examples{
 waldWolfowitz.test(results[ ,c(1,2)])
 }
-

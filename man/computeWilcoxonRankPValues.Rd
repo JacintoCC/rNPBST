@@ -21,4 +21,3 @@ pvalues
 \description{
 Compute p-values for Wilcoxon
 }
-

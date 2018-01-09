@@ -18,4 +18,3 @@ This function performs the Wilcoxon Rank Sum test
 \examples{
 wilcoxonRankSum.test(results[ ,1:2])
 }
-

@@ -17,4 +17,3 @@ Asymptotic pvalues computed
 \description{
 Computes asymptotic p-values of the Total number of runs up and down distribution
 }
-

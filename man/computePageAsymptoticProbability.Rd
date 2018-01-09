@@ -19,4 +19,3 @@ Exact p-value computed
 \description{
 Function to get the asymptotic probability given a distribution table
 }
-

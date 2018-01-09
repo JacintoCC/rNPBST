@@ -17,4 +17,3 @@ Distribution data frame
 \description{
 Parse XML distribution to a data frame
 }
-

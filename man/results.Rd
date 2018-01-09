@@ -12,4 +12,3 @@ results
 Results of some algotithms in different datasets
 }
 \keyword{datasets}
-

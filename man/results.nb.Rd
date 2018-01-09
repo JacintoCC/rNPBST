@@ -12,4 +12,3 @@ results.nb
 Results of Naive Bayes algorithm in different datasets
 }
 \keyword{datasets}
-

@@ -17,4 +17,3 @@ Cumulative probability function
 \description{
 Get cumulative probability function according to distribution
 }
-

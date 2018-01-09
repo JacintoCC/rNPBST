@@ -4,14 +4,14 @@
 \alias{computeAproximatedProbability}
 \title{Compute exact probability of distribution}
 \usage{
-computeAproximatedProbability(table, n, T)
+computeAproximatedProbability(table, n, t)
 }
 \arguments{
 \item{table}{Distribution table}
 
 \item{n}{Size of the exact distribution}
 
-\item{T}{Value of the statistic}
+\item{t}{Value of the statistic}
 }
 \value{
 p-value computed
@@ -19,4 +19,3 @@ p-value computed
 \description{
 Function to get the exact probability given a distribution table
 }
-

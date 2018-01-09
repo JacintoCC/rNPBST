@@ -14,4 +14,3 @@ heaviside(x, a = 0)
 \description{
 This function implements Heaviside step function
 }
-

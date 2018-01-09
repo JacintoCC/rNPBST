@@ -17,4 +17,3 @@ Double tail probability
 \description{
 Get double tail probability
 }
-

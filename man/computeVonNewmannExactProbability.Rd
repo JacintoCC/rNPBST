@@ -19,4 +19,3 @@ pvalue computed
 \description{
 Computes exact p-value of the Von Neumann distribution
 }
-

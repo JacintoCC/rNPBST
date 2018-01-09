@@ -18,4 +18,3 @@ This function performs the Friedman Aligned-Rank test
 \examples{
 friedmanAR.test(results)
 }
-

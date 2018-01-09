@@ -19,4 +19,3 @@ pvalue computed
 \description{
 Computes left tail p-value of the Total number of runs distribution
 }
-

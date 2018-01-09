@@ -15,4 +15,3 @@ A list with pvalues for alternative hypothesis, statistics, method and data name
 \description{
 This function performs the Concordance Coefficient test
 }
-

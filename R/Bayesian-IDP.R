@@ -4,7 +4,7 @@
 #' @description Bayesian Test for two samples based on the Imprecise Dirichlet Theory.
 #' @param x First vector of observations
 #' @param y Second vector of observations
-#' @param s Prior strength. Default $\sqrt{2} - 1$
+#' @param s Prior strength. Default sqrt(2) - 1
 #' @param c Probability needed of one algorithm outperforming the other. Default 0.5.
 #' @param mc.samples Number of Monte Carlo samples.
 #' @return List with posterior distribution and probability of exceeding c.
@@ -16,7 +16,7 @@ bayesian.imprecise <- function(x, y, s = sqrt(2) - 1, c = 0.5, mc.samples = 1000
     w <- list(x = MCMCpack::rdirichlet(mc.samples, weights.dir$x),
               y = MCMCpack::rdirichlet(mc.samples, weights.dir$y))
 
-    y.greater.x.indicator <- sapply(x, function(x.j) x.j < y)
+    y.greater.x.indicator <- sapply(x, function(x.j) (sign(y - x.j) + 1) / 2)
 
     g.lower <- function(w.x.s, w.y.s, indicator){
         product <- matrix(w.x.s[-1], ncol = 1) %*% matrix(w.y.s[-1], nrow = 1)
@@ -32,7 +32,6 @@ bayesian.imprecise <- function(x, y, s = sqrt(2) - 1, c = 0.5, mc.samples = 1000
     )
 
     g.upper <- function(w.x.s, w.y.s, indicator){
-
         product <- matrix(w.x.s[-1], ncol = 1) %*% matrix(w.y.s[-1], nrow = 1)
 
         upper.bound <- w.x.s[1] * w.y.s[1] +

@@ -17,4 +17,3 @@ Exact p-value computed
 \description{
 Function to get the exact probability of Wilcoxon distribution
 }
-

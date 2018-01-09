@@ -18,4 +18,3 @@ This function performs the Number of runs
 \examples{
 numberRuns.test(c("b","a","a","a","a","a","b","a","a","a"))
 }
-

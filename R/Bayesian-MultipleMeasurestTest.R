@@ -28,8 +28,8 @@ bayesian.MultipleConditions <- function(x, y,
     posterior.distribution <- count.vector + prior
 
     # Sampling from Dirichlet distribution
-    mc.sampling <- MCMCpack:rdirichlet(n.samples,
-                                       posterior.distribution)
+    mc.sampling <- MCMCpack::rdirichlet(n.samples,
+                                        posterior.distribution)
 
     # Compute posterior probabilities
     posterior.probabilities <- sapply(1:(2^n.measures),
@@ -39,5 +39,5 @@ bayesian.MultipleConditions <- function(x, y,
            })
 
     return(list(probabilities = posterior.probabilities,
-                sample = mc.sample))
+                sample = mc.sampling))
 }

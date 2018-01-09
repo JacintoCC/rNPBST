@@ -21,4 +21,3 @@ p-value computed
 \description{
 This function compute the asymtotic probability for Chakraborti and Desu test
 }
-

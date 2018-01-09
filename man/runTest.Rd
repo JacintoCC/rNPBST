@@ -15,4 +15,3 @@ The function returns the report of the test in a string
 \description{
 Wrapper to run a StatisticalTest object.
 }
-

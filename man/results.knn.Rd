@@ -12,4 +12,3 @@ results.knn
 Results of KNN algorithm in different datasets
 }
 \keyword{datasets}
-

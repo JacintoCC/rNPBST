@@ -18,4 +18,3 @@ This function performs the Number of runs up and down median test
 \examples{
  numberRunsUpDownMedian.test(c(23,99,89,36,1,64,14,28,2,81))
 }
-

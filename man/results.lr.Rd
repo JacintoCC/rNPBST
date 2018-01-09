@@ -12,4 +12,3 @@ results.lr
 Results of logistic regression algorithm in different datasets
 }
 \keyword{datasets}
-

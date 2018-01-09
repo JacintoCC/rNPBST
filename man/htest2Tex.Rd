@@ -10,7 +10,8 @@ htest2Tex(test)
 \item{test}{Test object with pvalue(s), test name and statistic(s)}
 }
 \value{
-This method prints the necessary code for include a table with the information provided by the test.
+This method prints the necessary code for include a table
+with the information provided by the test.
 }
 \description{
 Transform a test object to table in LaTeX format
@@ -18,4 +19,3 @@ Transform a test object to table in LaTeX format
 \examples{
 htest2Tex(cd.test(results))
 }
-

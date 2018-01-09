@@ -12,4 +12,3 @@ checkCountDataConditions(matrix)
 \description{
 Checks conditions for count data non parametric tests
 }
-

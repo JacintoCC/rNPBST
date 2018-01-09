@@ -18,4 +18,3 @@ This function performs the Chakraborti and Desu test
 \examples{
 cd.test(results)
 }
-

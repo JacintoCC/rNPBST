@@ -17,4 +17,3 @@ pvalue computed
 \description{
 Computes exact p-value of the Runs up down distribution
 }
-

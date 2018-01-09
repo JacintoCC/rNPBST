@@ -21,4 +21,3 @@ plotSimplex(bs$sample, num.points = 5000)
 bsr <- bayesianSignedRank.test(results$random.forest, results$KNN)
 plotSimplex(bsr$sample, num.points = 5000)
 }
-

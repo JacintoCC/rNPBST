@@ -23,4 +23,3 @@ p-value computed
 \description{
 Computes exact left tail of Fisher distribution
 }
-

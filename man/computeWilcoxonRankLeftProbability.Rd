@@ -19,4 +19,3 @@ pvalue associated
 \description{
 Compute left p-value for Wilcoxon rank sum test
 }
-

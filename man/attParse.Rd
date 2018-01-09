@@ -15,4 +15,3 @@ Row with values and attribute names
 \description{
 Parse XML Attributes of a row
 }
-

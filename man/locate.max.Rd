@@ -10,6 +10,7 @@ locate.max(x)
 \item{x}{Vector where find the maximum(s)}
 }
 \description{
-Returns a vector with an 1 in the maximum position. If there are more than one then 1/num. maximums is situated in each position
+Returns a vector with an 1 in the maximum position. If
+there are more than one then 1/num. maximums is situated in
+each position
 }
-

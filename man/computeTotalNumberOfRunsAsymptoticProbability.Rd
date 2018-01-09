@@ -19,4 +19,3 @@ pvalues computed
 \description{
 Computes asymptotic p-values of the Total number of runs distribution
 }
-

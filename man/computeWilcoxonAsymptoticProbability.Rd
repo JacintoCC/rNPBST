@@ -19,4 +19,3 @@ Exact p-value computed
 \description{
 Function to get asymptotic probability of Wilcoxon distribution
 }
-

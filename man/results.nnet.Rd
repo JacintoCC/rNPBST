@@ -12,4 +12,3 @@ results.nnet
 Results of neural network algorithm in different datasets
 }
 \keyword{datasets}
-

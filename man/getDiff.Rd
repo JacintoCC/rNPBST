@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{getDiff}
 \alias{getDiff}
-\title{Auxiliar function to get the difference between observations and}
+\title{Auxiliar function to get the difference between observations}
 \usage{
 getDiff(x, y)
 }
@@ -12,6 +12,7 @@ getDiff(x, y)
 \item{y}{Second vector}
 }
 \description{
-This function returns the difference between two vectors if they have the same length. If the second vector is missing, the first one is returned
+This function returns the difference between two
+vectors if they have the same length. If the second vector is
+missing, the first one is returned
 }
-

@@ -17,4 +17,3 @@ p-value computed
 \description{
 Computes p-value of the Kolmogorov distribution
 }
-

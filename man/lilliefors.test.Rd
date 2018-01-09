@@ -21,4 +21,3 @@ This function performs the Lilliefors test
 lilliefors.test(rnorm(100))
 lilliefors.test(rexp(100, rate=5), distribution = "EXPONENTIAL")
 }
-
