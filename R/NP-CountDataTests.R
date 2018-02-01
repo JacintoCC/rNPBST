@@ -102,18 +102,18 @@ mcNemar.test <- function(matrix){
   # Compute statistics
   S <- matrix[1,2] + matrix[2,1]
   Z <- (matrix[1,2] - matrix[2,1] + 0.5) / sqrt(matrix[1,2] + matrix[2,1])
-  t <- (matrix[1,2] - matrix[2,1]) * (matrix[1,2] - matrix[2,1]) / (matrix[1,2] + matrix[2,1])
+  T <- (matrix[1,2] - matrix[2,1]) * (matrix[1,2] - matrix[2,1]) / (matrix[1,2] + matrix[2,1])
 
   exact.pvalue <- stats::pbinom(matrix[1,2], S,  0.5)
   asymptotic.normal.pvalue <- stats::pnorm(Z)
-  asymptotic.chi.pvalue <- 1 - stats::pchisq(t, 1)
+  asymptotic.chi.pvalue <- 1 - stats::pchisq(T, 1)
 
   pvalues <- c("Exact p-value" = exact.pvalue,
                "Asymtotic Normal p-value" = asymptotic.normal.pvalue,
                "Asymtotic Chi p-value" = asymptotic.chi.pvalue)
 
   htest <- list(data.name = deparse(substitute(matrix)),
-                statistic = c("S" = S, "Z" = Z, "t"=t), p.value = pvalues,
+                statistic = c("S" = S, "Z" = Z, "T"=T), p.value = pvalues,
                 method = "McNemar")
   return(htest)
 }

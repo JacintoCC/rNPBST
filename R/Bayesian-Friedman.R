@@ -42,16 +42,20 @@ bayesianFriedman.test <- function(dataset, s = 1, gamma = 0.05,
       
       if(length.indet == m){
          indet.values = indet.values[-length.indet]
+         length.indet <- length.indet - 1
       }
       
+            
       if(length.indet == 0){
          h <- ifelse(all(R.mean == R.0), 0, 1)
       }
       else{
          matrix.A <- R.mean[indet.values, ] - matrix(R.0[1], nrow = length.indet)
          matrix.B <- Sigma[indet.values, indet.values]
-         matrix.C <- pracma::mldivide(matrix.B, matrix.A)
          
+         print(dim())
+         matrix.C <- pracma::mldivide(matrix.B, matrix.A)
+
          h <- ifelse(t(matrix.A) %*% matrix.C < rho, 0, 1)
       }
       
@@ -70,7 +74,6 @@ bayesianFriedman.test <- function(dataset, s = 1, gamma = 0.05,
          indet.values <- which(abs(eigen.values) > 10^-15)
          length.indet <- length(indet.values)
          
-         print(indet.values)
          if(length.indet == m){
             indet.values <- indet.values[-length.indet]
             length.indet <- length.indet - 1
@@ -80,11 +83,8 @@ bayesianFriedman.test <- function(dataset, s = 1, gamma = 0.05,
             h <- ifelse(all(R.mean == R.0), 0, 1)
          }
          else{
-            
             matrix.A <- R.mean[indet.values] - matrix(R.0[1], nrow = length.indet)
             matrix.B <- Sigma[indet.values, indet.values]
-            print(dim(matrix.A))
-            print(dim(matrix.B))
             matrix.C <- pracma::mldivide(matrix.B, matrix.A)
             
             h <- ifelse(t(matrix.A) %*% matrix.C < rho, 0, 1)
@@ -100,3 +100,4 @@ bayesianFriedman.test <- function(dataset, s = 1, gamma = 0.05,
       return(list(h = h, imprecise = imprecise))
    }
 }
+

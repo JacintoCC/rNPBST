@@ -4,14 +4,14 @@
 \alias{computeExactProbability}
 \title{Compute exact probability of distribution}
 \usage{
-computeExactProbability(table, n, t)
+computeExactProbability(table, n, T)
 }
 \arguments{
 \item{table}{Distribution table}
 
 \item{n}{Size of the exact distribution}
 
-\item{t}{Value of the statistic}
+\item{T}{Value of the statistic}
 }
 \value{
 Exact p-value computed

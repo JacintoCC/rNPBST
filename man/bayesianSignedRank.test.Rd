@@ -12,7 +12,7 @@ bayesianSignedRank.test(x, y = NULL, s = 0.5, z_0 = 0, rope.min = -0.01,
 
 \item{y}{Second vector of observations}
 
-\item{s}{Prior pseudo-observation probability}
+\item{s}{Prior pseudo-observation probabilitie}
 
 \item{z_0}{Prior pseudo-observation}
 

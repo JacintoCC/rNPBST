@@ -16,6 +16,9 @@ computeNumberOfRunsLeftTailProbability <- function(a, b, runs){
    if(n1 > 12 | (n1 < 9 & n1+n2 > 20) | (n1 > 8 & n2 >12))
       return(-1)
 
+   TotalNumberOfRuns.Left <- getData("TotalNumberOfRuns.Left")
+   TotalNumberOfRuns.Right <- getData("TotalNumberOfRuns.Right")
+
    left.tail <- TotalNumberOfRuns.Left$distribution[TotalNumberOfRuns.Left$x == n1 &
                                                        TotalNumberOfRuns.Left$y == n2 &
                                                        TotalNumberOfRuns.Left$z == runs]
@@ -50,6 +53,9 @@ computeNumberOfRunsRightTailProbability <- function(a, b, runs){
 
    if(n1 > 12 | (n1 < 10 & n1+n2 > 20) | (n1 > 9 & n2 >12))
       return(-1)
+
+   TotalNumberOfRuns.Left <- getData("TotalNumberOfRuns.Left")
+   TotalNumberOfRuns.Right <- getData("TotalNumberOfRuns.Right")
 
    left.tail <- TotalNumberOfRuns.Left$distribution[TotalNumberOfRuns.Left$x == n1 &
                                                        TotalNumberOfRuns.Left$y == n2 &
@@ -207,6 +213,7 @@ computeRunsUpDownExactProbability <- function(n, R){
 
    left.limits <- c(0,0,0,1,1,2,3,3,4,5,5,6,7,7,8,9,9,10,11,11,12,13,13,14,15,15)
 
+   RunsUpDown <- getData("RunsUpDown")
    if(R > left.limits[n]){
       left <- 1
       right <- RunsUpDown$distribution[RunsUpDown$x == n &
@@ -290,6 +297,9 @@ numberRunsUpDown.test <- function(sequence){
 computeVonNewmannExactProbability <- function(n, NM, RVN){
 
    if(n < 10){
+      NMRanksLeft <- getData("NMRanksLeft")
+      NMRanksRight <- getData("NMRanksRight")
+
       int.NM <- ceiling(NM)
       left <- NMRanksLeft$distribution[NMRanksLeft$x == n & NMRanksLeft$y == int.NM]
 
@@ -309,6 +319,8 @@ computeVonNewmannExactProbability <- function(n, NM, RVN){
       }
    }
    else{
+      RanksVonNeumann <- getData("RanksVonNeumann")
+
       row <- RanksVonNeumann[n, ]
       left <- as.numeric(names(row[row >= RVN])[1])
       right <- as.numeric(names(row[4 - row <= RVN])[1])

@@ -11,6 +11,7 @@
 #' @return computed pvalue
 computeKolmogorovExactProbability <- function(n, Dn){
    if(n < 9){
+      KolmogorovTwoSample <- getData("KolmogorovTwoSample")
       nmDn <- round(n * n * Dn)
       pvalue <- KolmogorovTwoSample$distribution[KolmogorovTwoSample$x == n &
                                                     KolmogorovTwoSample$y == n &
@@ -30,6 +31,7 @@ computeKolmogorovExactProbability <- function(n, Dn){
 #' @return computed pvalue
 computeKolmogorovAsymptoticProbability <- function(n, Dn){
    if(n < 21){
+      KolmogorovTwoSampleAsymptotic <-getData("KolmogorovTwoSampleAsymptotic")
       nmDn <- round(n * n * Dn)
       pvalue <- KolmogorovTwoSampleAsymptotic[which(rownames(KolmogorovTwoSampleAsymptotic) == n), 1]
 

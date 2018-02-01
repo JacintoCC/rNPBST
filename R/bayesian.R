@@ -70,7 +70,7 @@ bayesianSign.test <- function(x, y = NULL, s = 1, z_0 = 0,
 #' @param x First vector of observations
 #' @param y Second vector of observations
 #' @param z_0 Prior pseudo-observation
-#' @param s Prior pseudo-observation probability
+#' @param s Prior pseudo-observation probabilitie
 #' @param rope.min Inferior limit of the rope considered
 #' @param rope.max Superior limit of the rope considered
 #' @param weights A priori weights

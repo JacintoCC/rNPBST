@@ -4,14 +4,14 @@
 \alias{getFromDistributionTable}
 \title{Get value from distribution table}
 \usage{
-getFromDistributionTable(table, n, t, epsilon = 0.002)
+getFromDistributionTable(table, n, T, epsilon = 0.002)
 }
 \arguments{
 \item{table}{Distribution table}
 
 \item{n}{Size of the exact distribution}
 
-\item{t}{Value of the statistic}
+\item{T}{Value of the statistic}
 
 \item{epsilon}{Threshold for compare the statistic}
 }
