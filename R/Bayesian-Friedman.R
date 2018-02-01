@@ -52,8 +52,6 @@ bayesianFriedman.test <- function(dataset, s = 1, gamma = 0.05,
       else{
          matrix.A <- R.mean[indet.values, ] - matrix(R.0[1], nrow = length.indet)
          matrix.B <- Sigma[indet.values, indet.values]
-         
-         print(dim())
          matrix.C <- pracma::mldivide(matrix.B, matrix.A)
 
          h <- ifelse(t(matrix.A) %*% matrix.C < rho, 0, 1)
