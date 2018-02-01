@@ -52,6 +52,11 @@ getDiff <- function(x, y){
       stop("X and Y must be of the same length")
    else
       diff <- x - y
+   
+   if(length(dim(x)) == 2){
+      if(ncol(x) == 2)
+         diff <- x[,1]-x[,2]
+   }
 
    return(diff)
 }
