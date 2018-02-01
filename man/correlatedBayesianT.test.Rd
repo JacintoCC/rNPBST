@@ -2,7 +2,7 @@
 % Please edit documentation in R/bayesian.R
 \name{correlatedBayesianT.test}
 \alias{correlatedBayesianT.test}
-\title{Bayesian signed rank test}
+\title{Bayesian Correlayed t-test}
 \usage{
 correlatedBayesianT.test(x, y = NULL, rho = 1/length(x), rope.min = -0.01,
   rope.max = 0.01)
@@ -23,7 +23,7 @@ List with probabilities for each region and a sample of
 posterior distribution.
 }
 \description{
-This function performs the bayesian signed rank test
+This function performs the Bayesian correlated t-test
 }
 \examples{
 correlatedBayesianT.test(results.rf[1, ], results.knn[1, ])

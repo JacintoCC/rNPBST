@@ -63,71 +63,10 @@ bayesianSign.test <- function(x, y = NULL, s = 1, z_0 = 0,
               sample = sample))
 }
 
-#' @title Bayesian Signed-Rank test
+#' @title Bayesian Correlayed t-test
 #'
 #' @export
-#' @description This function performs the Bayesian Signed-Rank test
-#' @param x First vector of observations
-#' @param y Second vector of observations
-#' @param z_0 Prior pseudo-observation
-#' @param s Prior pseudo-observation probabilitie
-#' @param rope.min Inferior limit of the rope considered
-#' @param rope.max Superior limit of the rope considered
-#' @param weights A priori weights
-#' @param samples Number of samples of the distribution
-#' @examples
-#' bsr <- bayesianSignedRank.test(results$random.forest, results$KNN)
-#' bsr.stronger.prior <- bayesianSignedRank.test(results$random.forest, results$KNN, s=3, z_0 = 0.5)
-#' @return List with probabilities for each region and a sample of
-#'     posterior distribution.
-bayesianSignedRank.test <- function(x, y = NULL, s = 0.5, z_0 = 0,
-                                    rope.min = -0.01, rope.max = 0.01,
-                                    weights = c(s, rep(1, length(x))),
-                                    samples = 30000){
-  if(rope.min > rope.max)
-    stop("rope.min should be smaller than rope.min")
-
-  diff <- getDiff(x, y)
-
-  # Creation of the vector with the pseudo-observation
-  diff <- c(z_0, diff)
-  num.elements <- length(diff)
-
-  # Generate the sampled weights
-  sampled.weights <- MCMCpack::rdirichlet(samples, weights)
-
-  # Belonging of an interval
-  belongs.left <- sapply(diff, FUN = function(x) x+diff < 2 * rope.min)
-  belongs.rope <- sapply(diff, FUN = function(x) (x+diff > 2 * rope.min) &
-                                                 (x+diff < 2 * rope.max))
-  belongs.right <- sapply(diff, FUN = function(x) x+diff > 2 * rope.max)
-
-  sample <- t(apply(sampled.weights, 1,
-                   function(x){
-                     # Getting the coefficients
-                     matrix.prod <- sapply(x, FUN = function(y) x*y)
-                     c(sum(matrix.prod * belongs.left),
-                       sum(matrix.prod * belongs.rope),
-                       sum(matrix.prod * belongs.right))
-                    }
-                  ))
-
-  # Selects the max according to sampled weights
-  #   In case of a tie, the score is divided
-  winners <- apply(sample, 1, locate.max)
-
-  # Compute of the probabilities
-  probabilities <- apply(winners, 1, mean)
-  names(probabilities) <- c("left", "rope", "right")
-
-  return(list(probabilities = probabilities,
-              sample = sample))
-}
-
-#' @title Bayesian signed rank test
-#'
-#' @export
-#' @description This function performs the bayesian signed rank test
+#' @description This function performs the Bayesian correlated t-test
 #' @param x First vector of observations
 #' @param y Second vector of observations
 #' @param rho Expectated correlation.
