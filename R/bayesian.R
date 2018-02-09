@@ -56,10 +56,11 @@ bayesianSign.test <- function(x, y = NULL, s = 1, z_0 = 0,
 
   # Take a sample from Dirichlet distribution
   sample <- MCMCpack::rdirichlet(n.samples, weights)
-  # Compute probabilities based on data
-  probabilities <- c("left" = n.left,"rope" =  n.diff - n.left - n.right, "right" = n.right)/n.diff
-
-  return(list(probabilities = probabilities,
+  posterior.prob <- colMeans(sample)
+ 
+  return(list(probabilities = c(left = posterior.prob[1],
+                                rope = posterior.prob[2],
+                                right = posterior.prob[3]),
               sample = sample))
 }
 

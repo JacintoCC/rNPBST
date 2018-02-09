@@ -5,7 +5,7 @@
 \title{Bayesian Signed-Rank test}
 \usage{
 bayesianSignedRank.test(x, y = NULL, s = 0.5, z_0 = 0, rope.min = -0.01,
-  rope.max = 0.01, weights = c(s, rep(1, length(x))), mc.samples = 10000)
+  rope.max = 0.01, weights = NULL, mc.samples = 10000)
 }
 \arguments{
 \item{x}{First vector of observations}

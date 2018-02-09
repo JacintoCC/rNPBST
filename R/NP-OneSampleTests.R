@@ -8,7 +8,7 @@ computeWilcoxonExactProbability <- function(n, R){
   if(n > 50)
     return(-1)
   else{
-    WilcoxonTable <- getData("WilcoxonTable")
+     
     if(R - floor(R) == 0){
       pvalue <- unname(WilcoxonTable[R,n])
       pvalue <- ifelse(pvalue == -1, 1, pvalue)
@@ -20,7 +20,7 @@ computeWilcoxonExactProbability <- function(n, R){
       v2 <- unname(WilcoxonTable[ceiling(R),n])
       v2 <- ifelse(v2 == -1, 1, v2)
 
-      pvalue <- mean(v1, v2)
+      pvalue <- mean(c(v1, v2))
     }
 
     return(pvalue)

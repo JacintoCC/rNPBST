@@ -17,7 +17,7 @@
 #'     posterior distribution.
 bayesianSignedRank.test <- function(x, y = NULL, s = 0.5, z_0 = 0,
                                     rope.min = -0.01, rope.max = 0.01,
-                                    weights = c(s, rep(1, length(x))),
+                                    weights = NULL,
                                     mc.samples = 10000){
    if(rope.min > rope.max)
       stop("rope.min should be smaller than rope.min")
@@ -27,6 +27,8 @@ bayesianSignedRank.test <- function(x, y = NULL, s = 0.5, z_0 = 0,
    # Creation of the vector with the pseudo-observation
    diff <- c(z_0, diff)
    num.elements <- length(diff)
+   if(is.null(weights))
+      weights <- c(s, rep(1, num.elements))
    w <- MCMCpack::rdirichlet(mc.samples, weights)
    
    # Belonging of an interval
@@ -35,38 +37,24 @@ bayesianSignedRank.test <- function(x, y = NULL, s = 0.5, z_0 = 0,
                              (x+diff < 2 * rope.max))
    belongs.right <- sapply(diff, FUN = function(x) x+diff > 2 * rope.max)
    
-   get.posterior <- function(w.x.s, w.y.s, indicator){
-      product <- matrix(w.x.s, ncol = 1) %*% matrix(w.y.s, nrow = 1)
-      posterior <- sum(indicator * product)
-      return(posterior)
+   get.posterior <- function(w.x.s, w.y.s, left, rope, right){
+      product <- matrix(w.x.s[-1], ncol = 1) %*% matrix(w.y.s[-1], nrow = 1)
+      posterior.left <- sum(left * product)
+      posterior.rope <- sum(rope * product)
+      posterior.right <- sum(right * product)
+      return(cbind(left = posterior.left,
+                   rope = posterior.rope,
+                   right = posterior.right))
    }
    
-   posterior.distribution.left <- mapply(
+   posterior.distribution <- mapply(
       get.posterior,
       w.x = as.data.frame(t(w)),
       w.y = as.data.frame(t(w)),
-      MoreArgs = list(indicator = belongs.left)
-   ) %>% unlist() %>% as.vector()
+      MoreArgs = list(left = belongs.left, rope = belongs.rope, right = belongs.right)
+   ) %>% unname() %>% as.matrix() %>% t()
    
-   
-   posterior.distribution.rope <- mapply(
-      get.posterior,
-      w.x = as.data.frame(t(w)),
-      w.y = as.data.frame(t(w)),
-      MoreArgs = list(indicator = belongs.rope)
-   ) %>% unlist() %>% as.vector()
-   
-   posterior.distribution.right <- mapply(
-      get.posterior,
-      w.x = as.data.frame(t(w)),
-      w.y = as.data.frame(t(w)),
-      MoreArgs = list(indicator = belongs.right)
-   ) %>% unlist() %>% as.vector()
-   
-   sample <-  cbind(posterior.distribution.left, 
-                    posterior.distribution.rope, 
-                    posterior.distribution.right)
-   return(list("sample" = sample,
-               "probabilities" = colMeans(sample)))
+   return(list("sample" = posterior.distribution,
+               "probabilities" = colMeans(posterior.distribution)))
    
 }
