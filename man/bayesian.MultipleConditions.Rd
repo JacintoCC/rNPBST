@@ -5,7 +5,7 @@
 \title{Bayesian Test for Multiple Performance Measures Comparison}
 \usage{
 bayesian.MultipleConditions(x, y, n.samples = 10000, prior = rep(2^-ncol(x),
-  ncol(x)))
+  2^ncol(x)))
 }
 \arguments{
 \item{x}{Performance matrix of first algorithm}
@@ -18,7 +18,7 @@ bayesian.MultipleConditions(x, y, n.samples = 10000, prior = rep(2^-ncol(x),
 }
 \value{
 List with the probabilites of each possible dominance
-configuration.
+configuration and posterior sample
 }
 \description{
 Performs the GLRT for the joint analysis of multiple

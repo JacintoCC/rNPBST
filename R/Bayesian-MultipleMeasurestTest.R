@@ -8,11 +8,11 @@
 #' @param n.samples Size of Monte Carlo sampling
 #' @param prior Prior distribution parameters
 #' @return List with the probabilites of each possible dominance
-#'     configuration.
+#'     configuration and posterior sample
 bayesian.MultipleConditions <- function(x, y,
                                         n.samples = 10000,
-                                        prior = rep(2^-ncol(x), ncol(x))){
-    checkMultipleMeasuresConditions(x, y)
+                                        prior = rep(2^-ncol(x), 2^ncol(x))){
+    #checkMultipleMeasuresConditions(x, y)
     
     # Get the number of measures
     n.measures <- ncol(x)
@@ -28,16 +28,15 @@ bayesian.MultipleConditions <- function(x, y,
     posterior.distribution <- count.vector + prior
 
     # Sampling from Dirichlet distribution
-    mc.sampling <- MCMCpack:rdirichlet(n.samples,
+    mc.sampling <- MCMCpack::rdirichlet(n.samples,
                                        posterior.distribution)
 
     # Compute posterior probabilities
     posterior.probabilities <- sapply(1:(2^n.measures),
            function(i){
-               max.by.sample <- apply(mc.sampling[ ,-i], 1, max)
-               mean(count.proportion[i] > max.by.sample)
+              mean(mc.sampling[ ,i] > apply(mc.sampling[ ,-i], 1, max))
            })
 
     return(list(probabilities = posterior.probabilities,
-                sample = mc.sample))
+                sample = mc.sampling))
 }

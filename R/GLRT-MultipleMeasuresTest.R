@@ -12,6 +12,7 @@ checkMultipleMeasuresConditions <- function(x, y){
 #' @title Generalized Likelihood Ratio Test for Multiple Performance
 #'     Measures
 #'
+#' @export
 #' @description Performs the GLRT for the joint analysis of multiple
 #'     performance measures.
 #' @param x Performance matrix of first algorithm
@@ -39,11 +40,13 @@ multipleMeasuresGLRT <- function(x, y){
     lambda.statistic <- mean(c(n.a,n.b)) ^ (n.a + n.b) / (n.a^n.a * n.b^n.b)
 
     # p-value
-    p.value <- 1 - stats::pchisq(-2*log(lambda.statistic))
+    p.value <- 1 - stats::pchisq(-2*log(lambda.statistic),1)
 
     htest <- list(data.name = "x",
                   statistic = list("n.vector" = count.vector,
                                    "lambda" = lambda.statistic),
                   p.value = p.value,
                   method = "GLRT Multiple Measures")
+    
+    return(htest)
 }
