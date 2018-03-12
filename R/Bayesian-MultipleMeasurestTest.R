@@ -9,7 +9,7 @@
 #' @param prior Prior distribution parameters
 #' @return List with the probabilites of each possible dominance
 #'     configuration and posterior sample
-bayesian.MultipleConditions <- function(x, y,
+bayesianMultipleConditions.test <- function(x, y,
                                         n.samples = 10000,
                                         prior = rep(2^-ncol(x), 2^ncol(x))){
     #checkMultipleMeasuresConditions(x, y)

@@ -106,7 +106,7 @@ htest2Tex <- function(test){
                                        sep = ""))
                        })
 
-   cat(paste(tex.string,
+   return(paste(tex.string,
              paste(tex.items, collapse = "\n"),
              "\\end{tabular}",
              "\\end{table}",
