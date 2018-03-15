@@ -52,7 +52,8 @@ bayesianSignedRank.test <- function(x, y = NULL, s = 0.5, z_0 = 0,
       w.x = as.data.frame(t(w)),
       w.y = as.data.frame(t(w)),
       MoreArgs = list(left = belongs.left, rope = belongs.rope, right = belongs.right)
-   ) %>% unname() %>% as.matrix() %>% t()
+   ) 
+   posterior.distribution <- t(as.matrix(unname(posterior.distribution)))
    
    return(list("sample" = posterior.distribution,
                "probabilities" = colMeans(posterior.distribution)))
