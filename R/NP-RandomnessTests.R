@@ -309,8 +309,6 @@ computeVonNewmannExactProbability <- function(n, NM, RVN){
       }
    }
    else{
-      RanksVonNeumann <- getData("RanksVonNeumann")
-
       row <- RanksVonNeumann[n, ]
       left <- as.numeric(names(row[row >= RVN])[1])
       right <- as.numeric(names(row[4 - row <= RVN])[1])
