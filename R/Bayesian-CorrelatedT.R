@@ -8,8 +8,8 @@
 #' @param rope.min Lower limit of the rope considered
 #' @param rope.max Upper limit of the rope considered
 #' @examples
-#' correlatedBayesianT.test(results.rf[1, ], results.knn[1, ])
-#' correlatedBayesianT.test(results.rf[5, ], results.knn[5, ], rope.min=-0.05, rope.max = 0.05)
+#' bayesianCorrelatedT.test(results.rf[1, ], results.knn[1, ])
+#' bayesianCorrelatedT.test(results.rf[5, ], results.knn[5, ], rope.min=-0.05, rope.max = 0.05)
 #' @return List with probabilities for each region and a sample of
 #'     posterior distribution.
 bayesianCorrelatedT.test <- function(x, y = NULL, rho = 1/length(x),
