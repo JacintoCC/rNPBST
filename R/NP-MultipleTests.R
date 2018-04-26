@@ -7,7 +7,6 @@
 #' @return Exact p-value computed
 computePageExactProbability <- function(N, k, L){
   if(N <= 8 & N >= 3 & k <= 12 & k >= 2){
-    PageTable <- getData("PageTable")
     pvalues <- PageTable$p[PageTable$N == N &
                            PageTable$k == k &
                            PageTable$L < L]
@@ -104,7 +103,6 @@ partialcorrelation.test <- function(matrix){
   tau <- (Txy - Txz * Tyz) / sqrt((1 - Txz * Txz) * (1 - Tyz * Tyz))
 
   # Pvalue
-  PartialCorrelationTable <- getData("PartialCorrelationTable")
   pvalue <- as.numeric(computeAproximatedProbability(PartialCorrelationTable, n, tau))
 
   htest <- list(data.name = deparse(substitute(matrix)),

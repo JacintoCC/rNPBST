@@ -20,21 +20,6 @@ locate.max <- function(x){
   return(vec/sum(vec))
 }
 
-
-#' @title Get data from data folderFunction to get a data file and
-#'     assign it to a variable
-#'
-#' @description Function to get a data file and assign it to a
-#'     variable
-#' @param ... Parameters to data function
-#' @return Data to assign it to a variable
-getData <- function(...)
-{
-   e <- new.env()
-   name <- utils::data(..., envir = e)[1]
-   e[[name]]
-}
-
 #' @title Auxiliar function to get the difference between observations
 #         and make checkings
 #'

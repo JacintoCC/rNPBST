@@ -6,7 +6,6 @@
 #' @param R rank associated
 #' @return pvalue associated
 computeWilcoxonRankLeftProbability <- function(n, m, R){
-   WilcoxonRanksSumTable <- getData("WilcoxonRanksSumTable")
 
    if(n > 10 | m > 10 | R > 105)
       return(NULL)
@@ -24,8 +23,6 @@ computeWilcoxonRankLeftProbability <- function(n, m, R){
 #' @param R rank associated
 #' @return pvalue associated
 computeWilcoxonRankRightProbability <- function(n, m, R){
-   WilcoxonRanksSumTable <- getData("WilcoxonRanksSumTable")
-
    if(n > 10 | m > 10 | R > 105)
       return(NULL)
 
@@ -47,7 +44,6 @@ computeWilcoxonRankRightProbability <- function(n, m, R){
       return(NULL)
 
    trueR <- ifelse(max%%2 == 0, 2 * max - R, 2 * max - (R-1))
-   getData("WilcoxonRanksSumTable")
 
    return(WilcoxonRanksSumTable$distribution[WilcoxonRanksSumTable$x == n &
                                                 WilcoxonRanksSumTable$y == m &
