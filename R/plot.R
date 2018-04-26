@@ -58,7 +58,7 @@ plotSimplex <- function(points, num.points = nrow(points)){
 #' @param names Names of the algorithms
 #' @param dataset Names of the dataset
 #' @examples
-#' cbt <- correlatedBayesianT.test(results.rf[1, ], results.knn[1, ])
+#' cbt <- bayesianCorrelatedT.test(results.rf[1, ], results.knn[1, ])
 #' plotPosterior(cbt, names = c("Random Forest", "KNN"), dataset = "abalone")
 plotPosterior <- function (data, names, dataset) {
    ggplot2::qplot(data$dist$x, data$dist$y, geom = "line") +
