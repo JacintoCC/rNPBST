@@ -52,5 +52,5 @@ bayesian.imprecise <- function(x, y, s = sqrt(2) - 1, c = 0.5, mc.samples = 1000
     return(list(post.dist.lower = posterior.distribution.lower,
                 post.dist.upper = posterior.distribution.upper,
                 area.dist.lower = mean(posterior.distribution.lower > c),
-                area.dist.lower = mean(posterior.distribution.upper > c)))
+                area.dist.upper = mean(posterior.distribution.upper > c)))
 }
