@@ -75,7 +75,7 @@ htest2Tex <- function(test){
                                             length(item),
                                             "}{*}{",
                                             names.items[i],
-                                            "} \t & \t",
+                                            "}\n\t & \t",
                                             sep = "")
                           names.subitems <- names(item)
                           tex.item.subitems <- rbind(names.subitems,
