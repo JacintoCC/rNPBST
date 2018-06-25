@@ -32,16 +32,15 @@ bayesianSignedRank.test <- function(x, y = NULL, s = 0.5, z_0 = 0,
    w <- MCMCpack::rdirichlet(mc.samples, weights)
    
    # Belonging of an interval
-   belongs.left <- sapply(diff, FUN = function(x) x+diff < 2 * rope.min)
-   belongs.rope <- sapply(diff, FUN = function(x) (x+diff > 2 * rope.min) &
-                             (x+diff < 2 * rope.max))
-   belongs.right <- sapply(diff, FUN = function(x) x+diff > 2 * rope.max)
+   belongs.left <- sapply(diff, FUN = function(x) x+diff <= 2 * rope.min)
+   belongs.right <- sapply(diff, FUN = function(x) x+diff >= 2 * rope.max)
    
-   get.posterior <- function(w.x.s, w.y.s, left, rope, right){
+   get.posterior <- function(w.x.s, w.y.s, left, right){
       product <- matrix(w.x.s[-1], ncol = 1) %*% matrix(w.y.s[-1], nrow = 1)
       posterior.left <- sum(left * product)
-      posterior.rope <- sum(rope * product)
       posterior.right <- sum(right * product)
+      posterior.rope <-  1 - posterior.left - posterior.right
+      
       return(cbind(left = posterior.left,
                    rope = posterior.rope,
                    right = posterior.right))
@@ -51,7 +50,7 @@ bayesianSignedRank.test <- function(x, y = NULL, s = 0.5, z_0 = 0,
       get.posterior,
       w.x = as.data.frame(t(w)),
       w.y = as.data.frame(t(w)),
-      MoreArgs = list(left = belongs.left, rope = belongs.rope, right = belongs.right)
+      MoreArgs = list(left = belongs.left, right = belongs.right)
    ) 
    posterior.distribution <- t(as.matrix(unname(posterior.distribution)))
    posterior.prob <- colMeans(posterior.distribution)
