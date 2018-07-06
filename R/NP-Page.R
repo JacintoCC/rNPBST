@@ -38,7 +38,8 @@ computePageAsymptoticProbability <- function(N, k, L){
 #'
 #' @export
 #' @description This function performs the Page test
-#' @param matrix Matrix of data
+#' @param x First matrix of data
+#' @param y Second matrix of data
 #' @return A list with pvalues for alternative hypothesis, statistics, method and data name
 page.test <- function(x, y = NULL){
     if(is.null(y)){
