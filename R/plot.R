@@ -6,10 +6,10 @@
 #' @param num.points Number of points to be shown
 #' @examples
 #' bs <- bayesianSign.test(results$random.forest, results$KNN)
-#' plotSimplex(bs$sample, num.points = 5000)
+#' print(plotSimplex(bs$sample, num.points = 5000))
 #'
 #' bsr <- bayesianSignedRank.test(results$random.forest, results$KNN)
-#' plotSimplex(bsr$sample, num.points = 5000)
+#' print(plotSimplex(bsr$sample, num.points = 5000))
 plotSimplex <- function(points, num.points = nrow(points)){
    # Reduce the number of points to plot
    if(num.points > nrow(points))
