@@ -7,7 +7,9 @@
 page.test(x, y = NULL)
 }
 \arguments{
-\item{matrix}{Matrix of data}
+\item{x}{First matrix of data}
+
+\item{y}{Second matrix of data}
 }
 \value{
 A list with pvalues for alternative hypothesis, statistics, method and data name
