@@ -3,6 +3,7 @@
 language: R
 sudo: false
 cache: packages
+install:
 ## Install a fixed version of ggplot2
 - Rscript -e 'remove.packages("ggplot2")'
 - wget http://cran.rstudio.com/src/contrib/Archive/RcppArmadillo/ggplot2_2.2.1.tar.gz
