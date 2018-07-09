@@ -13,8 +13,8 @@ License: GPL-2
 Imports:
    rJava,
    MCMCpack,
-   ggplot2,
-   ggtern,
+   ggplot2 (<= 2.2.1),
+   ggtern (>= 2.2.1),
    XML,
    EnvStats,
    rmutil,
