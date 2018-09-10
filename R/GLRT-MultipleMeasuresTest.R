@@ -26,12 +26,8 @@ multipleMeasuresGLRT <- function(x, y){
 
     # Get the number of measures
     n.measures <- ncol(x)
-
-    # Build the dominance matrix
-    dominance.matrix <- x > y
-
     # Get the number of occurences of each dominance configuration
-    count.vector <- occurencesDominanceConfiguration(dominance.matrix)
+    count.vector <- rNPBST:::occurencesDominanceConfiguration(x, y)
 
     # Conform the statistic
     n.a <- max(count.vector)

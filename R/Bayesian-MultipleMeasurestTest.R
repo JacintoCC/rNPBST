@@ -17,11 +17,8 @@ bayesianMultipleConditions.test <- function(x, y,
     # Get the number of measures
     n.measures <- ncol(x)
 
-    # Build the dominance matrix
-    dominance.matrix <- x > y
-
     # Get the number of occurences of each dominance configuration
-    count.vector <- occurencesDominanceConfiguration(dominance.matrix)
+    count.vector <- rNPBST:::occurencesDominanceConfiguration(x, y)
     count.proportion <-  count.vector / n.measures
 
     # Posterior distribution

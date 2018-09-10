@@ -120,16 +120,33 @@ checkBivariateConditions <- function(matrix){
 #'
 #' @description Count the occurences for each possible dominance
 #'     configuration
-#' @param dominance.matrix Dominance Matrix
+#' @param x Performance matrix of first algorithm
+#' @param y Performance matrix of second algorithm
 #' @return Occurence count vector
-occurencesDominanceConfiguration <- function(dominance.matrix){
-    n.measures <- ncol(dominance.matrix)
-    count.vector <- sapply(0:(2**n.measures - 1),
-                           function(i){
-                               binary.vector <- rev(intToBits(i)[1:n.measures])
-                               coincidence.vector <- apply(dominance.matrix, 1,
-                                                           function(r) all(r == binary.vector))
-                               return(sum(coincidence.vector))
-                           })
-    return(count.vector)
+occurencesDominanceConfiguration <- function(x, y){
+  # Build the dominance matrix
+  dominance.matrix <- rNPBST:::heaviside(x-y)
+  n.measures <- ncol(dominance.matrix)
+  
+  weights.vector <- t(apply(dominance.matrix, 1, function(dominance.statement){
+    weights <- numeric(length = 2^length(dominance.statement))
+    occurrence.dominance.configuration <- create.permutations(dominance.statement)
+    numbers <- apply(occurrence.dominance.configuration, 1, function(single.dominance.configuration){
+      strtoi(paste(single.dominance.configuration, collapse = ""), base = 2) + 1
+    })
+    weights[numbers] <- 1 / nrow(occurrence.dominance.configuration)
+    return(weights)
+  }))
+  return(colSums(weights.vector))
+}
+
+
+create.permutations <- function(x){
+  tie.location <- x == 0.5
+  tie.num <- sum(tie.location)
+  list.options <- as.list(x)
+  for(i in which(tie.location)){
+    list.options[[i]] <- c(0,1)
+  }
+  expand.grid(list.options)
 }

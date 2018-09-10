@@ -25,12 +25,15 @@ bayesianFriedman.test <- function(dataset, s = 1, gamma = 0.05,
    ones <- matrix(1, nrow = n)
    R.0 <- matrix((m+1) / 2, nrow = m)
    
+   # R.mean
+   R.mean <- as.vector((rowSums(R) + s*R.0) / (s+n))
+   names(R.mean) <- colnames(R)
+   
    # Weights from Dirichlet distribution
    weights.dir <- c(s, rep(1, n))
    w <- MCMCpack::rdirichlet(n.samples, weights.dir)
    
    if(imprecise){
-      R.mean <- (rowSums(R) + s*R.0) / (s+n)
       CovWl <- (matrix(1,ncol = n, nrow = n) + diag(n)) / ((s+n) * (s+n+1))
       Sigma <- s * (R.0 %*% t(R.0) * (s+1) + R.0 %*% matrix(1, ncol = n) %*% t(R) + rowSums(R) %*% t(R.0)) /
          ((s+n)*(s+n+1)) + R %*% CovWl %*% t(R) - R.mean %*% t(R.mean)
@@ -63,7 +66,6 @@ bayesianFriedman.test <- function(dataset, s = 1, gamma = 0.05,
       Pe <- pracma::perms(1:m)
       imprecise <- apply(Pe, 1, function(pe){
          R.0 <- pe
-         R.mean <- (rowSums(R) + s*R.0) / (s+n)
          CovWl <- (matrix(1,ncol = n, nrow = n) + diag(n)) / ((s+n) * (s+n+1))
          Sigma <- s * (R.0 %*% t(R.0) * (s+1) + R.0 %*% matrix(1, ncol = n) %*% t(R) + rowSums(R) %*% t(R.0)) /
             ((s+n)*(s+n+1)) + R %*% CovWl %*% t(R) - R.mean %*% t(R.mean)
@@ -88,14 +90,13 @@ bayesianFriedman.test <- function(dataset, s = 1, gamma = 0.05,
             h <- ifelse(t(matrix.A) %*% matrix.C < rho, 0, 1)
          }
          
-         return(list(h = h, meanranks = R.mean, covariance = Sigma))
+         return(h)
       })
       
-      
-      unique.h <- unique(sapply(imprecise, function(x) x$h))
+      unique.h <- unique(imprecise)
       h <- ifelse(length(unique.h) > 1, 2, unique.h)
       
-      return(list(h = h, imprecise = imprecise))
+      return(list(h = h,  meanranks = R.mean, imprecise = imprecise))
    }
 }
 

@@ -1,0 +1,31 @@
+  booktitle = {}, {{, {{Proceedings}}},
+  editor = {{},
+  year = {2017},
+  pages = {281--292},
+  doi = {}
+}
+
+citHeader("To cite the 'rNPBST' package in publications use:")
+
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date, perl = TRUE)
+vers <- paste("R package version", meta$Version)
+
+citEntry(entry="InCollection",
+         title = "rNPBST: An R Package Covering Non-Parametric and Bayesian Statistical Tests",
+         author = personList(as.person("J. Carrasco"),
+                             as.person("S. Garc\'ia"),
+                             as.person("M. del M. Rueda"),
+                             as.person("F. Herrera")),
+	 publisher = "Springer International Publishing",
+         address   = "Cham",
+         year     = "2017",
+         note     = "ISBN 978-3-319-59650-1",
+         booktitle = "Hybrid Artificial Intelligent Systems: 12th International Conference, HAIS 2017, La Rioja, Spain, June 21-23, 2017",
+         editor = "Mart\'inez de Pis\'on, Francisco Javier and Urraca, Rub\'en and Quinti\'an, H\'ector and Corchado, Emilio",
+         pages = "281--292",
+         doi = "10.1007/978-3-319-59650-1_24",
+         textVersion =
+         paste(Carrasco, J., Garc\'ia, S., del Mar Rueda, Mar\'ia, & Herrera, F. (2017).",
+  "rNPBST: An R Package Covering Non-parametric and Bayesian Statistical Tests.",
+  "In F. J. Mart\'inez de Pis\'on, R. Urraca, H. Quinti\'an, & E. Corchado (Eds.), Hybrid Artificial Intelligent Systems: 12th International Conference, HAIS 2017, La Rioja, Spain, June 21-23, 2017, Proceedings (pp. 281–292).",
+  "Cham: Springer International Publishing."))
