@@ -28,7 +28,7 @@ multipleMeasuresGLRT <- function(x, y){
     n.measures <- ncol(x)
     # Get the number of occurences of each dominance configuration
     count.vector <- occurencesDominanceConfiguration(x, y)
-    names(count.vector) <- sapply(0:(2^n.measures-1), 
+    names.count.vector <- sapply(0:(2^n.measures-1), 
                                   function(x){
                                     gsub("1", ">", gsub("0", "<", paste(as.numeric(rev(intToBits(x)[1:n.measures])), 
                                                                         collapse = " ")))
@@ -44,7 +44,8 @@ multipleMeasuresGLRT <- function(x, y){
     p.value <- 1 - stats::pchisq(-2*log(lambda.statistic),1)
 
     htest <- list(data.name = "x",
-                  statistic = list("n.vector" = count.vector,
+                  statistic = list("n.vector" = data.frame("Configuration" = names.count.vector,
+                                                           "Value" = count.vector),
                                    "lambda" = lambda.statistic),
                   p.value = p.value,
                   method = "GLRT Multiple Measures")

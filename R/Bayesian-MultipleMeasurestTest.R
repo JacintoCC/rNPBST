@@ -34,12 +34,13 @@ bayesianMultipleConditions.test <- function(x, y,
               mean(mc.sampling[ ,i] > apply(mc.sampling[ ,-i], 1, max))
            })
     
-    names(posterior.probabilities) <- sapply(0:(2^n.measures-1), 
+    names.posterior.probabilities <- sapply(0:(2^n.measures-1), 
                                              function(x){
                                                gsub("1", ">", gsub("0", "<", paste(as.numeric(rev(intToBits(x)[1:n.measures])), 
                                                                                    collapse = " ")))
                                              }) 
 
-    return(list(probabilities = posterior.probabilities,
+    return(list(probabilities =  data.frame("Configuration" = names.count.vector,
+                                            "Probability" = count.vector),
                 sample = mc.sampling))
 }
