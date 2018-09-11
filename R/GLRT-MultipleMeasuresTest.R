@@ -28,6 +28,11 @@ multipleMeasuresGLRT <- function(x, y){
     n.measures <- ncol(x)
     # Get the number of occurences of each dominance configuration
     count.vector <- occurencesDominanceConfiguration(x, y)
+    names(count.vector) <- sapply(0:(2^n.measures-1), 
+                                  function(x){
+                                    gsub("1", ">", gsub("0", "<", paste(as.numeric(rev(intToBits(x)[1:n.measures])), 
+                                                                        collapse = " ")))
+                                  }) 
 
     # Conform the statistic
     n.a <- max(count.vector)
