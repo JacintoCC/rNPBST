@@ -4,10 +4,12 @@
 \alias{occurencesDominanceConfiguration}
 \title{Occurences Dominance Configuration}
 \usage{
-occurencesDominanceConfiguration(dominance.matrix)
+occurencesDominanceConfiguration(x, y)
 }
 \arguments{
-\item{dominance.matrix}{Dominance Matrix}
+\item{x}{Performance matrix of first algorithm}
+
+\item{y}{Performance matrix of second algorithm}
 }
 \value{
 Occurence count vector

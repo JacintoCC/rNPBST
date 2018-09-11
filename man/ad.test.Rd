@@ -5,8 +5,8 @@
 \title{Anderson-Darling test for goodness of fit}
 \usage{
 ad.test(sequence, distribution = "NORMAL", mean = NULL, sd = NULL,
-  start = NULL, end = NULL, freedom = NULL, k = NULL, lambda = NULL,
-  scale = NULL, s = NULL)
+  start = NULL, end = NULL, freedom = NULL, k = NULL,
+  lambda = NULL, scale = NULL, s = NULL)
 }
 \arguments{
 \item{sequence}{Sequence of data}

@@ -5,7 +5,8 @@
 \title{Bayesian Sign test}
 \usage{
 bayesianSign.test(x, y = NULL, s = 1, z_0 = 0, rope.min = -0.01,
-  rope.max = 0.01, weights = c(s/2, rep(1, length(x))), n.samples = 1e+05)
+  rope.max = 0.01, weights = c(s/2, rep(1, length(x))),
+  n.samples = 1e+05)
 }
 \arguments{
 \item{x}{First vector of observations}

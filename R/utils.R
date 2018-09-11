@@ -125,7 +125,7 @@ checkBivariateConditions <- function(matrix){
 #' @return Occurence count vector
 occurencesDominanceConfiguration <- function(x, y){
   # Build the dominance matrix
-  dominance.matrix <- rNPBST:::heaviside(x-y)
+  dominance.matrix <- heaviside(x-y)
   n.measures <- ncol(dominance.matrix)
   
   weights.vector <- t(apply(dominance.matrix, 1, function(dominance.statement){

@@ -16,8 +16,8 @@ This function projects 3-simplex points to a 2D triangle
 }
 \examples{
 bs <- bayesianSign.test(results$random.forest, results$KNN)
-print(plotSimplex(bs$sample, num.points = 5000))
+plotSimplex(bs$sample, num.points = 5000)
 
 bsr <- bayesianSignedRank.test(results$random.forest, results$KNN)
-print(plotSimplex(bsr$sample, num.points = 5000))
+plotSimplex(bsr$sample, num.points = 5000)
 }
