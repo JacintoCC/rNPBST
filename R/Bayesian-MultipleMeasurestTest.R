@@ -40,7 +40,7 @@ bayesianMultipleConditions.test <- function(x, y,
                                                                                    collapse = " ")))
                                              }) 
 
-    return(list(probabilities =  data.frame("Configuration" = names.count.vector,
-                                            "Probability" = count.vector),
+    return(list(probabilities =  data.frame("Configuration" = names.posterior.probabilities,
+                                            "Probability" = posterior.probabilities),
                 sample = mc.sampling))
 }

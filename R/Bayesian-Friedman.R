@@ -53,7 +53,7 @@ bayesianFriedman.test <- function(dataset, s = 1, gamma = 0.05,
          h <- ifelse(all(R.mean == R.0), 0, 1)
       }
       else{
-         matrix.A <- R.mean[indet.values, ] - matrix(R.0[1], nrow = length.indet)
+         matrix.A <- R.mean[indet.values] - matrix(R.0[1], nrow = length.indet)
          matrix.B <- Sigma[indet.values, indet.values]
          matrix.C <- pracma::mldivide(matrix.B, matrix.A)
 
