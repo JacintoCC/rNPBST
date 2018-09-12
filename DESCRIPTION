@@ -15,13 +15,16 @@ Imports:
    rJava,
    MCMCpack,
    ggplot2,
+   dplyr,
+   magrittr,
    ggtern,
    XML,
    EnvStats,
    rmutil,
    devtools,
    KernSmooth,
-   pracma
+   pracma,
+   rlang
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.0
 Depends: R (>= 2.10)
