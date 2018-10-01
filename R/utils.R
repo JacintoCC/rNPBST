@@ -66,9 +66,19 @@ htest2Tex <- function(test){
                        "\\multicolumn{3}{c}{",
                        test$method, " test} \\\\ \\hline\n",
                        sep = "")
-
+   if("sample" %in% names(test)){
+     test$sample <- NULL
+   }
+   if("dist" %in% names(test)){
+     test$dist <- NULL
+   }
+   if("post.dist.lower" %in% names(test)){
+     test$post.dist.lower <- NULL
+     test$post.dist.upper <- NULL
+   }
+   
    names.items <- names(test)
-   tex.items <- lapply(1:(length(test)-1),
+   tex.items <- lapply(1:max(c(1,length(test)-1)),
                        function(i){
                           item <- test[[i]]
                           tex.item <- paste("\\multirow{",
