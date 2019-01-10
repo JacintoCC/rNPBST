@@ -33,5 +33,6 @@ bayesianCorrelatedT.test <- function(x, y = NULL, rho = 1/length(x),
   results <- list('probabilities' = c('left' = p.left, 'rope' = p.rope, 'right'= 1 - p.left-p.rope),
                   'rope' = c(rope.min, rope.max),
                   'dist' = data.frame(x = x, y = y))
+  class(results) <- "PosteriorT"
   return (results)
 }

@@ -151,6 +151,11 @@ occurencesDominanceConfiguration <- function(x, y){
 }
 
 
+#' @title Create Permutations
+#'
+#' @description Auxiliar method for create permutations with the different possible results for a heaviside vector
+#' @param x Vector 
+#' @return Data frame with all the different permutations.
 create.permutations <- function(x){
   tie.location <- x == 0.5
   tie.num <- sum(tie.location)
@@ -159,4 +164,33 @@ create.permutations <- function(x){
     list.options[[i]] <- c(0,1)
   }
   expand.grid(list.options)
+}
+
+
+#' @title Adjust Format Table
+#'
+#' @export
+#' @description Auxiliar method for printing a p-value table with bold font in p-values less than 0.05
+#' @param table Table with p-values
+#' @param rownames Rownames for the table
+#' @param colnames Colnames for the table
+#' @param ... Extra arguments for xtable
+#' @importFrom dplyr mutate_all
+#' @return Latex code with the formatted table.
+AdjustFormatTable <- function(table, rownames=NULL, colnames=NULL,...){
+  if(!is.null(rownames)){ rownames(table) <- rownames }
+  if(!is.null(colnames)){ colnames(table) <- colnames }
+  
+  formated.table <- mutate_all(as.data.frame(table),
+                               function(x){
+                                 sapply(x, function(y){
+                                   formated.col <- ifelse(y < 0.05, paste0("$\\mathbf{", sprintf("%1.2g", y),"}$"), 
+                                                          paste0("$",sprintf("%1.2g", y),"$"))
+                                   formated.col <- gsub("([0-9]{1,2})e([+-]?[0-9]{2})", "\\1 \\\\cdot 10^\\{\\2\\}", formated.col)
+                                 })
+                               })
+  rownames(formated.table) <- rownames(table)
+  print(xtable::xtable(formated.table, ...),
+        include.rownames=TRUE, sanitize.text.function = identity,
+        type = "latex")
 }

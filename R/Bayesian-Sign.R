@@ -58,8 +58,11 @@ bayesianSign.test <- function(x, y = NULL, s = 1, z_0 = 0,
    sample <- MCMCpack::rdirichlet(n.samples, weights)
    posterior.prob <- colMeans(sample)
    
-   return(list(probabilities = c(left = posterior.prob[1],
-                                 rope = posterior.prob[2],
-                                 right = posterior.prob[3]),
-               sample = sample))
+   posterior <- list(probabilities = c(left = posterior.prob[1],
+                                       rope = posterior.prob[2],
+                                       right = posterior.prob[3]),
+                     sample = sample)
+   class(posterior) <- "PosteriorDirichlet"
+   
+   return(posterior)
 }

@@ -55,9 +55,11 @@ bayesianSignedRank.test <- function(x, y = NULL, s = 0.5, z_0 = 0,
    posterior.distribution <- t(as.matrix(unname(posterior.distribution)))
    posterior.prob <- colMeans(posterior.distribution)
    
-   return(list(probabilities = c(left = posterior.prob[1],
-                                 rope = posterior.prob[2],
-                                 right = posterior.prob[3]),
-               sample = posterior.distribution))
+   posterior <- list(probabilities = c(left = posterior.prob[1],
+                                       rope = posterior.prob[2],
+                                       right = posterior.prob[3]),
+                     sample = posterior.distribution)
+   class(posterior) <- "PosteriorDirichlet"
    
+   return(posterior)
 }
