@@ -23,6 +23,7 @@ plot.PosteriorIDP <- function(x, ...){
                        as.matrix(idp.density[,3:4])) %>%
     as.data.frame() %>%
     dplyr::transmute(Dist = rep(c("Lower", "Upper"), each = 512),
+                     Area = rep(c(x$area.dist.lower, x$area.dist.upper), each = 512),
                      x = .data$lower.x, y = .data$lower.y)
   
   ggplot2::ggplot(idp.density, ggplot2::aes(x = .data$x, y = .data$y, color = .data$Dist)) +
@@ -30,5 +31,9 @@ plot.PosteriorIDP <- function(x, ...){
     ggplot2::geom_ribbon(data = idp.density[idp.density$x >= 0.5, ],
                          ggplot2::aes(.data$x, ymin=0, ymax=.data$y, fill = .data$Dist), alpha = 0.3) +
     ggplot2::xlab("P(X <= Y)") +
-    ggplot2::ylab("Density")
+    ggplot2::ylab("Density") +
+    ggplot2::scale_color_discrete(name="Posterior\ndistribution\narea", labels = c(sprintf('Lower: %.3f', x$area.dist.lower),
+                                                                                   sprintf('Upper: %.3f', x$area.dist.upper))) +
+    ggplot2::scale_fill_discrete(name="Posterior\ndistribution\narea", labels = c(sprintf('Lower: %.3f', x$area.dist.lower), 
+                                                                                  sprintf('Upper: %.3f', x$area.dist.upper)))
 }

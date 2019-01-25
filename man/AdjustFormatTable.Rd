@@ -4,7 +4,8 @@
 \alias{AdjustFormatTable}
 \title{Adjust Format Table}
 \usage{
-AdjustFormatTable(table, rownames = NULL, colnames = NULL, ...)
+AdjustFormatTable(table, rownames = NULL, colnames = NULL,
+  type = "latex", print.code = FALSE, ...)
 }
 \arguments{
 \item{table}{Table with p-values}
@@ -12,6 +13,10 @@ AdjustFormatTable(table, rownames = NULL, colnames = NULL, ...)
 \item{rownames}{Rownames for the table}
 
 \item{colnames}{Colnames for the table}
+
+\item{type}{Type of output. Default is latex.}
+
+\item{print.code}{Boolean for printing the table or the code that generates that table}
 
 \item{...}{Extra arguments for xtable}
 }

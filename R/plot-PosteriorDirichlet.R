@@ -12,12 +12,12 @@
 #' bsr <- bayesianSignedRank.test(results$random.forest, results$KNN)
 #' plot(bsr, num.points = 5000)
 plot.PosteriorDirichlet <- function(x, num.points = nrow(x$sample), ...){
-  x <- x$sample
+  sample <- x$sample
    # Reduce the number of points to plot
-   if(num.points > nrow(x))
-      num.points = nrow(x)
+   if(num.points > nrow(sample))
+      num.points = nrow(sample)
 
-   subset <- x[sample(nrow(x), num.points), ]
+   subset <- sample[sample(nrow(sample), num.points), ]
 
    L <- subset[ ,1]
    rope <- subset[ ,2]

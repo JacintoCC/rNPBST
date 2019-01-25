@@ -174,23 +174,47 @@ create.permutations <- function(x){
 #' @param table Table with p-values
 #' @param rownames Rownames for the table
 #' @param colnames Colnames for the table
+#' @param type Type of output. Default is latex.
+#' @param print.code Boolean for printing the table or the code that generates that table
 #' @param ... Extra arguments for xtable
 #' @importFrom dplyr mutate_all
 #' @return Latex code with the formatted table.
-AdjustFormatTable <- function(table, rownames=NULL, colnames=NULL,...){
+AdjustFormatTable <- function(table, rownames=NULL, colnames=NULL, type = "latex", print.code = FALSE, ...){
   if(!is.null(rownames)){ rownames(table) <- rownames }
   if(!is.null(colnames)){ colnames(table) <- colnames }
   
-  formated.table <- mutate_all(as.data.frame(table),
-                               function(x){
-                                 sapply(x, function(y){
-                                   formated.col <- ifelse(y < 0.05, paste0("$\\mathbf{", sprintf("%1.2g", y),"}$"), 
-                                                          paste0("$",sprintf("%1.2g", y),"$"))
-                                   formated.col <- gsub("([0-9]{1,2})e([+-]?[0-9]{2})", "\\1 \\\\cdot 10^\\{\\2\\}", formated.col)
+  if(type == "latex"){
+    formated.table <- mutate_all(as.data.frame(table),
+                                 function(x){
+                                   sapply(x, function(y){
+                                     formated.col <- ifelse(y < 0.05, paste0("$\\mathbf{", sprintf("%1.2g", y),"}$"),
+                                                            paste0("$",sprintf("%1.2g", y),"$"))
+                                     formated.col <- gsub("([0-9]{1,2})e([+-]?[0-9]{2})", "\\1 \\\\cdot 10^\\{\\2\\}", formated.col)
+                                   })
                                  })
-                               })
-  rownames(formated.table) <- rownames(table)
-  print(xtable::xtable(formated.table, ...),
-        include.rownames=TRUE, sanitize.text.function = identity,
-        type = "latex")
+    rownames(formated.table) <- rownames(table)
+    if(print.code){
+      print(xtable::xtable(formated.table,comment = FALSE, ...),
+          include.rownames=TRUE, sanitize.text.function = identity,
+          type = "latex")
+    }
+    else{
+      knitr::kable(formated.table)
+    }
+  }
+  else{
+    formated.table <- mutate_all(as.data.frame(table),
+                                 function(x){
+                                   sapply(x, function(y){
+                                     formated.col <- ifelse(y < 0.05, paste0("<b>", sprintf("%1.2g", y),"</b>"),
+                                                            sprintf("%1.2g", y))
+                                     formated.col <- gsub("([0-9]{1,2})e([+-]?[0-9]{2})", "\\1 &middot; 10<sup>\\2</su>", formated.col)
+                                   })
+                                 })
+    rownames(formated.table) <- rownames(table)
+
+    print(xtable::xtable(formated.table, comment = FALSE, ...),
+          include.rownames=TRUE, sanitize.text.function = identity,
+          type = "html")
+  }
 }

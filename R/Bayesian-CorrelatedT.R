@@ -27,12 +27,13 @@ bayesianCorrelatedT.test <- function(x, y = NULL, rho = 1/length(x),
   p.left <- stats::pt((rope.min - delta)/sp, df)
   p.rope <- stats::pt((rope.max - delta)/sp, df) - p.left
 
-  x <- seq(min(delta-3*stdX, -0.02), max(delta+3*stdX, 0.02), by = 0.001)
+  x <- seq(min(delta-3*stdX, -0.02), max(delta+3*stdX, 0.02), length.out = 100)
   y <- sapply(x, function(t) stats::dt((t - delta)/sp, df))
 
   results <- list('probabilities' = c('left' = p.left, 'rope' = p.rope, 'right'= 1 - p.left-p.rope),
                   'rope' = c(rope.min, rope.max),
-                  'dist' = data.frame(x = x, y = y))
+                  'dist' = data.frame(x = x, y = y), 
+                  'method' = "Bayesian Correlated t-test")
   class(results) <- "PosteriorT"
   return (results)
 }

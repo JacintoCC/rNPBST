@@ -27,7 +27,7 @@ bayesianFriedman.test <- function(dataset, s = 1, gamma = 0.05,
    
    # R.mean
    R.mean <- as.vector((rowSums(R) + s*R.0) / (s+n))
-   names(R.mean) <- colnames(R)
+   names(R.mean) <- rownames(R)
    
    # Weights from Dirichlet distribution
    weights.dir <- c(s, rep(1, n))
