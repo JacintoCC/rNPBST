@@ -24,17 +24,18 @@ Imports:
    devtools,
    KernSmooth,
    pracma,
+   Rgraphviz,
+   graph,
    rlang,
    xtable
 Suggests: 
   knitr, 
   rmarkdown, 
-  Rgraphviz,
-  graph,
   scmamp, 
   reshape2, 
   tidyr, 
   lawstat
+Remote: bioc::3.8/Rgraphviz, bioc::3.8/graph 
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.0
