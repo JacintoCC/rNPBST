@@ -26,7 +26,15 @@ Imports:
    pracma,
    rlang,
    xtable
-Suggests: knitr, rmarkdown, scmamp, reshape2, tidyr, lawstat
+Suggests: 
+  knitr, 
+  rmarkdown, 
+  Rgraphviz,
+  graph,
+  scmamp, 
+  reshape2, 
+  tidyr, 
+  lawstat
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.0
