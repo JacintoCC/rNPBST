@@ -57,3 +57,27 @@ bayesian.imprecise <- function(x, y, s = sqrt(2) - 1, c = 0.5, mc.samples = 1000
 
     return(posteriorIDP)
 }
+
+
+#' @title Test object to table in LaTeX format
+#'
+#' @export
+#' @description Transform a test object to table in LaTeX format
+#' @param test Test object with pvalue(s), test name and statistic(s)
+#' @examples
+#' htest2Tex(cd.test(results))
+#' @return This method prints the necessary code for include a table
+#'     with the information provided by the test.
+htest2Tex.PosteriorIDP <- function(test){
+  tex.string <- paste("\\begin{table}[] \n\\centering\n \\caption{Bayesian IDP test} \n",
+                      "\\begin{tabular}{ll} \n\\hline\n",
+                      "\\multicolumn{2}{c}{Bayesian IDP test} \\\\ \\hline\n",
+                      "\\multirow{1}{*}{area.dist.lower}\n",
+                      "\t& ", test$area.dist.lower, " \\\\ \\hline\n",
+                      "\\multirow{1}{*}{area.dist.upper}\n",
+                      "\t& ", test$area.dist.upper, " \\\\ \\hline\n",
+                      "\\end{tabular}\n",
+                      "\\end{table}\n",
+                      sep = "")
+  return(tex.string)
+}

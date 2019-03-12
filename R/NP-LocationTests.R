@@ -178,7 +178,7 @@ wilcoxonRankSum.test <- function(matrix){
    pvalues <- computeWilcoxonRankPValues(combined, n1, n2, WRank)
 
    htest <- list(data.name = deparse(substitute(matrix)),
-                 statistic = WRank, p.value = pvalues,
+                 statistic = c("WRank" = WRank), p.value = pvalues,
                  method = "Wilcoxon Rank Sum")
    return(htest)
 }

@@ -57,14 +57,41 @@ getDiff <- function(x, y){
 #' @return This method prints the necessary code for include a table
 #'     with the information provided by the test.
 htest2Tex <- function(test){
-   tex.string <- paste("\\begin{table}[] \n\\centering \\caption{",
+  UseMethod("htest2Tex")
+}
+
+#' @title Test object to table in LaTeX format
+#'
+#' @export
+#' @description Transform a test object to table in LaTeX format
+#' @param test Test object with pvalue(s), test name and statistic(s)
+#' @examples
+#' htest2Tex(cd.test(results))
+#' @return This method prints the necessary code for include a table
+#'     with the information provided by the test.
+htest2Tex.htest <- function(test){
+  class(test) <- "list"
+  htest2Tex(test)
+}
+
+#' @title Test object to table in LaTeX format
+#'
+#' @export
+#' @description Transform a test object to table in LaTeX format
+#' @param test Test object with pvalue(s), test name and statistic(s)
+#' @examples
+#' htest2Tex(cd.test(results))
+#' @return This method prints the necessary code for include a table
+#'     with the information provided by the test.
+htest2Tex.list <- function(test){
+   tex.string <- paste("\\begin{table}[] \n\\centering\n\\caption{",
                        test$method,
                        " test} \n\\begin{tabular}{lll} \n\\hline\n",
                        sep = "")
 
    tex.string <- paste(tex.string,
                        "\\multicolumn{3}{c}{",
-                       test$method, " test} \\\\ \\hline\n",
+                       test$method, "} \\\\ \\hline\n",
                        sep = "")
    if("sample" %in% names(test)){
      test$sample <- NULL

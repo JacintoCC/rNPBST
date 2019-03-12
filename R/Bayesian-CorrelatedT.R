@@ -34,6 +34,35 @@ bayesianCorrelatedT.test <- function(x, y = NULL, rho = 1/length(x),
                   'rope' = c(rope.min, rope.max),
                   'dist' = data.frame(x = x, y = y), 
                   'method' = "Bayesian Correlated t-test")
-  class(results) <- "PosteriorT"
+  class(results) <- c("PosteriorT")
   return (results)
+}
+
+#' @title Test object to table in LaTeX format
+#'
+#' @export
+#' @description Transform a test object to table in LaTeX format
+#' @param test Test object with pvalue(s), test name and statistic(s)
+#' @examples
+#' htest2Tex(cd.test(results))
+#' @return This method prints the necessary code for include a table
+#'     with the information provided by the test.
+htest2Tex.PosteriorT <- function(test){
+  tex.string <- paste("\\begin{table}[] \n",
+                      "\\centering\n",
+                      "\\caption{Bayesian Correlated t-test}\n",
+                      "\\begin{tabular}{lll} \n",
+                      "\\hline\n",
+                      "\\multirow{3}{*}{Probabilities}\n",
+                      "& 	left	 &", test$probabilities[1],"\\\n",
+                      "& 	rope	 &", test$probabilities[2],"\\\n",
+                      "& 	right	 &", test$probabilities[3],"\\ \\hline\n",
+                      "\\multirow{2}{*}{rope}\n",
+                      "& 	Lower Bound	 &", test$rope[1],"\\\n",
+                      "& 	Upper Bound	 &", test$rope[2],"\\ \\hline\n",
+                      "\\end{tabular}",
+                      "\\end{table}",
+                      sep = "")
+  
+  return(tex.string)
 }

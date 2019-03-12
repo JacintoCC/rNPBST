@@ -114,8 +114,30 @@ iterations, except for the Page test for the study of the convergence.
 
 ## Classic tests
 
+```{r}
+EBO <- unlist(select(filter(cec17.final, Algorithm == "EBO", Dimension == 10), Result), use.names = F)
+jSO <- unlist(select(filter(cec17.final, Algorithm == "jSO", Dimension == 10), Result), use.names = F)
+```
+
 
 ```{r}
+sign.results <- rNPBST::binomialSign.test(cbind(EBO, jSO))
+wilcoxon.results <- rNPBST::wilcoxon.test(cbind(EBO, jSO))
+wilcoxonRS.results <- rNPBST::wilcoxonRankSum.test(cbind(EBO, jSO))
+
+r
+p.values <- sapply(list(sign.results,wilcoxon.results, wilcoxonRS.results), function(x) x$p.value[3])
+lapply(list(sign.results,wilcoxon.results, wilcoxonRS.results), function(x) x$statistic)
+
+
+```
+
+
+
+
+
+```{r}
+
 ApplyNPPairwise <- function(data, test){
 split(data, data$Dimension) %>%
    lapply(function(x){
@@ -136,6 +158,7 @@ results.nppairwise <- matrix(c(results.sign, results.wilcoxon,results.wilcoxonRS
                                              paste("Dim.", levels(cec17.final$Dimension)))) %>%
     AdjustFormatTable(caption = "Non-parametric pairwise comparison between EBO and jSO", label = "tab:np-pairwise", print.code = T)
 ```
+
 
 
 ```{r apply.np.test}
@@ -485,16 +508,20 @@ state that the region of practical equivalence is $[-10,10]$.
 
 
 ```{r bayesian.pair.test}
-jso <- filter(cec17.final, Algorithm == "jSO", Dimension == 30) %>%
+jso <- filter(cec17.final, Algorithm == "jSO", Dimension == 10) %>%
     select(Result) %>% unlist()
-ebo.cmar <- filter(cec17.final, Algorithm == "EBO-CMAR", Dimension == 30) %>%
+ebo <- filter(cec17.final, Algorithm == "EBO", Dimension == 10) %>%
     select(Result) %>% unlist()
 
-bst.results <- rNPBST::bayesianSign.test(ebo.cmar, jso,
+bst.results <- rNPBST::bayesianSign.test(ebo, jso,
                                        rope.min = -10, rope.max = 10)
-bsrt.results <- rNPBST::bayesianSignedRank.test(ebo.cmar, jso,
+plot(bst.results, num.points = 10000) + ggplot2::labs(x = "jSO", z = "EBO")
+
+bsrt.results <- rNPBST::bayesianSignedRank.test(ebo, jso,
                                               rope.min = -10, rope.max = 10)
+plot(bsrt.results, num.points = 10000)+ ggplot2::labs(x = "jSO", z = "EBO", y = "rope")
 ```
+
 The test compute the probability of the true location of
 $\textrm{EBO-CMAR} - \textrm{jSO}$ with respect to $0$, so both tests'
 results gives that the left region (jSO obtain worse results) a
@@ -523,8 +550,8 @@ situation, as the probability of the rope is very low.
 
 ```{r plot.pair.bayesian.tests}
 wilcox.test(jso, ebo.cmar, paired = T)
-plotSimplex(bst.results$sample, num.points = 10000) 
-plotSimplex(bsrt.results$sample, num.points = 10000)
+plot(bst.results, num.points = 10000) 
+plot(bsrt.results, num.points = 10000)
 ```
 
 ## Imprecise Dirichlet Process Test
@@ -564,7 +591,7 @@ ebo.cmar <- filter(cec17.final, Algorithm == "EBO", Dimension == 50) %>%
     select(Result) %>% unlist()
 
 bayesian.imprecise.results <- bayesian.imprecise(jso, ebo.cmar)
-plot(bayesian.imprecise.results)
+plot(bayesian.imprecise.results) + ggplot2::ggtitle("JSO vs. EBO-CMAR")
 ```
 
 According to the results of the Bayesian Imprecise Dirichlet Process,
@@ -594,6 +621,22 @@ bayesianmultipleconditions.results <- rNPBST::bayesianMultipleConditions.test(a,
 bayesianmultipleconditions.results$probabilities
 ```
 
+## PlackettLuce
+
+```{r}
+library(rNPBST)
+cec17.extended.10 <- filter(cec17.extended, Dimension == "10") %>% select(-Dimension)
+a <- merge(cec17.extended.10, cec17.extended.10, by = c("Benchmark","Iteration")) %>%
+  filter(Algorithm.x != Algorithm.y) %>%
+  filter_at(vars(ends_with(".x"),
+                 ends_with(".y")), 
+            any_vars(. == 0)) %>%
+  group_by(Algorithm.x, Algorithm.y) %>%
+  mutate(End.x = sum(!!any_vars(. == 0)))
+  summarise(r_ij = n(),
+            w_ij = sum(vars(ends_with(".x")), any_vars(. == 0)))) %>%
+  ungroup()
+```
 
 # Appendix
 

@@ -42,7 +42,7 @@ bayesianSign.test <- function(x, y = NULL, s = 1, z_0 = 0,
    }
    else{
       # Compute number of elements in each region
-      n.left  <- sum(diff < rope.min)
+      n.left  <- sum(diff < rope.min) + 0.5 * sum(diff == rope.min)
       n.right  <- n.diff - n.left
       
       # Adjust weights
@@ -58,11 +58,49 @@ bayesianSign.test <- function(x, y = NULL, s = 1, z_0 = 0,
    sample <- MCMCpack::rdirichlet(n.samples, weights)
    posterior.prob <- colMeans(sample)
    
-   posterior <- list(probabilities = c(left = posterior.prob[1],
-                                       rope = posterior.prob[2],
-                                       right = posterior.prob[3]),
-                     sample = sample)
+   if(rope.min != rope.max){
+     probabilities <- c(left = posterior.prob[1],
+                        rope = posterior.prob[2],
+                        right = posterior.prob[3])
+     
+   }
+   else{
+     probabilities <- c(left = posterior.prob[1],
+                        right = posterior.prob[2])
+   }
+   
+   posterior <- list(probabilities = probabilities,
+                     sample = sample,
+                     method = "Bayesian Sign Test")
    class(posterior) <- "PosteriorDirichlet"
    
    return(posterior)
+}
+
+#' @title Test object to table in LaTeX format
+#'
+#' @export
+#' @description Transform a test object to table in LaTeX format
+#' @param test Test object with pvalue(s), test name and statistic(s)
+#' @examples
+#' htest2Tex(cd.test(results))
+#' @return This method prints the necessary code for include a table
+#'     with the information provided by the test.
+htest2Tex.PosteriorDirichlet <- function(test){
+  tex.string <- paste("\\begin{table}[] \n",
+                      "\\centering\n",
+                      "\\caption{", test$method,"}\n",
+                      "\\begin{tabular}{lll} \n",
+                      "\\hline\n",
+                      "\\multirow{3}{*}{Probabilities}\n",
+                      "& 	left	 &", test$probabilities[1],"\\\n",
+                      ifelse(length(test$probabilities) == 3,
+                             paste0("& 	rope	 &", test$probabilities[2],"\\\n",
+                                    "& 	right	 &", test$probabilities[3],"\\ \\hline\n"),
+                             paste0("& 	right	 &", test$probabilities[2],"\\ \\hline\n")),
+                      "\\end{tabular}",
+                      "\\end{table}",
+                      sep = "")
+  
+  return(tex.string)
 }
