@@ -214,16 +214,17 @@ AdjustFormatTable <- function(table, rownames=NULL, colnames=NULL, type = "latex
     formated.table <- mutate_all(as.data.frame(table),
                                  function(x){
                                    sapply(x, function(y){
-                                     formated.col <- ifelse(y < 0.05, paste0("$\\mathbf{", sprintf("%1.2g", y),"}$"),
-                                                            paste0("$",sprintf("%1.2g", y),"$"))
+                                     formated.col <- ifelse(y < 0.05, paste0("\\(\\mathbf{", sprintf("%1.2e", y),"}\\)"),
+                                                            paste0("\\(",sprintf("%1.2e", y),"\\)"))
                                      formated.col <- gsub("([0-9]{1,2})e([+-]?[0-9]{2})", "\\1 \\\\cdot 10^\\{\\2\\}", formated.col)
                                    })
                                  })
     rownames(formated.table) <- rownames(table)
+    # return(formated.table)
     if(print.code){
       print(xtable::xtable(formated.table,comment = FALSE, ...),
-          include.rownames=TRUE, sanitize.text.function = identity,
-          type = "latex")
+            include.rownames=TRUE, sanitize.text.function = identity,
+            type = "latex")
     }
     else{
       knitr::kable(formated.table)

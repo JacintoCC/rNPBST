@@ -29,9 +29,10 @@ PlotConfidenceCurve <- function(x, y, paired = FALSE, alpha = 0.05, m = 10){
     ggplot2::geom_vline(xintercept = med, linetype = "dotted") +
     ggplot2::geom_vline(xintercept = 0) +
     ggplot2::geom_hline(yintercept = alpha, linetype="dotted") +
-    ggplot2::annotate("text", x=med, y=0, label=as.character(signif(med)), color="red") + 
+    ggplot2::annotate("text", x=med*1.6, y=0.08, label=as.character(signif(med,4)), color="red") + 
     ggplot2::labs(x = "True difference in performance",
-                  y = "p-value")
+                  y = "p-value") +
+    ggplot2::theme(axis.text=ggplot2::element_text(size=12))
   return(graphic)
 }
 

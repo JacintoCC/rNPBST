@@ -5,3 +5,6 @@ doc
 .RData
 .Ruserdata
 *.Rproj
+packrat/lib*/
+packrat/*
+.Rprofile

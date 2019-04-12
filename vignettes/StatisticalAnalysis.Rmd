@@ -58,6 +58,20 @@ results of the algorithms among the different iterations do not follow
 a normal distribution, as could be expected due to the different
 difficulty of the multiple benchmark functions throug the dimensions.
 
+```{r mv.shapiro}
+sapply(split(cec17.final, cec17.final$Algorithm), 
+                          function(x){
+                            test <- x %>%
+                              select(-Algorithm) %>% tidyr::spread(Dimension, Result) %>%
+                              select(-Benchmark)  %>% 
+                              as.matrix() %>%
+                              mvShapiroTest::mvShapiro.Test()
+                            return(test$p.value)
+                          }) %>% matrix(ncol = 1, byrow = F,dimnames = list(levels(cec17.final$Algorithm), "p-value")) %>%
+  AdjustFormatTable(print.code = T)
+```
+
+
 ### Homocedasticity
 
 ```{r levene}
@@ -425,10 +439,12 @@ cat(rNPBST::htest2Tex(rNPBST::wilcoxon.test(conf.interval.matrix)))
 ```    
 
 ```{r}
-ApproximateNPConfidenceInterval(x = conf.interval.matrix[ ,1],
-                                                           y = conf.interval.matrix[ ,2], paired = T)
+rNPBST::NP.ApproximateConfidenceInterval(x = conf.interval.matrix[ ,1],
+                                         y = conf.interval.matrix[ ,2], paired = T)
 PlotConfidenceCurve(x = conf.interval.matrix[ ,1],
-                                               y = conf.interval.matrix[ ,2], m = 50, paired = T)
+                    y = conf.interval.matrix[ ,2], 
+                    m = 50, paired = T) +
+  ggplot2::ggtitle("PPSO vs jSO")
 ```
 
 ## Multiple measures test - GLRT
