@@ -27,15 +27,15 @@ Imports:
    Rgraphviz,
    graph,
    rlang,
-   xtable
+   xtable,
+  mvShapiroTest
 Suggests: 
   knitr, 
   rmarkdown, 
   scmamp, 
   reshape2, 
   tidyr, 
-  lawstat,
-  mvShapiroTest
+  lawstat
 Remote: bioc::3.8/Rgraphviz, bioc::3.8/graph 
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
