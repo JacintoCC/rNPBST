@@ -20,31 +20,53 @@ library(xtable)
 library(ggplot2)
 ```
 
+This vignette comprehends a statistical analysis of the case of study
+of the CEC’17 Special Session and Competition on Single Objective Real
+Parameter Numerical Optimization can be illustrated. The results have
+been included in the package as a dataset.
+
+- We will mainly use two data sets, one with all the results (all
+  iterations of the execution of all the algorithms in all benchmark
+  functions for all dimensions), \texttt{cec17.extended.final}, and
+  the mean data set (which aggregates the results among the
+  iterations), \texttt{cec17.final}.
+- In most of the pairwise comparisons we have involved EBOwithCMAR
+  and jSO algorithms, as they are the best classified algorithms in
+  the competition.
+- \autoref{tab:data-mean} shows the mean among different
+  iterations of the results obtained at the end of all of the steps of
+  each algorithm on each benchmark function for the 10 Dimension
+  scenario.
+- The tables included in this section are obtained with the function
+  \texttt{AdjustFormatTable} of the package used, which is helpful to
+  highlight the rejected hypotheses by emboldening the associated
+  $p$-values.
+
 # Parametric analysis
 
-In this section we illustrate the application of the parametric tests
-to the comparison of algorithms in the study case of the competition
-of CEC2017. With this purpose, we use the results obtained at the end
-of the 100\% of the steps and compute the mean among different
-iterations of each algorithm on each benchmark function.
 
 ## Preliminars
+
+Traditionally the statistical tests applied to the comparison of
+different algorithms belonged to the parametric family of tests. We
+start the statistical analysis of the results with these kinds of
+tests and the study of the conditions in order to use them safely.
 
 The traditional parametric test used in the context of a comparison of
 multiple algorithms over multiple problems (benchmarks) is the ANOVA
 test. This test makes some assumptions that should be checked before
 it is performed:
-- The distribution of the results among different benchmarks is normal.
-- The standard deviation of results is equal. 
 
-### Normality
+- The distribution of the results for each algorithm among
+  different benchmarks follows a Gaussian distribution.
+- The standard deviation of results among groups is equal.
 
 
 ```{r shapiro, echo=TRUE, results="asis"}
-shapiro.test <- split(cec17.final, cec17.final$Dimension) %>%
-   lapply(function(x) split(x, x$Algorithm) %>%
-   lapply(function(y) shapiro.test(y$Result)$p.value)) %>%
-   unlist() %>% matrix(ncol = 4, byrow = F) %>% as.data.frame()
+shapiro.test <- split(cec17.final, cec17.final$Dimension) %>% 
+   lapply(function(x) split(x, x$Algorithm) %>% 
+   lapply(function(y) shapiro.test(y$Result)$p.value)) %>% 
+   unlist() %>% matrix(ncol = 4) %>% as.data.frame()
 
 AdjustFormatTable(shapiro.test, 
                   colnames = paste("Dim.", levels(cec17.final$Dimension)),
@@ -52,81 +74,69 @@ AdjustFormatTable(shapiro.test,
                   digits = -2, type = "latex")
 ```    
 
-We can see that all the null hypotheses are rejected because the
-associated p-values are less than $0.05$. This means that the mean
-results of the algorithms among the different iterations do not follow
-a normal distribution, as could be expected due to the different
-difficulty of the multiple benchmark functions throug the dimensions.
+In this table we gather the $p$-values associated with the normality
+of each group of mean results for an algorithm in a dimension
+scenario. All the null hypotheses are rejected because the $p$-values
+are less than $0.05$, which means that we reject that the distribution
+of the mean results for each benchmark function follow a normal
+distribution. This conclusion could be expected because of the
+different difficulty of the benchmark functions in higher dimension
+scenarios. This is marked with boldface in subsequent tables.
+
+
+In some circumstances like the Multi-Objective Optimization we need to
+include different measures in the comparison. We will now consider the
+results of the different dimensions as if they were different measures
+in the same benchmark function. Then, in order to perform the
+Hotelling's $T^2$ test we first check the normality of the population
+with the multivariate generalization of Shapiro-Wilk's test. The
+following table shows that the normality hypothesis is rejected for
+every algorithm. Therefore, we stop the parametric analysis of the
+results here because the assumptions of parametric tests are not
+satisfied.
+
 
 ```{r mv.shapiro}
 sapply(split(cec17.final, cec17.final$Algorithm), 
-                          function(x){
-                            test <- x %>%
-                              select(-Algorithm) %>% tidyr::spread(Dimension, Result) %>%
-                              select(-Benchmark)  %>% 
-                              as.matrix() %>%
-                              mvShapiroTest::mvShapiro.Test()
-                            return(test$p.value)
-                          }) %>% matrix(ncol = 1, byrow = F,dimnames = list(levels(cec17.final$Algorithm), "p-value")) %>%
+       function(x){
+          test <- x %>%
+            select(-Algorithm) %>% 
+            tidyr::spread(Dimension, Result) %>%
+ 	    select(-Benchmark)  %>%
+            as.matrix() %>%
+            mvShapiroTest::mvShapiro.Test()
+          return(test$p.value)
+       }) %>% 
+       matrix(ncol = 1, 
+              dimnames = list(levels(cec17.final$Algorithm),
+                              "p-value")) %>%
   AdjustFormatTable(print.code = T)
 ```
 
 
-### Homocedasticity
-
-```{r levene}
-levene.test <- split(cec17.final, cec17.final$Dimension) %>%
-  lapply(function(x) lawstat::levene.test(x$Result,  x$Algorithm)$p.value) %>% 
-  unlist() %>% matrix(ncol = 4, byrow = T)
-AdjustFormatTable(levene.test, type ="latex", digits = -2, 
-                  colnames = paste("Dim.", levels(cec17.final$Dimension)),
-                  rownames = "p.value", caption = "Levene test for homocedasticity",
-                  label = "tab:levene", print.code = TRUE)
-```
-
-Although normality is not satisfied, we check the homocedasticity for
-the different dimensions. As the $p$-value are greater than $\alpha =
-0.05$ we cannot reject the hypothesis of the equivalence of the
-variances.
-
-
-```{r t.test}
-split(cec17.final, cec17.final$Dimension) %>%
-   lapply(function(x){
-      y <- t.test(select(filter(x, Algorithm == "EBO"), Result),
-                  select(filter(x, Algorithm == "jSO"), Result))$p.value
-   }) %>%
-    unlist() %>%
-    matrix(nrow = 1, dimnames = list("p.value", paste("Dim.", levels(cec17.final$Dimension)))) %>%
-    AdjustFormatTable(caption = "EBO vs. jSO t-test results", label = "tab:t-test")
-```
-
-
-```{r anova}
-
-split(cec17.final, cec17.final$Dimension) %>%
-   lapply(function(x){
-      y <- aov(Result ~ Algorithm, x) %>% summary()
-      y[[1]][1,5]
-   }) %>%
-    unlist() %>%
-    matrix(nrow = 1, dimnames = list("p.value", paste("Dim.", levels(cec17.final$Dimension)))) %>%
-    AdjustFormatTable(caption = "ANOVA results", label = "tab:ANOVA")
-```
-
-We perform the ANOVA test and see how the equivalence of the means by
-algorithms can not be rejected for any dimensions, a circumstance that
-is consistent with the previous statements about the power of the
-ANOVA test when the assumption of the test are not fulfilled.
 
 # Non-parametric tests
 
-In this section we perform the most popular tests in the field of the
-comparison of optimization algorithms. We continue using the
-aggregated results across the different runs at the end of the
-iterations, except for the Page test for the study of the convergence.
+
+In this subsection we perform the most popular tests in the field of the
+comparison of optimization algorithms. We continue using the aggregated
+results across the different runs at the end of the iterations, except
+for the Page test for the study of the convergence.
 
 ## Classic tests
+
+### Pairwise comparison
+
+First, we perform the non-parametric pairwise comparisons with the
+Sign, Wilcoxon and Wilcoxon Rank-Sum tests for the 10 dimension
+scenario. The hypotheses of the equality of the medians is only
+rejected by the Wilcoxon Rank-Sum test, and we can see in the
+following table how for example Wilcoxon's statistics $R+$ and $R-$
+are similar, which means that there is no significant difference
+between the ranking of the observations where one algorithm
+outperforms the other. Then, the next step requires all the different
+algorithms in the competition to be involved in the comparison.
+
 
 ```{r}
 EBO <- unlist(select(filter(cec17.final, Algorithm == "EBO", Dimension == 10), Result), use.names = F)
@@ -139,19 +149,12 @@ sign.results <- rNPBST::binomialSign.test(cbind(EBO, jSO))
 wilcoxon.results <- rNPBST::wilcoxon.test(cbind(EBO, jSO))
 wilcoxonRS.results <- rNPBST::wilcoxonRankSum.test(cbind(EBO, jSO))
 
-r
 p.values <- sapply(list(sign.results,wilcoxon.results, wilcoxonRS.results), function(x) x$p.value[3])
 lapply(list(sign.results,wilcoxon.results, wilcoxonRS.results), function(x) x$statistic)
-
-
 ```
 
 
-
-
-
 ```{r}
-
 ApplyNPPairwise <- function(data, test){
 split(data, data$Dimension) %>%
    lapply(function(x){
@@ -173,7 +176,7 @@ results.nppairwise <- matrix(c(results.sign, results.wilcoxon,results.wilcoxonRS
     AdjustFormatTable(caption = "Non-parametric pairwise comparison between EBO and jSO", label = "tab:np-pairwise", print.code = T)
 ```
 
-
+### Multiple comparison
 
 ```{r apply.np.test}
 ApplyNPTest <- function(data, test){
@@ -186,7 +189,6 @@ ApplyNPTest <- function(data, test){
     unlist
 }
 ```
-    
 
 ```{r np.test}
 friedman.results <- ApplyNPTest(cec17.final, friedman.test)
@@ -198,10 +200,7 @@ quade.results <- split(cec17.final, cec17.final$Dimension) %>%
     quade.test(x$Result, x$Algorithm, x$Benchmark) %>% get("p.value", .)
   }) %>%
   unlist(use.names = T)
-```    
 
-
-```{r np.results}
 non.parametric <- matrix(c(friedman.results, friedman.ar.results,
                            iman.davenport.results, quade.results),
                          byrow = T, ncol = 4)
@@ -212,38 +211,43 @@ AdjustFormatTable(non.parametric,
                   caption = "Non-Parametric tests",
                   label = "tab:np-tests")
 ```
-We can see how the four tests reject the null hypotheses, it is, the
-equivalence of the medians of the results of the different
-benchmarks. We must have in mind that a comparison between thirteen
-algorithms is not the recommended procedure if we want to compare our
-proposal, but we should include in the comparison the state-of-the-art
-algorithms, because the inclusion of an algorithm with lower
-performance will be reflected in the rejection of the null hypothesis
-while that would be not rejected if this bogus algorithm would not
-have been included. 
+
+We can see in this table how the tests that involve multiple
+algorithms reject the null hypotheses, that is, the equivalence of the
+medians of the results of the different benchmarks.  We must keep in
+mind that a comparison between thirteen algorithms is not the
+recommended procedure if we want to compare our proposal. We should
+only include the state-of-the-art algorithms in the comparison,
+because the inclusion of an algorithm with lower performance could
+lead to the rejection of the null hypothesis, not due to the
+differences between our algorithm and the comparison group, but
+because of the differences between this dummy algorithm and the
+others.
 
 ## Post-hoc tests
 
-Then, we proceed to perform the post-hoc tests in order to determinate
+Then, we proceed to perform the post-hoc tests in order to determine
 the location of the differences between these algorithms. We use the
 modification of the classic non-parametric tests to obtain the
 $p$-value associated with each hypothesis, although we should adjust
 these $p$-values with a post-hoc procedure.
 
-
 ### Control algorithm 
 
-To illustrate this, we first suppose that we are in an One versus all
-scenario where we are presenting our algorithm (we are going to use
-EBOwithCMAR, the winner of the CEC'2017 competition). The possible
-approach here, as in the rest of the analysis are:
+To illustrate this, we first suppose that we are in a One versus all
+scenario where we are presenting our algorithm (we will use
+EBOwithCMAR, the winner of the CEC'17 competition). The possible
+approach here, as in the rest of the analysis is:
 
 - Considering all the results in the different dimensions as if they
   were different function or benchmarks, we would only obtain a single
   $p$-value for the comparison between EBO-CMAR with each contestant
   algorithm. The adjusted $p$-values are shown in the following table
-  for the Friedman, Friedman Aligned-Rank and Quade test.
-
+  for the Friedman, Friedman Aligned-Rank and Quade test. Here we see
+  that there is not much difference between the different tests and
+  that differences are found in the comparison with DYYPO, IDEN, MOS,
+  PPSO, RBI and TFL, although the sign of these differences need to be
+  checked in the raw data.
 
 ```{r post.hoc}
 cec17.final.10 <- filter(cec17.final, Dimension == 10)
@@ -259,9 +263,8 @@ results.post.friedman <- ApplyNPTestPostHoc(cec17.final, scmamp::friedmanPost,
                                            scmamp::adjustHolland, control = "EBO")
 results.post.friedmanAR <- ApplyNPTestPostHoc(cec17.final, scmamp::friedmanPost,
                                              scmamp::adjustHolland, control = "EBO")
-results.post.quade <- ApplyNPTestPostHoc(cec17.final, scmamp::quadePost, scmamp::adjustHolland,
-                                        control = "EBO")
-
+results.post.quade <- ApplyNPTestPostHoc(cec17.final, scmamp::quadePost, 
+                                         scmamp::adjustHolland, control = "EBO")
 
 results.post.global.holland <- rbind(results.post.friedman,
                                     results.post.friedmanAR,
@@ -275,8 +278,8 @@ AdjustFormatTable(as.data.frame(t(results.post.global.holland)),
 
 - If we wanted to show that the differences between the algorithms
   also persist in each group of results obtained across the different
-  dimensions, we should perform these tests repeatedly and apply later
-  the appropiate post-hoc procedure. In the following table we show
+  dimensions, we should perform these tests repeatedly and apply the
+  appropiate post-hoc procedure later. In the following table we show
   the adjusted $p$-value obtained.
 
 ```{r post.hoc.grouped}
@@ -293,7 +296,7 @@ ApplyNPTestPostHoc.Grouped <- function(data, test, adjust, control = NULL){
 post.hoc.grouped <- ApplyNPTestPostHoc.Grouped(cec17.final, 
                                                scmamp::friedmanPost, 
                                                scmamp::adjustHolland,
-                                              control = "EBO")
+                                               control = "EBO")
 
 AdjustFormatTable(post.hoc.grouped,
                   colnames = paste("Dim", colnames(post.hoc.grouped)),
@@ -305,15 +308,9 @@ AdjustFormatTable(post.hoc.grouped,
 ### $n$ versus $n$ scenario
 
 In the scenario of the statistical analysis of the results obtained
-during a competition, we would not focus in the comparison between the
-results of a single algorithm but we would make all the posible pairs,
-so we would not use the control algorithm.
-
-As in the scenario with a control algorithm, we could be interested in
-the  global comparison  between  all the  posible  pairs of  algorithm
-considering the  results in the  different dimensions as if  they came
-from the same distribution or pay attention to the differences between
-the algorithms in the different contexts according to the dimension.
+during a competition, we do not focus on the comparison of the results
+of a single algorithm, rather we would make all the posible pairs, and
+therfore we would not use the control algorithm.
 
 ```{r all.vs.all}
 ApplyNPTestPostHoc(cec17.final.10,
@@ -323,32 +320,55 @@ ApplyNPTestPostHoc(cec17.final.10,
                     label = "tab:nvsn-friedman-holland", print.code = F)
 ```
 
-```{r all.vs.all.group}
-all.vs.all.group <- scmamp::postHocTest(select(tidyr::spread(cec17.final, Algorithm, Result),
-                                             -Benchmark),
-                                      group.by = "Dimension",
-                                      test = "friedman", adjust = "holland")
+The results of the $n \times n$ comparison using a Friedman test and a
+Post-Hoc Holland adjust of the $p$-values is shown in this
+table. Here, we can see that there is not a single algorithm whose
+equivalence with the rest of the algorithms is discarded (in the 10
+dimension scenario). However, for a multiple comparison with a high
+number of algorithms, like in the competition used as example, the
+adjustment makes finding differences between the algorithms more
+difficult. If we observe the results of the best classified algorithms
+in the competition, like jSO and EBO, we see that there are
+significant differences with algorithms like MOS, PPSO or RBI but this
+difference is not significant for LSHADE variants or MM.
 
-all.vs.all.group$corrected.pval[, ,1] %>%
-  AdjustFormatTable(caption = "Results $n$ vs $n$, dimension 10. Friedman test + Holland adjust.",
-                    label = "tab:nvsn-dim10-friedman-holland")
+The CD plot associated with the scenario of an $n$ vs. $n$ comparison
+and performed with the Nemenyi test provides an interesting
+visualization fo the significance of the observed paired
+differences. In the next figure, we show the results of this
+comparison, where the differences between the group of the first
+classified algorithms whose equivalence cannot be discarded includes
+up to the RBI algorithm (7th classified in the 10 Dimension
+scenario). This plot, with several overlapped groups that contain many
+algorithms, shows that the differences are hard to identify in
+algorithms that perform similarly. In the following code, the results
+have been multiplied by -1 in order to preserve the order with respect
+to the minimization objective, as the function was designed to be used
+with a maximization intention.
 
-# all.vs.all.group$corrected.pval[, ,3] %>%
-#   AdjustFormatTable(caption = "Results $n$ vs $n$, dimension 30. Friedman test + Holland adjust.",
-#                     label = "tab:nvsn-dim30-friedman-holland")
+```{r}
+results.matrix.10 <- filter(cec17.final, Dimension == 10) %>% 
+	tidyr::spread("Algorithm", "Result") %>% 
+	dplyr::select(-Benchmark, -Dimension)
+scmamp::plotCD(-results.matrix.10)
 ```
 
 ## Convergence test
 
 For the comparison of the convergence of two algorithms, we use the
-mean result acrossthe different runs for each benchmark function of
-two algorithms. This results could be equally extended using the
-convenient adjustments. It is relevant to note that the algorithms
-EBOwithCMAR (first classified) and LSHADE-cnEpSin (third classified)
-do not provide their partial results, so we compare here the
-convergence of the jSO and LSHADE\_SPACMA algorithms in the
-competition for the 10 dimension scenario, where the null hypothesis
-of LSHADE\_SPACMA cannot be rejected and 50 dimension scenario.
+Page test with the mean result across the different runs for each
+benchmark function of two algorithms. These results could be equally
+extended using the convenient adjustments. It is relevant to note that
+the algorithms EBO (first classified) and LSCNE (third classified) do
+not provide their partial results.
+
+The results in the following table show the comparison of the
+convergence of the jSO and the LSSPA algorithms in the competition for
+the 10 and 100 dimension scenario. Here, the null hypothesis of the
+difference between LSSPA and jSO getting a positive trend cannot be
+rejected in the 50 dimension scenario. In the 100 dimension scenario,
+the test also detects an increasing trend in the ranks of the
+difference between jSO and DYYPO.
 
 ```{r convergence}
 convergence.comparison.lshade <- filter(cec17.mean,
@@ -364,25 +384,13 @@ convergence.comparison <- rbind(convergence.comparison.jso,
                                 convergence.comparison.lshade) %>%
   as.data.frame() %>% reshape2::melt(id.vars = c("Algorithm", "Benchmark"), value.name = "Result") %>%
   transform(Perc.Iterations = as.numeric(gsub("perc.completion.", "", variable))) %>% select(-variable)
-
-convergence.comparison %>%
-  filter(Benchmark %in% c(3, 9, 11, 15)) %>%
-  ggplot(aes(x = Perc.Iterations, y = Result, col = Benchmark, linetype = Algorithm)) + 
-  geom_line()
 ```
-
-```{r}
-plot(as.numeric((convergence.comparison.lshade - convergence.comparison.jso)[2, ]))
-```
-
 
 ```{r}
 convergence.comparison.jso <- select(convergence.comparison.jso, -Benchmark, -Algorithm)
 convergence.comparison.lshade <- select(convergence.comparison.lshade, -Benchmark, -Algorithm)
 cat(rNPBST::htest2Tex(rNPBST::page.test(-convergence.comparison.lshade+convergence.comparison.jso)))
 ```
-
-
 
 
 ```{r}
@@ -401,17 +409,28 @@ rNPBST::page.test(-convergence.comparison.jso + convergence.comparison.dyypo)
 
 ## Confidence Intervals and Confidence Curves
 
-In this Section we show the use of confidence intervals and confidence
-curves in the comparison of optimization results. First, we have to
-warn that these comparisons only take care of two algorithm at each
-time, and a post-hoc correction would be needed if the comparison
-involved a greater number of algorithms as we are going to see in
-the following examples. 
+In this subsection we show the use of confidence intervals and
+confidence curves in the comparison of optimization results. First, we
+must advise that these comparisons only take care of two algorithms at
+a time, and a post-hoc correction would be needed if the comparison
+involved a greater number of algorithms, as we will see in the
+following examples.
 
-- We suppose that we want to compare the final and mean results of the
-  two first classified algorithms in the benchmark function for the 10
-  dimension. Then, we select in the dataset the corresponding data and
-  obtain the following result.
+We perform the comparison of the final results of PPSO and jSO
+algorithms for the 10 dimension scenario. 
+
+As the 0 effect is not included in the non-parametric confidence
+interval, the null hypothesis is then rejected. The interval is very
+wide, so we have not much certainty the true location of the
+parameter. If we only had done the Wilcoxon test, we would have
+obtained the associated $p$-value, and the null hypothesis would also
+be rejected, so the difference between the medians are detected with
+both methods. If we look at the confidence curve, we can reject the
+classic null hypothesis if the interval bounded by the intersections
+of the horizontal line at the $\alpha$ value and the curve does not
+contain 0. The confidence curve associated with the previous test is
+plotted in \autoref{fig:conf-curve}, where we check that the null
+hypothesis can be rejected.
 
 ```{r confidence.intervals}
 conf.interval.PPSO <- filter(cec17.final,Algorithm == "PPSO",
@@ -420,6 +439,13 @@ conf.interval.PPSO <- filter(cec17.final,Algorithm == "PPSO",
 conf.interval.jSO <- filter(cec17.final,Algorithm == "jSO",
                            Dimension == 10) %>%
     select(Result)
+
+rNPBST::NP.ApproximateConfidenceInterval(x = conf.interval.PPSO,
+                                        y = conf.interval.jSO, 
+                                        paired = T)
+rNPBST::PlotConfidenceCurve(x = conf.interval.PPSO,
+                            y = conf.interval.jSO, 
+                            m = 50, paired = T)
 ```
 
 As the 0 effect is not included in the Non-parametric confidence
@@ -436,7 +462,9 @@ the horizontal line at the $\alpha$ value remains under the curve.
 conf.interval.matrix <- cbind(conf.interval.PPSO, conf.interval.jSO)
 colnames(conf.interval.matrix) <- c("PPSO", "jSO")
 cat(rNPBST::htest2Tex(rNPBST::wilcoxon.test(conf.interval.matrix)))
-```    
+```  
+
+
 
 ```{r}
 rNPBST::NP.ApproximateConfidenceInterval(x = conf.interval.matrix[ ,1],
