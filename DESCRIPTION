@@ -34,10 +34,11 @@ Suggests:
   scmamp, 
   reshape2, 
   tidyr, 
-  lawstat
+  lawstat,
+  mvShapiroTest
 Remote: bioc::3.8/Rgraphviz, bioc::3.8/graph 
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Depends: R (>= 2.10)
 LazyData: true
