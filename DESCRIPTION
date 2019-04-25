@@ -27,13 +27,13 @@ Imports:
    Rgraphviz,
    graph,
    rlang,
-   xtable,
-   mvShapiroTest
+   xtable
 Suggests: 
   knitr, 
   rmarkdown, 
   scmamp, 
   reshape2, 
+  mvShapiroTest,
   tidyr, 
   lawstat
 Remote: bioc::3.8/Rgraphviz, bioc::3.8/graph 
