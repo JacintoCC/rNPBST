@@ -28,7 +28,7 @@ Imports:
    graph,
    rlang,
    xtable,
-  mvShapiroTest
+   mvShapiroTest
 Suggests: 
   knitr, 
   rmarkdown, 

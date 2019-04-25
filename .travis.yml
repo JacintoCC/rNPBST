@@ -23,11 +23,12 @@ install:
   - ./travis-tool.sh install_r pracma
   - ./travis-tool.sh install_r rlang
   - ./travis-tool.sh install_r xtable
-  - ./travis-tool.sh install_r knitr 
+  - ./travis-tool.sh install_r knitr
   - ./travis-tool.sh install_r rmarkdown
   - ./travis-tool.sh install_bioc Rgraphviz
   - ./travis-tool.sh install_bioc graph
-  - ./travis-tool.sh install_r scmamp 
-  - ./travis-tool.sh install_r reshape2 
-  - ./travis-tool.sh install_r tidyr 
+  - ./travis-tool.sh install_r scmamp
+  - ./travis-tool.sh install_r reshape2
+  - ./travis-tool.sh install_r tidyr
   - ./travis-tool.sh install_r lawstat
+  - ./travis-tool.sh install_r mvShapiroTest
