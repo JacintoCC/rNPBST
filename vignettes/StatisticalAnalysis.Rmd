@@ -33,10 +33,9 @@ been included in the package as a dataset.
 - In most of the pairwise comparisons we have involved EBOwithCMAR
   and jSO algorithms, as they are the best classified algorithms in
   the competition.
-- \autoref{tab:data-mean} shows the mean among different
-  iterations of the results obtained at the end of all of the steps of
-  each algorithm on each benchmark function for the 10 Dimension
-  scenario.
+- The used data shows the mean among different iterations of the
+  results obtained at the end of all of the steps of each algorithm on
+  each benchmark function for the 10 Dimension scenario.
 - The tables included in this section are obtained with the function
   \texttt{AdjustFormatTable} of the package used, which is helpful to
   highlight the rejected hypotheses by emboldening the associated
@@ -70,9 +69,9 @@ shapiro.test <- split(cec17.final, cec17.final$Dimension) %>%
 
 AdjustFormatTable(shapiro.test, 
                   colnames = paste("Dim.", levels(cec17.final$Dimension)),
-                  rownames = levels(cec17.final$Algorithm), print.code = TRUE,
-                  digits = -2, type = "latex")
-```    
+                  rownames = levels(cec17.final$Algorithm), print.code = FALSE,
+                  digits = -2)
+```
 
 In this table we gather the $p$-values associated with the normality
 of each group of mean results for an algorithm in a dimension
@@ -110,10 +109,8 @@ sapply(split(cec17.final, cec17.final$Algorithm),
        matrix(ncol = 1, 
               dimnames = list(levels(cec17.final$Algorithm),
                               "p-value")) %>%
-  AdjustFormatTable(print.code = T)
+  AdjustFormatTable(print.code = FALSE)
 ```
-
-
 
 # Non-parametric tests
 
@@ -143,14 +140,12 @@ EBO <- unlist(select(filter(cec17.final, Algorithm == "EBO", Dimension == 10), R
 jSO <- unlist(select(filter(cec17.final, Algorithm == "jSO", Dimension == 10), Result), use.names = F)
 ```
 
-
 ```{r}
 sign.results <- rNPBST::binomialSign.test(cbind(EBO, jSO))
 wilcoxon.results <- rNPBST::wilcoxon.test(cbind(EBO, jSO))
 wilcoxonRS.results <- rNPBST::wilcoxonRankSum.test(cbind(EBO, jSO))
 
 p.values <- sapply(list(sign.results,wilcoxon.results, wilcoxonRS.results), function(x) x$p.value[3])
-lapply(list(sign.results,wilcoxon.results, wilcoxonRS.results), function(x) x$statistic)
 ```
 
 
@@ -173,7 +168,8 @@ results.nppairwise <- matrix(c(results.sign, results.wilcoxon,results.wilcoxonRS
                              nrow = 3, byrow = T,
                              dimnames = list(c("Sign","Wilcoxon", "Wilcoxon Rank-Sum"), 
                                              paste("Dim.", levels(cec17.final$Dimension)))) %>%
-    AdjustFormatTable(caption = "Non-parametric pairwise comparison between EBO and jSO", label = "tab:np-pairwise", print.code = T)
+    AdjustFormatTable(caption = "Non-parametric pairwise comparison between EBO and jSO",
+                      label = "tab:np-pairwise", print.code = FALSE)
 ```
 
 ### Multiple comparison
@@ -268,12 +264,13 @@ results.post.quade <- ApplyNPTestPostHoc(cec17.final, scmamp::quadePost,
 
 results.post.global.holland <- rbind(results.post.friedman,
                                     results.post.friedmanAR,
-                                    results.post.quade)
+                                    results.post.quade) %>% t 
+results.post.global.holland <- cbind(rownames(results.post.global.holland),
+                                    results.post.global.holland) %>% as.data.frame()
+rownames(results.post.global.holland) <- NULL
+colnames(results.post.global.holland) <- c("Algorithm","Friedman","FriedmanAR","Quade") 
 
-AdjustFormatTable(as.data.frame(t(results.post.global.holland)),
-                  colnames = c("Friedman","FriedmanAR","Quade"),
-                  caption = "Post-Hoc Non-Parametric tests with control algorithm",
-                  label = "tab:np-tests-ph-control", print.code = T)
+knitr::kable(results.post.global.holland)
 ```
 
 - If we wanted to show that the differences between the algorithms
@@ -317,7 +314,7 @@ ApplyNPTestPostHoc(cec17.final.10,
                    scmamp::friedmanPost,
                    scmamp::adjustHolland)  %>%
   AdjustFormatTable(caption = "Results $n$ vs $n$. Friedman test + Holland adjust.",
-                    label = "tab:nvsn-friedman-holland", print.code = F)
+                    label = "tab:nvsn-friedman-holland")
 ```
 
 The results of the $n \times n$ comparison using a Friedman test and a
@@ -389,7 +386,7 @@ convergence.comparison <- rbind(convergence.comparison.jso,
 ```{r}
 convergence.comparison.jso <- select(convergence.comparison.jso, -Benchmark, -Algorithm)
 convergence.comparison.lshade <- select(convergence.comparison.lshade, -Benchmark, -Algorithm)
-cat(rNPBST::htest2Tex(rNPBST::page.test(-convergence.comparison.lshade+convergence.comparison.jso)))
+page.results <- rNPBST::page.test(-convergence.comparison.lshade+convergence.comparison.jso)
 ```
 
 
@@ -402,10 +399,8 @@ convergence.comparison.dyypo <- filter(cec17.mean,
                                 Algorithm == "DYYPO",
                                 Dimension == 100) %>%
     select(-Algorithm, -Benchmark, -Dimension)
-rNPBST::page.test(convergence.comparison.jso - convergence.comparison.dyypo)
-rNPBST::page.test(-convergence.comparison.jso + convergence.comparison.dyypo)
+page.results <- rNPBST::page.test(convergence.comparison.jso - convergence.comparison.dyypo)
 ```
-
 
 ## Confidence Intervals and Confidence Curves
 
@@ -429,7 +424,7 @@ both methods. If we look at the confidence curve, we can reject the
 classic null hypothesis if the interval bounded by the intersections
 of the horizontal line at the $\alpha$ value and the curve does not
 contain 0. The confidence curve associated with the previous test is
-plotted in \autoref{fig:conf-curve}, where we check that the null
+plotted in the following figure, where we check that the null
 hypothesis can be rejected.
 
 ```{r confidence.intervals}
@@ -440,11 +435,12 @@ conf.interval.jSO <- filter(cec17.final,Algorithm == "jSO",
                            Dimension == 10) %>%
     select(Result)
 
-rNPBST::NP.ApproximateConfidenceInterval(x = conf.interval.PPSO,
-                                        y = conf.interval.jSO, 
+rNPBST::NP.ApproximateConfidenceInterval(x = conf.interval.PPSO[,1],
+                                        y = conf.interval.jSO[,1], 
                                         paired = T)
-rNPBST::PlotConfidenceCurve(x = conf.interval.PPSO,
-                            y = conf.interval.jSO, 
+
+rNPBST::PlotConfidenceCurve(x = conf.interval.PPSO[,1],
+                            y = conf.interval.jSO[,1], 
                             m = 50, paired = T)
 ```
 
@@ -461,10 +457,8 @@ the horizontal line at the $\alpha$ value remains under the curve.
 ```{r confidence.curve}
 conf.interval.matrix <- cbind(conf.interval.PPSO, conf.interval.jSO)
 colnames(conf.interval.matrix) <- c("PPSO", "jSO")
-cat(rNPBST::htest2Tex(rNPBST::wilcoxon.test(conf.interval.matrix)))
-```  
-
-
+rNPBST::htest2Tex(rNPBST::wilcoxon.test(conf.interval.matrix))
+```
 
 ```{r}
 rNPBST::NP.ApproximateConfidenceInterval(x = conf.interval.matrix[ ,1],
@@ -484,74 +478,101 @@ matrix.EBO <-  filter(cec17.final, Algorithm == "EBO") %>%
 matrix.jSO <-  filter(cec17.final, Algorithm == "jSO") %>%
     select(-Algorithm) %>% tidyr::spread(Dimension, Result) %>%
     select(-Benchmark)
-rNPBST::multipleMeasuresGLRT(matrix.EBO, matrix.jSO) 
+
+glrt.results <- rNPBST::multipleMeasuresGLRT(matrix.EBO, matrix.jSO)
+knitr::kable(glrt.results$statistic$n.vector)
 ```
 
-In order to perform the Non-Parametric Multiple Measures test, we
-consider that the results of the different dimensions as if they were
-different measures in the same benchmark function. We select the means
-of the executions of the two best algorithms and reshape them into a
-matrix with the results of each benchmark in the rows and the
-different dimensions in the columns. Then we use the test to see which
-hypothesis of dominance is the most probable and if we can state that
-the probability of this dominance statement is significant. According
-to the results, we obtain that the most observed dominance statement
-in the third position (which corresponds to the number 2, 0010 in
-binary) and the configuration $[<,<,>,<]$, it is, EBO-CMAR obtains a
-better result for the dimensions 10, 30 and 100 while jSO obtains
-better results in the 50 dimension scenario. However, the associated
-null hypothesis which states that the mentioned configuration is no
-more probable than the following one, obtain a $p$-value of 0.25, so
-this hypothesis cannot be rejected. The second most probable
-configuration is in the 15th position (or number 14) and the
-configuration $[>,>,>,<]$, which means that EBO-CMAR obtains worse
-results in dimensions 10,30 and 50, so we cannot assure which is the
-most probable situation in the lower dimension scenarios.
+In some circumstances like the Multi-Objective Optimization we need to
+include different measures in the comparison.  This is the scenario of
+application of the Non-Parametric Multiple Measures test. We select
+the means of the executions of the two best algorithms and reshape
+them into a matrix with the results of each benchmark in the rows and
+the different dimensions in the columns. Then we use the test to see
+which hypothesis of dominance is the most probable and if we can state
+that the probability of this dominance statement is
+significant. According to the results shown in this table, we obtain
+that the most observed dominance statement is the configuration
+$[<,<,>,<]$, it is, EBO-CMAR obtains a better result for the
+dimensions 10, 30 and 100 while jSO obtains better results in the 50
+dimension scenario. However, the associated null hypothesis which
+states that the mentioned configuration is no more probable than the
+following one, obtain a $p$-value of 0.25, so this hypothesis cannot
+be rejected. The second most probable configuration is $[>,>,>,<]$,
+which means that EBO-CMAR obtains worse results in dimensions 10,30
+and 50, so we cannot be certain which is the most probable situation
+in the lower dimension scenarios. It is relevant to note that the
+number of observations can be a real value as the weight of an
+observation is divided between the possible configuration when there
+is a tie for any measure.
 
 # Bayesian tests
 
-In this section we illustrate the use of the proposed Bayesian
-tests. The considerations are analogous to the ones made in the
-frequentist case, as the described tests use the aggregations of the
-runs to compare the results of the different benchmark functions, or
-use these runs with the drawback of obtaining a restrained statement
-about the results in one single problem.
+In this section we illustrate the use of the described Bayesian tests.
+The considerations are analogous to the ones made in the frequentist
+case, as the described tests use the aggregations of the runs to compare
+the results of the different benchmark functions, or use these runs with
+the drawback of obtaining a restrained statement about the results in
+one single problem.
 
 ## Bayesian Friedman test
 
 We start with the Bayesian version of the Friedman test. In this test
 we do not obtain a single $p$-value, but the accepted hypothesis. Due
 to the high number of contestant algorithms and the memory needed to
-allocate the covariance matrix of all the possible permutations, we
-perform here the imprecise version of the test. The null hypothesis of
-the equivalence of the mean ranks for the 10 dimension scenario is
-rejected.
+allocate the covariance matrix of all the possible permutations, here
+we will perform the imprecise version of the test. The null hypothesis
+of the equivalence of the mean ranks for the 10 dimension scenario is
+rejected. 
 
 ```{r bayesian.friedman.test}
-dim.10 <- filter(cec17.final, Dimension == 10) %>%
-    tidyr::spread(Algorithm, Result) %>% select(-Benchmark, -Dimension)
-
-bft.results <- bayesianFriedman.test(dim.10, imprecise = TRUE, n.samples = 200)
-bft.results$h
-meanranks <- bft.results$meanranks
-names(meanranks) <- colnames(bft.results$covariance)
-xtable::xtable(as.matrix(meanranks))
+spread.final.10 <- tidyr::spread(cec17.final.10, Algorithm, Result) %>% 
+	select(-Benchmark)
+bft.results <- bayesianFriedman.test(spread.final.10, imprecise = TRUE, 
+                                    n.samples = 200)
 ```
 
 ## Bayesian Sign and Signed-Rank test
 
 The originial proposal of the use of the Bayesian Sign and Signed-Rank
-tests are destinated to the comparison of classification algorithms
-and the proposed region of practical equivalence is $[-0.01,0.01]$ for
-a measure in the range $[0,1]$. In the scenario of optimization
-problems, we should be concern that the possible outcomes are
-lower-bounded by 0 but in many functions there is not an upper bound
-or the maximum is very high so we must follow another approach. As the
-difference in the 30 dimension comparison is between 0 and 1527, we
-state that the region of practical equivalence is $[-10,10]$.
+tests is the comparison of classification algorithms and the proposed
+\textit{rope} is $[-0.01,0.01]$ for a measure in the range $[0,1]$. In
+the scenario of optimization problems, we should be concerned that the
+possible outcomes are lower-bounded by 0 but in many functions there
+is not an upper bound or the maximum is very high, so we must follow
+another approach. As the difference in the 30 dimension comparison is
+between 0 and 1527, we state that the region of practical equivalence
+is $[-10,10]$.
+
+The tests compute the probability of the true location of
+$\textrm{EBO-CMAR} - \textrm{jSO}$ with respect to $0$, so both tests'
+results shows that the left region (jSO obtain worse results) results
+in greater probability, although this is not significant. Rope
+probability is low in comparison with the right and left region, and
+this is because, although the number of wins and losses is similar for
+both algorithms, the number of benchmark functions where the results
+are quite similar is lower.
+
+We can see the posterior probability density of the parameter in the
+following figures, where each point represents an estimation of the
+probability of the parameter which belongs to each region of
+interest. The proportion of the location of the points is shown in the
+associated table. This means that we have repeatedly obtained the
+triplets of the probability of each region to be the true location of
+the difference between the two samples, and then we have plotted these
+triplets to obtain the posterior distribution of the parameter. If we
+compare these results with a paired Wilcoxon test, we see that the
+null hypothesis of the equivalence of the means cannot be rejected.
+
+However, using the Bayesian paradigm we cannot establish the dominance
+of one algorithm over the other either, while in the frequentist
+paradigm we could be tempted to (erroneously) establish that there is
+no difference between these algorithms. With these plots we can see
+this is not the same situation, as the probability of the rope is very
+low.
 
 
-```{r bayesian.pair.test}
+```{r bayesian.pair.test, out.width = "400px"}
 jso <- filter(cec17.final, Algorithm == "jSO", Dimension == 10) %>%
     select(Result) %>% unlist()
 ebo <- filter(cec17.final, Algorithm == "EBO", Dimension == 10) %>%
@@ -559,137 +580,199 @@ ebo <- filter(cec17.final, Algorithm == "EBO", Dimension == 10) %>%
 
 bst.results <- rNPBST::bayesianSign.test(ebo, jso,
                                        rope.min = -10, rope.max = 10)
-plot(bst.results, num.points = 10000) + ggplot2::labs(x = "jSO", z = "EBO")
+plot(bst.results, num.points = 10000) +
+    ggplot2::labs(x = "jSO", z = "EBO")
+```
 
+
+```{r, out.width = "400px"}
 bsrt.results <- rNPBST::bayesianSignedRank.test(ebo, jso,
                                               rope.min = -10, rope.max = 10)
-plot(bsrt.results, num.points = 10000)+ ggplot2::labs(x = "jSO", z = "EBO", y = "rope")
+plot(bsrt.results, num.points = 10000) +
+    ggplot2::labs(x = "jSO", z = "EBO", y = "rope")
+
 ```
 
-The test compute the probability of the true location of
-$\textrm{EBO-CMAR} - \textrm{jSO}$ with respect to $0$, so both tests'
-results gives that the left region (jSO obtain worse results) a
-greater probability, although this is not significative. Rope
-probability is low in comparison with the right and left region, and
-this is because, although the number of wins and losses is similar for
-both algorithms, the number of benchmark functions where the results
-are quite similar is lower.
-
-We can see the posterior probability density of the parameter in the
-following plots, where each point represents an estimation of the
-probability of the parameter to belong to each region of
-interest. This means that we have repeatedly obtained the triplets of
-the probability of each region to be the true location of the
-difference between the two samples and then we have plotted these
-triplets to obtain the posterior distribution of the parameter. If we
-compare these results with a paired Wilcoxon test we see that the null
-hypothesis of the equivalence of the means cannot be
-rejected. However, using the Bayesian paradigm we cannot establish the
-dominance of one algorithm over the other either, but while in the
-frequentist paradigm we could be tempted to (erroneously) establish
-that there is no difference between these algorithms with these plots
-we obtain valuable information and we can see that here is not the same
-situation, as the probability of the rope is very low.
-
-
-```{r plot.pair.bayesian.tests}
-wilcox.test(jso, ebo.cmar, paired = T)
-plot(bst.results, num.points = 10000) 
-plot(bsrt.results, num.points = 10000)
-```
 
 ## Imprecise Dirichlet Process Test
 
 The Imprecise Dirichlet Process consists in a more complex idea of the
 previous tests although the implications of the use of the Bayesian
-Tests could be clearer. In this test we try to not to introduce any
-prior distribution, not even the prior distribution where both
-algorithms have the same performance, but all the possible probability
-measures $\alpha$, and then obtain an upper and a lower bounds for the
-probability in which we are interested. The input consits in the
+Tests could be clearer. In this test we try to not introduce any prior
+distribution, not even the prior distribution where both algorithms
+have the same performance, but all the possible probability measures
+$\alpha$, and then obtain an upper and a lower bounds for the
+probability in which we are interested. The input consists of the
 aggregated results among the different runs for all the benchmark
 functions for a single dimension. The other parameters of the function
 are the strong parameter $s$ and the pseudo-observation $c$. With
 these data, we obtain two bounds for the posterior probability of the
-first algorithm outperforming the second one, i.e. the probability of
+first algorithm outperforming the second one, i.e.~the probability of
 $P(X \leq Y) \geq 0.5$. These are the possible scenarios:
 
 - Both bounds are greater than 0.95: Then we can say that the first
-  algorithm outperforms the second algorithm with a 95\% of
-  probability.
-- Both bounds are lower than 0.05: This is the inverse case. In this
-  situation, the second algorithm outperforms the first algorithm with
-  a 95\% of probability.
+  algorithm outperforms the second algorithm with 95\% probability.
+- Both bounds are lower than 0.05: This is the inverse case. In
+  this situation, the second algorithm outperforms the first algorithm
+  with 95\% probability.
 - Both bounds are between 0.05 and 0.95: Then we can say that the
   probability of one algorithm outperforming the other is lower than
   the desired probability of 0.95.
 - Finally, if only one of the bounds is greater than 0.95 or lower
-  than 0.05, the situation is indetermined and we cannot decide.
+  than 0.05, the situation is undetermined and we cannot decide.
 
-```{r bayesian.imprecise}
-library(dplyr)
-library(rNPBST)
-jso <- filter(cec17.final, Algorithm == "jSO", Dimension == 50) %>%
-    select(Result) %>% unlist()
-ebo.cmar <- filter(cec17.final, Algorithm == "EBO", Dimension == 50) %>%
-    select(Result) %>% unlist()
-
+```{r bayesian.imprecise, out.width = "400px"}
 bayesian.imprecise.results <- bayesian.imprecise(jso, ebo.cmar)
 plot(bayesian.imprecise.results) + ggplot2::ggtitle("JSO vs. EBO-CMAR")
 ```
 
-According to the results of the Bayesian Imprecise Dirichlet Process,
-the probability $\mathcal{P}[P(EBO-CMAR \leq jSO) \geq 0.5]$, that is
-the probability of EBO-CMAR outperforming jSO, is between 0.92 and
-0.96, so there is an indetermination and we cannot say that there is 
-a probability greater than 0.95 of EBO-CMAR outperforming jSO, 
-nor there is not such probability. These numbers represent
-the area under the curve of the upper and lower distributions when
-$P(X \leq Y) \geq 0.5$
-
-
+According to the results of the Bayesian Imprecise Dirichlet Process
+test, the probability under the Dirichlet Process of $P(EBO \leq jSO)
+\geq 0.5$, that is the probability of EBO-CMAR outperforming jSO, is
+between 0.92 and 0.96, so there is an indetermination, and we cannot
+say that there is a probability greater than 0.95 of EBO-CMAR
+outperforming jSO, nor that there is no such probability. These
+numbers represent the area under the curve of the upper and lower
+distributions when $P(X \leq Y) \geq 0.5$. In the last figure we can
+see both posterior distributions. 
 
 ## Bayesian Multiple Measures Test
 
 In the Bayesian version of the Multiple Measures test the results are
-analogous to the frequentist version. The most probable configuration
-is also the dominance of the EBO-CMAR in the 10,30 and 100 dimensions
-while the algorithm jSO obtains better results in the 50 dimension
-according to this test, but the posterior probability is 0.841, so we
-cannot say that the difference with respect the remaining
-configurations is determinative.
+analogous to the frequentist version shown previously. We use the same
+matrices with the results of each algorithm arranged by
+dimensions. Here we obtain that the most probable configuration is
+also the dominance of EBO in the 10, 30 and 100 dimensions while the
+algorithm jSO obtains better results in the 50 dimension according to
+this test, but the posterior probability is 0.84, as is shown in the
+following table, so we cannot say that the difference with respect to
+the remaining configurations is determinative.
 
 
 ```{r bayesian.multiple}
-bayesianmultipleconditions.results <- rNPBST::bayesianMultipleConditions.test(a,b)
-bayesianmultipleconditions.results$probabilities
+bmultiple.results <- bayesianMultipleConditions.test(matrix.EBO, matrix.jSO)
+knitr::kable(bmultiple.results$probabilities)
 ```
 
-## PlackettLuce
+# Summary of results in CEC'2017
 
-```{r}
-library(rNPBST)
-cec17.extended.10 <- filter(cec17.extended, Dimension == "10") %>% select(-Dimension)
-a <- merge(cec17.extended.10, cec17.extended.10, by = c("Benchmark","Iteration")) %>%
-  filter(Algorithm.x != Algorithm.y) %>%
-  filter_at(vars(ends_with(".x"),
-                 ends_with(".y")), 
-            any_vars(. == 0)) %>%
-  group_by(Algorithm.x, Algorithm.y) %>%
-  mutate(End.x = sum(!!any_vars(. == 0)))
-  summarise(r_ij = n(),
-            w_ij = sum(vars(ends_with(".x")), any_vars(. == 0)))) %>%
-  ungroup()
+pIn this section we include a summary of the statistical analysis
+performed within the context of the CEC'2017.
+
+The following table shows the official results of the algorithms in
+their scoring system and the scores computed following the indications
+of the report of the problem definition for the competition with the
+available raw results of the algorithms. The difference between the
+two scores may reside in the aggregation method for the results of the
+different iterations. In this paper we have used the mean result,
+while the organisers of the competition may have selected the best
+result. There are some relevant differences, specially with respect to
+the first score, that generate discrepancies in the classification of
+the algorithms, for example LSHADE variants are benefited by the
+aggregation of the raw results in detriment of EBO and jSO. In the
+official CEC'17 summary, the results of the MOS12 algorithm are not
+included, so we have excluded them in the analyses of this section.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|lrrr|lrrr|}
+  \hline
+  \multicolumn{4}{|c|}{Official CEC'17 Results} & \multicolumn{4}{c|}{Score Computation}\\
+  \hline
+  Algorithm & Score1 & Score2 & Score & Algorithm & Score1 & Score2 & Score \\ 
+  \hline
+  EBO & \textbf{50.00} & 48.01 & \textbf{98.01} & LSSPA & \textbf{50.00} & \textbf{50.00} & \textbf{100.00} \\ 
+  jSO & 49.69 & 47.08 & 96.77 & LSCNE & 4.44 & 39.60 & 44.03 \\ 
+  LSCNE & 46.82 & 49.74 & 96.56 & jSO & 4.71 & 38.68 & 43.39 \\ 
+  LSSPA & 46.44 & \textbf{50.00} & 96.44 & EBO & 3.69 & 38.95 & 42.64 \\ 
+  DES & 45.94 & 43.20 & 89.14 & DES & 4.35 & 36.93 & 41.28 \\ 
+  MM & 45.96 & 40.12 & 86.07 & MM & 4.36 & 34.43 & 38.79 \\ 
+  IDEN & 29.85 & 27.68 & 57.53 & RBI & 0.36 & 29.34 & 29.70 \\ 
+  RBI & 3.79 & 33.61 & 37.40 & IDEN & 2.83 & 24.96 & 27.79 \\ 
+  MOS13 & 18.94 & 17.34 & 36.28 & MOS11 & 1.05 & 17.72 & 18.77 \\ 
+  MOS11 & 11.09 & 19.30 & 30.39 & MOS13 & 1.80 & 16.08 & 17.87 \\ 
+  PPSO & 3.93 & 17.36 & 21.28 & PPSO & 0.37 & 16.07 & 16.44 \\ 
+  DYYPO & 0.59 & 17.03 & 17.62 & DYYPO & 0.06 & 15.83 & 15.88 \\ 
+  TFL & 0.03 & 16.25 & 16.27 & TFL & 0.00 & 15.01 & 15.01 \\ 
+  \hline
+\end{tabular}
+\caption{CEC17 Results Scores with mean results} 
+\label{tab:CEC17scores}
+\end{table}
+
+The classic statistical analysis that should be made in the context of
+a competition would involve a non-parametric test with post-hoc test
+for a $n$ versus $n$ scenario, as we do not have a preference for the
+results of comparison of any specific algorithm. In order to preserve
+the relative importance of the results in the different dimension
+scenarios, we show the plots of the critical difference explained in
+for the four scenarios.
+
+As we can see in the following figures, summary scores are consistent
+with Critical Differences plots, as the first classified algorithms
+are also in the first positions of the graphical
+representation. However, the statistical tests make it possible to
+address the fact that there is a group of algorithms in the lead group
+in every dimension scenario whose associated hypothesis of equivalence
+cannot be discarded. These algorithms are: LSSPA, DES, LSCNE, MM and
+jSO, which contradicts the fact that EBO won the competition. EBO has
+the lowest mean rank in Dimension 10, 30 and 100, but the hypotheses
+of equivalence with the first classified in Dimension 50 (LSSPA)
+cannot be rejected.
+
+```{r, out.width = "200px"}
+knitr::include_graphics("img/cd-plot-dim10.pdf")
+knitr::include_graphics("img/cd-plot-dim30.pdf")
 ```
 
-# Appendix
+```{r, out.width = "200px"}
+knitr::include_graphics("img/cd-plot-dim50.pdf")
+knitr::include_graphics("img/cd-plot-dim100.pdf")
+```
 
-```{r}
-base.data <- cec17.final %>%
-  filter(Dimension == 10) %>%
-  select(-Dimension) %>%
-  reshape(idvar = "Benchmark", timevar = "Algorithm", direction = "wide") %>%
-  transform(Benchmark = as.integer(levels(Benchmark))[Benchmark]) %>% arrange(Benchmark)
-colnames(base.data)[-1] <- levels(cec17.final$Algorithm)
-knitr::kable(base.data)
+
+In the Bayesian paradigm, after having rejected the equivalence of all
+the mean ranks of the algorithms with the Friedman tests, we
+repeatedly perform the Bayesian Signed-Rank for every pair of
+algorithms in each dimension scenario. The results are summarized in
+the following figures. Specially in lower dimensions there is less
+certainty than there was in the non-parametric analysis concerning the
+dominance of an algorithm over the other in each comparison, although
+from the Bayesian perspective we can state where there is a tie
+between a pair of algorithms and the direction of the difference,
+while the equivalence with NHST cannot be assured. In this case, as we
+are interested in the minimization of the result, an algorithm wins
+when the difference between the results is in the left region. This is
+represented by the color red, while the probability represents the
+opacity of the tile.
+ 
+```{r, out.width = "500px"}
+knitr::include_graphics("img/bayesian-multiple-dim10.eps")
+```
+
+As the error obtained in the competition increases, more comparisons
+are marked as significant and less ties between algorithms are
+detected. In this figure we see how in the comparison of the first
+classified algorithms the most probable situation is a tie. This group
+starts to win with a greater probability in the 30 Dimension scenario,
+while the ties persist within the lead group.
+
+```{r, out.width = "500px"}
+knitr::include_graphics("img/bayesian-multiple-dim30.eps")
+```
+
+The results of the 50 dimension scenario, shown in
+the following figure, coincide with the conclusions
+obtained in the non-parametric analysis, whilst the EBO algorithm, the
+winner of the competition, obtains worse results (with a probability
+above 0.8) than the lead group comprised of the DES, jSO, LSSPA, LSCNE
+and MM algorithms. Finally in 100 dimension scenario, EBO wins in the
+comparisons with all the remaining algorithms, with probabilities
+between 0.64 in the comparison versus DES and 0.96 versus DYYPO.
+
+```{r, out.width = "500px"}
+knitr::include_graphics("img/bayesian-multiple-dim50.eps")
+```
+```{r, out.width = "500px"}
+knitr::include_graphics("img/bayesian-multiple-dim100.eps")
 ```
