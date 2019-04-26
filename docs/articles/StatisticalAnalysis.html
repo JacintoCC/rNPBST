@@ -53,9 +53,6 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/CECComparison.html">CEC'17 Results Comparison</a>
-    </li>
-    <li>
       <a href="../articles/StatisticalAnalysis.html">Statistical Analysis</a>
     </li>
   </ul>
@@ -83,48 +80,34 @@
 
     
     
+<p>This vignette comprehends a statistical analysis of the case of study of the CEC’17 Special Session and Competition on Single Objective Real Parameter Numerical Optimization can be illustrated. The results have been included in the package as a dataset.</p>
+<ul>
+<li>We will mainly use two data sets, one with all the results (all iterations of the execution of all the algorithms in all benchmark functions for all dimensions), , and the mean data set (which aggregates the results among the iterations), .</li>
+<li>In most of the pairwise comparisons we have involved EBOwithCMAR and jSO algorithms, as they are the best classified algorithms in the competition.</li>
+<li>The used data shows the mean among different iterations of the results obtained at the end of all of the steps of each algorithm on each benchmark function for the 10 Dimension scenario.</li>
+<li>The tables included in this section are obtained with the function  of the package used, which is helpful to highlight the rejected hypotheses by emboldening the associated <span class="math inline">\(p\)</span>-values.</li>
+</ul>
 <div id="parametric-analysis" class="section level1">
 <h1 class="hasAnchor">
 <a href="#parametric-analysis" class="anchor"></a>Parametric analysis</h1>
-<p>In this section we illustrate the application of the parametric tests to the comparison of algorithms in the study case of the competition of CEC2017. With this purpose, we use the results obtained at the end of the 100% of the steps and compute the mean among different iterations of each algorithm on each benchmark function.</p>
 <div id="preliminars" class="section level2">
 <h2 class="hasAnchor">
 <a href="#preliminars" class="anchor"></a>Preliminars</h2>
-<p>The traditional parametric test used in the context of a comparison of multiple algorithms over multiple problems (benchmarks) is the ANOVA test. This test makes some assumptions that should be checked before it is performed: - The distribution of the results among different benchmarks is normal. - The standard deviation of results is equal.</p>
-<div id="normality" class="section level3">
-<h3 class="hasAnchor">
-<a href="#normality" class="anchor"></a>Normality</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">shapiro.test &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/split">split</a></span>(cec17.final, cec17.final<span class="op">$</span>Dimension) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="st">   </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(<span class="cf">function</span>(x) <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/split">split</a></span>(x, x<span class="op">$</span>Algorithm) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="st">   </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(<span class="cf">function</span>(y) <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/shapiro.test">shapiro.test</a></span>(y<span class="op">$</span>Result)<span class="op">$</span>p.value)) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="st">   </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlist">unlist</a></span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="dt">ncol =</span> <span class="dv">4</span>, <span class="dt">byrow =</span> F) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.data.frame">as.data.frame</a></span>()</a>
+<p>Traditionally the statistical tests applied to the comparison of different algorithms belonged to the parametric family of tests. We start the statistical analysis of the results with these kinds of tests and the study of the conditions in order to use them safely.</p>
+<p>The traditional parametric test used in the context of a comparison of multiple algorithms over multiple problems (benchmarks) is the ANOVA test. This test makes some assumptions that should be checked before it is performed:</p>
+<ul>
+<li>The distribution of the results for each algorithm among different benchmarks follows a Gaussian distribution.</li>
+<li>The standard deviation of results among groups is equal.</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">shapiro.test &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/split">split</a></span>(cec17.final, cec17.final<span class="op">$</span>Dimension) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="st">   </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(<span class="cf">function</span>(x) <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/split">split</a></span>(x, x<span class="op">$</span>Algorithm) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="st">   </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/lapply">lapply</a></span>(<span class="cf">function</span>(y) <span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/shapiro.test">shapiro.test</a></span>(y<span class="op">$</span>Result)<span class="op">$</span>p.value)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="st">   </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/unlist">unlist</a></span>() <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">matrix</a></span>(<span class="dt">ncol =</span> <span class="dv">4</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.data.frame">as.data.frame</a></span>()</a>
 <a class="sourceLine" id="cb1-5" title="5"></a>
 <a class="sourceLine" id="cb1-6" title="6"><span class="kw"><a href="../reference/AdjustFormatTable.html">AdjustFormatTable</a></span>(shapiro.test, </a>
 <a class="sourceLine" id="cb1-7" title="7">                  <span class="dt">colnames =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="st">"Dim."</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/levels">levels</a></span>(cec17.final<span class="op">$</span>Dimension)),</a>
-<a class="sourceLine" id="cb1-8" title="8">                  <span class="dt">rownames =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/levels">levels</a></span>(cec17.final<span class="op">$</span>Algorithm), <span class="dt">print.code =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb1-9" title="9">                  <span class="dt">digits =</span> <span class="dv">-2</span>, <span class="dt">type =</span> <span class="st">"latex"</span>)</a></code></pre></div>
-% latex table generated in R 3.5.2 by xtable 1.8-3 package % Tue Mar 12 10:49:15 2019
-
-<p>We can see that all the null hypotheses are rejected because the associated p-values are less than <span class="math inline">\(0.05\)</span>. This means that the mean results of the algorithms among the different iterations do not follow a normal distribution, as could be expected due to the different difficulty of the multiple benchmark functions throug the dimensions.</p>
-</div>
-<div id="homocedasticity" class="section level3">
-<h3 class="hasAnchor">
-<a href="#homocedasticity" class="anchor"></a>Homocedasticity</h3>
-<pre><code>## % latex table generated in R 3.5.2 by xtable 1.8-3 package
-## % Tue Mar 12 10:49:15 2019
-## \begin{table}[ht]
-## \centering
-## \begin{tabular}{rllll}
-##   \hline
-##  &amp; Dim. 10 &amp; Dim. 30 &amp; Dim. 50 &amp; Dim. 100 \\ 
-##   \hline
-## p.value &amp; $0.39$ &amp; $0.28$ &amp; $0.31$ &amp; $0.38$ \\ 
-##    \hline
-## \end{tabular}
-## \caption{Levene test for homocedasticity} 
-## \label{tab:levene}
-## \end{table}</code></pre>
-<p>Although normality is not satisfied, we check the homocedasticity for the different dimensions. As the <span class="math inline">\(p\)</span>-value are greater than <span class="math inline">\(\alpha = 0.05\)</span> we cannot reject the hypothesis of the equivalence of the variances.</p>
+<a class="sourceLine" id="cb1-8" title="8">                  <span class="dt">rownames =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/levels">levels</a></span>(cec17.final<span class="op">$</span>Algorithm), <span class="dt">print.code =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb1-9" title="9">                  <span class="dt">digits =</span> <span class="dv">-2</span>)</a></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th></th>
@@ -133,69 +116,190 @@
 <th align="left">Dim. 50</th>
 <th align="left">Dim. 100</th>
 </tr></thead>
-<tbody><tr class="odd">
-<td>p.value</td>
-<td align="left"><span class="math inline">\(0.92\)</span></td>
-<td align="left"><span class="math inline">\(0.94\)</span></td>
-<td align="left"><span class="math inline">\(0.35\)</span></td>
-<td align="left"><span class="math inline">\(0.36\)</span></td>
-</tr></tbody>
+<tbody>
+<tr class="odd">
+<td>DES</td>
+<td align="left"><span class="math inline">\(\mathbf{1.40 \cdot 10^{-11}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{6.37 \cdot 10^{-08}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.36 \cdot 10^{-11}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{3.85 \cdot 10^{-08}}\)</span></td>
+</tr>
+<tr class="even">
+<td>DYYPO</td>
+<td align="left"><span class="math inline">\(\mathbf{7.62 \cdot 10^{-09}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.35 \cdot 10^{-11}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{3.67 \cdot 10^{-11}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.68 \cdot 10^{-11}}\)</span></td>
+</tr>
+<tr class="odd">
+<td>IDEN</td>
+<td align="left"><span class="math inline">\(\mathbf{3.15 \cdot 10^{-06}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{4.24 \cdot 10^{-08}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.59 \cdot 10^{-11}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.21 \cdot 10^{-10}}\)</span></td>
+</tr>
+<tr class="even">
+<td>jSO</td>
+<td align="left"><span class="math inline">\(\mathbf{1.28 \cdot 10^{-06}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.42 \cdot 10^{-07}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.40 \cdot 10^{-11}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{9.00 \cdot 10^{-09}}\)</span></td>
+</tr>
+<tr class="odd">
+<td>LSSPA</td>
+<td align="left"><span class="math inline">\(\mathbf{3.97 \cdot 10^{-06}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.67 \cdot 10^{-06}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{5.58 \cdot 10^{-08}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.29 \cdot 10^{-08}}\)</span></td>
+</tr>
+<tr class="even">
+<td>MM</td>
+<td align="left"><span class="math inline">\(\mathbf{1.51 \cdot 10^{-11}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.68 \cdot 10^{-07}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.40 \cdot 10^{-11}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{7.61 \cdot 10^{-07}}\)</span></td>
+</tr>
+<tr class="odd">
+<td>MOS11</td>
+<td align="left"><span class="math inline">\(\mathbf{3.38 \cdot 10^{-10}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{3.75 \cdot 10^{-10}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.51 \cdot 10^{-10}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.89 \cdot 10^{-09}}\)</span></td>
+</tr>
+<tr class="even">
+<td>MOS12</td>
+<td align="left"><span class="math inline">\(\mathbf{2.16 \cdot 10^{-11}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.42 \cdot 10^{-08}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{3.64 \cdot 10^{-11}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.79 \cdot 10^{-10}}\)</span></td>
+</tr>
+<tr class="odd">
+<td>MOS13</td>
+<td align="left"><span class="math inline">\(\mathbf{1.09 \cdot 10^{-10}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.82 \cdot 10^{-09}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{3.03 \cdot 10^{-11}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{9.56 \cdot 10^{-11}}\)</span></td>
+</tr>
+<tr class="even">
+<td>PPSO</td>
+<td align="left"><span class="math inline">\(\mathbf{7.57 \cdot 10^{-09}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.77 \cdot 10^{-10}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{3.32 \cdot 10^{-10}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{4.49 \cdot 10^{-11}}\)</span></td>
+</tr>
+<tr class="odd">
+<td>RBI</td>
+<td align="left"><span class="math inline">\(\mathbf{4.75 \cdot 10^{-09}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.12 \cdot 10^{-07}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{5.75 \cdot 10^{-11}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.07 \cdot 10^{-10}}\)</span></td>
+</tr>
+<tr class="even">
+<td>TFL</td>
+<td align="left"><span class="math inline">\(\mathbf{4.47 \cdot 10^{-11}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{7.50 \cdot 10^{-11}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.41 \cdot 10^{-09}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.58 \cdot 10^{-11}}\)</span></td>
+</tr>
+<tr class="odd">
+<td>LSCNE</td>
+<td align="left"><span class="math inline">\(\mathbf{2.17 \cdot 10^{-11}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.20 \cdot 10^{-07}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.39 \cdot 10^{-11}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.95 \cdot 10^{-08}}\)</span></td>
+</tr>
+<tr class="even">
+<td>EBO</td>
+<td align="left"><span class="math inline">\(\mathbf{2.87 \cdot 10^{-06}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.21 \cdot 10^{-07}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.70 \cdot 10^{-08}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.39 \cdot 10^{-11}}\)</span></td>
+</tr>
+</tbody>
 </table>
+<p>In this table we gather the <span class="math inline">\(p\)</span>-values associated with the normality of each group of mean results for an algorithm in a dimension scenario. All the null hypotheses are rejected because the <span class="math inline">\(p\)</span>-values are less than <span class="math inline">\(0.05\)</span>, which means that we reject that the distribution of the mean results for each benchmark function follow a normal distribution. This conclusion could be expected because of the different difficulty of the benchmark functions in higher dimension scenarios. This is marked with boldface in subsequent tables.</p>
+<p>In some circumstances like the Multi-Objective Optimization we need to include different measures in the comparison. We will now consider the results of the different dimensions as if they were different measures in the same benchmark function. Then, in order to perform the Hotelling’s <span class="math inline">\(T^2\)</span> test we first check the normality of the population with the multivariate generalization of Shapiro-Wilk’s test. The following table shows that the normality hypothesis is rejected for every algorithm. Therefore, we stop the parametric analysis of the results here because the assumptions of parametric tests are not satisfied.</p>
 <table class="table">
 <thead><tr class="header">
 <th></th>
-<th align="left">Dim. 10</th>
-<th align="left">Dim. 30</th>
-<th align="left">Dim. 50</th>
-<th align="left">Dim. 100</th>
+<th align="left">p-value</th>
 </tr></thead>
-<tbody><tr class="odd">
-<td>p.value</td>
-<td align="left"><span class="math inline">\(0.37\)</span></td>
-<td align="left"><span class="math inline">\(0.28\)</span></td>
-<td align="left"><span class="math inline">\(0.31\)</span></td>
-<td align="left"><span class="math inline">\(0.38\)</span></td>
-</tr></tbody>
+<tbody>
+<tr class="odd">
+<td>DES</td>
+<td align="left"><span class="math inline">\(\mathbf{5.08 \cdot 10^{-21}}\)</span></td>
+</tr>
+<tr class="even">
+<td>DYYPO</td>
+<td align="left"><span class="math inline">\(\mathbf{7.67 \cdot 10^{-31}}\)</span></td>
+</tr>
+<tr class="odd">
+<td>IDEN</td>
+<td align="left"><span class="math inline">\(\mathbf{6.54 \cdot 10^{-26}}\)</span></td>
+</tr>
+<tr class="even">
+<td>jSO</td>
+<td align="left"><span class="math inline">\(\mathbf{3.82 \cdot 10^{-24}}\)</span></td>
+</tr>
+<tr class="odd">
+<td>LSSPA</td>
+<td align="left"><span class="math inline">\(\mathbf{1.96 \cdot 10^{-16}}\)</span></td>
+</tr>
+<tr class="even">
+<td>MM</td>
+<td align="left"><span class="math inline">\(\mathbf{2.64 \cdot 10^{-21}}\)</span></td>
+</tr>
+<tr class="odd">
+<td>MOS11</td>
+<td align="left"><span class="math inline">\(\mathbf{4.48 \cdot 10^{-27}}\)</span></td>
+</tr>
+<tr class="even">
+<td>MOS12</td>
+<td align="left"><span class="math inline">\(\mathbf{1.84 \cdot 10^{-26}}\)</span></td>
+</tr>
+<tr class="odd">
+<td>MOS13</td>
+<td align="left"><span class="math inline">\(\mathbf{7.50 \cdot 10^{-30}}\)</span></td>
+</tr>
+<tr class="even">
+<td>PPSO</td>
+<td align="left"><span class="math inline">\(\mathbf{1.38 \cdot 10^{-29}}\)</span></td>
+</tr>
+<tr class="odd">
+<td>RBI</td>
+<td align="left"><span class="math inline">\(\mathbf{2.21 \cdot 10^{-24}}\)</span></td>
+</tr>
+<tr class="even">
+<td>TFL</td>
+<td align="left"><span class="math inline">\(\mathbf{5.03 \cdot 10^{-29}}\)</span></td>
+</tr>
+<tr class="odd">
+<td>LSCNE</td>
+<td align="left"><span class="math inline">\(\mathbf{3.61 \cdot 10^{-23}}\)</span></td>
+</tr>
+<tr class="even">
+<td>EBO</td>
+<td align="left"><span class="math inline">\(\mathbf{3.49 \cdot 10^{-23}}\)</span></td>
+</tr>
+</tbody>
 </table>
-<p>We perform the ANOVA test and see how the equivalence of the means by algorithms can not be rejected for any dimensions, a circumstance that is consistent with the previous statements about the power of the ANOVA test when the assumption of the test are not fulfilled.</p>
-</div>
 </div>
 </div>
 <div id="non-parametric-tests" class="section level1">
 <h1 class="hasAnchor">
 <a href="#non-parametric-tests" class="anchor"></a>Non-parametric tests</h1>
-<p>In this section we perform the most popular tests in the field of the comparison of optimization algorithms. We continue using the aggregated results across the different runs at the end of the iterations, except for the Page test for the study of the convergence.</p>
+<p>In this subsection we perform the most popular tests in the field of the comparison of optimization algorithms. We continue using the aggregated results across the different runs at the end of the iterations, except for the Page test for the study of the convergence.</p>
 <div id="classic-tests" class="section level2">
 <h2 class="hasAnchor">
 <a href="#classic-tests" class="anchor"></a>Classic tests</h2>
-<pre><code>## Error in eval(expr, envir, enclos): objeto 'r' no encontrado</code></pre>
-<pre><code>## [[1]]
-##  K K2 
-## 11 16 
-## 
-## [[2]]
-##    R+    R- 
-## 202.5 232.5 
-## 
-## [[3]]
-## WRank 
-##   627</code></pre>
-<pre><code>## % latex table generated in R 3.5.2 by xtable 1.8-3 package
-## % Tue Mar 12 10:49:16 2019
-## \begin{table}[ht]
-## \centering
-## \begin{tabular}{rllll}
-##   \hline
-##  &amp; Dim. 10 &amp; Dim. 30 &amp; Dim. 50 &amp; Dim. 100 \\ 
-##   \hline
-## Sign &amp; $0.44$ &amp; $0.57$ &amp; $0.14$ &amp; $0.087$ \\ 
-##   Wilcoxon &amp; $1$ &amp; $1$ &amp; $\mathbf{0.039}$ &amp; $\mathbf{0.034}$ \\ 
-##   Wilcoxon Rank-Sum &amp; $\mathbf{0.00036}$ &amp; $\mathbf{0.0014}$ &amp; $\mathbf{0.022}$ &amp; $\mathbf{5.8 \cdot 10^{-05}}$ \\ 
-##    \hline
-## \end{tabular}
-## \caption{Non-parametric pairwise comparison between EBO and jSO} 
-## \label{tab:np-pairwise}
-## \end{table}</code></pre>
+<div id="pairwise-comparison" class="section level3">
+<h3 class="hasAnchor">
+<a href="#pairwise-comparison" class="anchor"></a>Pairwise comparison</h3>
+<p>First, we perform the non-parametric pairwise comparisons with the Sign, Wilcoxon and Wilcoxon Rank-Sum tests for the 10 dimension scenario. The hypotheses of the equality of the medians is only rejected by the Wilcoxon Rank-Sum test, and we can see in the following table how for example Wilcoxon’s statistics <span class="math inline">\(R+\)</span> and <span class="math inline">\(R-\)</span> are similar, which means that there is no significant difference between the ranking of the observations where one algorithm outperforms the other. Then, the next step requires all the different algorithms in the competition to be involved in the comparison.</p>
+</div>
+<div id="multiple-comparison" class="section level3">
+<h3 class="hasAnchor">
+<a href="#multiple-comparison" class="anchor"></a>Multiple comparison</h3>
 <table class="table">
 <thead><tr class="header">
 <th></th>
@@ -207,139 +311,145 @@
 <tbody>
 <tr class="odd">
 <td>Friedman</td>
-<td align="left"><span class="math inline">\(\mathbf{8.5 \cdot 10^{-11}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.2 \cdot 10^{-10}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.4 \cdot 10^{-10}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.3 \cdot 10^{-10}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{8.45 \cdot 10^{-11}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.21 \cdot 10^{-10}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.41 \cdot 10^{-10}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.29 \cdot 10^{-10}}\)</span></td>
 </tr>
 <tr class="even">
 <td>Friedman AR</td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{0.00 \cdot 10^{+00}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{0.00 \cdot 10^{+00}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{0.00 \cdot 10^{+00}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{0.00 \cdot 10^{+00}}\)</span></td>
 </tr>
 <tr class="odd">
 <td>Iman-Davenport</td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{0.00 \cdot 10^{+00}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{0.00 \cdot 10^{+00}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{0.00 \cdot 10^{+00}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{0.00 \cdot 10^{+00}}\)</span></td>
 </tr>
 <tr class="even">
 <td>Quade</td>
-<td align="left"><span class="math inline">\(\mathbf{3.3 \cdot 10^{-36}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{6.6 \cdot 10^{-62}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.6 \cdot 10^{-54}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.7 \cdot 10^{-62}}\)</span></td>
-</tr>
-<tr class="odd">
-<td>We can see how th</td>
-<td align="left">e four tests reject the null hyp</td>
-<td align="left">otheses, it is, the</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td>equivalence of th</td>
-<td align="left">e medians of the results of the</td>
-<td align="left">different</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td>benchmarks. We mu</td>
-<td align="left">st have in mind that a compariso</td>
-<td align="left">n between thirteen</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td>algorithms is not</td>
-<td align="left">the recommended procedure if we</td>
-<td align="left">want to compare our</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td>proposal, but we</td>
-<td align="left">should include in the comparison</td>
-<td align="left">the state-of-the-art</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td>algorithms, becau</td>
-<td align="left">se the inclusion of an algorithm</td>
-<td align="left">with lower</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td>performance will</td>
-<td align="left">be reflected in the rejection of</td>
-<td align="left">the null hypothesis</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td>while that would</td>
-<td align="left">be not rejected if this bogus al</td>
-<td align="left">gorithm would not</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td>have been include</td>
-<td align="left">d.</td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="left"></td>
+<td align="left"><span class="math inline">\(\mathbf{3.26 \cdot 10^{-36}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{6.60 \cdot 10^{-62}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.55 \cdot 10^{-54}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.69 \cdot 10^{-62}}\)</span></td>
 </tr>
 </tbody>
 </table>
+<p>We can see in this table how the tests that involve multiple algorithms reject the null hypotheses, that is, the equivalence of the medians of the results of the different benchmarks. We must keep in mind that a comparison between thirteen algorithms is not the recommended procedure if we want to compare our proposal. We should only include the state-of-the-art algorithms in the comparison, because the inclusion of an algorithm with lower performance could lead to the rejection of the null hypothesis, not due to the differences between our algorithm and the comparison group, but because of the differences between this dummy algorithm and the others.</p>
+</div>
 </div>
 <div id="post-hoc-tests" class="section level2">
 <h2 class="hasAnchor">
 <a href="#post-hoc-tests" class="anchor"></a>Post-hoc tests</h2>
-<p>Then, we proceed to perform the post-hoc tests in order to determinate the location of the differences between these algorithms. We use the modification of the classic non-parametric tests to obtain the <span class="math inline">\(p\)</span>-value associated with each hypothesis, although we should adjust these <span class="math inline">\(p\)</span>-values with a post-hoc procedure.</p>
+<p>Then, we proceed to perform the post-hoc tests in order to determine the location of the differences between these algorithms. We use the modification of the classic non-parametric tests to obtain the <span class="math inline">\(p\)</span>-value associated with each hypothesis, although we should adjust these <span class="math inline">\(p\)</span>-values with a post-hoc procedure.</p>
 <div id="control-algorithm" class="section level3">
 <h3 class="hasAnchor">
 <a href="#control-algorithm" class="anchor"></a>Control algorithm</h3>
-<p>To illustrate this, we first suppose that we are in an One versus all scenario where we are presenting our algorithm (we are going to use EBOwithCMAR, the winner of the CEC’2017 competition). The possible approach here, as in the rest of the analysis are:</p>
+<p>To illustrate this, we first suppose that we are in a One versus all scenario where we are presenting our algorithm (we will use EBOwithCMAR, the winner of the CEC’17 competition). The possible approach here, as in the rest of the analysis is:</p>
 <ul>
-<li>Considering all the results in the different dimensions as if they were different function or benchmarks, we would only obtain a single <span class="math inline">\(p\)</span>-value for the comparison between EBO-CMAR with each contestant algorithm. The adjusted <span class="math inline">\(p\)</span>-values are shown in the following table for the Friedman, Friedman Aligned-Rank and Quade test.</li>
+<li>Considering all the results in the different dimensions as if they were different function or benchmarks, we would only obtain a single <span class="math inline">\(p\)</span>-value for the comparison between EBO-CMAR with each contestant algorithm. The adjusted <span class="math inline">\(p\)</span>-values are shown in the following table for the Friedman, Friedman Aligned-Rank and Quade test. Here we see that there is not much difference between the different tests and that differences are found in the comparison with DYYPO, IDEN, MOS, PPSO, RBI and TFL, although the sign of these differences need to be checked in the raw data.</li>
 </ul>
-<pre><code>## % latex table generated in R 3.5.2 by xtable 1.8-3 package
-## % Tue Mar 12 10:49:16 2019
-## \begin{table}[ht]
-## \centering
-## \begin{tabular}{rlll}
-##   \hline
-##  &amp; Friedman &amp; FriedmanAR &amp; Quade \\ 
-##   \hline
-## DES &amp; $0.26$ &amp; $0.26$ &amp; $0.99$ \\ 
-##   DYYPO &amp; $\mathbf{0}$ &amp; $\mathbf{0}$ &amp; $\mathbf{0.00029}$ \\ 
-##   IDEN &amp; $\mathbf{0.002}$ &amp; $\mathbf{0.002}$ &amp; $0.75$ \\ 
-##   jSO &amp; $0.93$ &amp; $0.93$ &amp; $0.99$ \\ 
-##   LSSPA &amp; $0.74$ &amp; $0.74$ &amp; $0.99$ \\ 
-##   MM &amp; $0.81$ &amp; $0.81$ &amp; $0.99$ \\ 
-##   MOS11 &amp; $\mathbf{0}$ &amp; $\mathbf{0}$ &amp; $\mathbf{0.0013}$ \\ 
-##   MOS12 &amp; $\mathbf{0}$ &amp; $\mathbf{0}$ &amp; $\mathbf{1.7 \cdot 10^{-05}}$ \\ 
-##   MOS13 &amp; $\mathbf{0}$ &amp; $\mathbf{0}$ &amp; $\mathbf{0.00065}$ \\ 
-##   PPSO &amp; $\mathbf{0}$ &amp; $\mathbf{0}$ &amp; $\mathbf{0.0013}$ \\ 
-##   RBI &amp; $\mathbf{0.012}$ &amp; $\mathbf{0.012}$ &amp; $0.75$ \\ 
-##   TFL &amp; $\mathbf{0}$ &amp; $\mathbf{0}$ &amp; $\mathbf{4.8 \cdot 10^{-05}}$ \\ 
-##   LSCNE &amp; $0.93$ &amp; $0.93$ &amp; $0.99$ \\ 
-##   EBO &amp;  &amp;  &amp;  \\ 
-##    \hline
-## \end{tabular}
-## \caption{Post-Hoc Non-Parametric tests with control algorithm} 
-## \label{tab:np-tests-ph-control}
-## \end{table}</code></pre>
+<table class="table">
+<thead><tr class="header">
+<th align="left">Algorithm</th>
+<th align="left">Friedman</th>
+<th align="left">FriedmanAR</th>
+<th align="left">Quade</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">DES</td>
+<td align="left">0.264769595206217</td>
+<td align="left">0.264769595206217</td>
+<td align="left">0.9921639370694</td>
+</tr>
+<tr class="even">
+<td align="left">DYYPO</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0.000287772511504802</td>
+</tr>
+<tr class="odd">
+<td align="left">IDEN</td>
+<td align="left">0.00201830829496519</td>
+<td align="left">0.00201830829496519</td>
+<td align="left">0.747823562648854</td>
+</tr>
+<tr class="even">
+<td align="left">jSO</td>
+<td align="left">0.927041078646202</td>
+<td align="left">0.927041078646202</td>
+<td align="left">0.992233063187013</td>
+</tr>
+<tr class="odd">
+<td align="left">LSSPA</td>
+<td align="left">0.739935381323557</td>
+<td align="left">0.739935381323557</td>
+<td align="left">0.992233063187013</td>
+</tr>
+<tr class="even">
+<td align="left">MM</td>
+<td align="left">0.808377985241051</td>
+<td align="left">0.808377985241051</td>
+<td align="left">0.992233063187013</td>
+</tr>
+<tr class="odd">
+<td align="left">MOS11</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0.00128038175513479</td>
+</tr>
+<tr class="even">
+<td align="left">MOS12</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">1.71297300646245e-05</td>
+</tr>
+<tr class="odd">
+<td align="left">MOS13</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0.000650336213055214</td>
+</tr>
+<tr class="even">
+<td align="left">PPSO</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0.00128038175513479</td>
+</tr>
+<tr class="odd">
+<td align="left">RBI</td>
+<td align="left">0.0121961510181453</td>
+<td align="left">0.0121961510181453</td>
+<td align="left">0.747823562648854</td>
+</tr>
+<tr class="even">
+<td align="left">TFL</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">4.7961728694812e-05</td>
+</tr>
+<tr class="odd">
+<td align="left">LSCNE</td>
+<td align="left">0.927041078646202</td>
+<td align="left">0.927041078646202</td>
+<td align="left">0.992233063187013</td>
+</tr>
+<tr class="even">
+<td align="left">EBO</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
 <ul>
 <li>
-<p>If we wanted to show that the differences between the algorithms also persist in each group of results obtained across the different dimensions, we should perform these tests repeatedly and apply later the appropiate post-hoc procedure. In the following table we show the adjusted <span class="math inline">\(p\)</span>-value obtained.</p>
+<p>If we wanted to show that the differences between the algorithms also persist in each group of results obtained across the different dimensions, we should perform these tests repeatedly and apply the appropiate post-hoc procedure later. In the following table we show the adjusted <span class="math inline">\(p\)</span>-value obtained.</p>
 <table class="table">
 <thead><tr class="header">
 <th align="right">Di</th>
@@ -351,94 +461,94 @@
 <tbody>
 <tr class="odd">
 <td align="right">DES</td>
-<td><span class="math inline">\(\mathbf{0.00093}\)</span></td>
-<td><span class="math inline">\(0.22\)</span></td>
-<td><span class="math inline">\(\mathbf{0.00017}\)</span></td>
-<td align="left"><span class="math inline">\(0.65\)</span></td>
+<td><span class="math inline">\(\mathbf{9.27 \cdot 10^{-04}}\)</span></td>
+<td><span class="math inline">\(2.20 \cdot 10^{-01}\)</span></td>
+<td><span class="math inline">\(\mathbf{1.65 \cdot 10^{-04}}\)</span></td>
+<td align="left"><span class="math inline">\(6.46 \cdot 10^{-01}\)</span></td>
 </tr>
 <tr class="even">
 <td align="right">DYYPO</td>
-<td><span class="math inline">\(\mathbf{5.1 \cdot 10^{-07}}\)</span></td>
-<td><span class="math inline">\(\mathbf{1.7 \cdot 10^{-11}}\)</span></td>
-<td><span class="math inline">\(0.81\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
+<td><span class="math inline">\(\mathbf{5.13 \cdot 10^{-07}}\)</span></td>
+<td><span class="math inline">\(\mathbf{1.66 \cdot 10^{-11}}\)</span></td>
+<td><span class="math inline">\(8.10 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{0.00 \cdot 10^{+00}}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="right">IDEN</td>
-<td><span class="math inline">\(0.87\)</span></td>
-<td><span class="math inline">\(0.21\)</span></td>
-<td><span class="math inline">\(0.46\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{4.8 \cdot 10^{-07}}\)</span></td>
+<td><span class="math inline">\(8.69 \cdot 10^{-01}\)</span></td>
+<td><span class="math inline">\(2.14 \cdot 10^{-01}\)</span></td>
+<td><span class="math inline">\(4.65 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{4.81 \cdot 10^{-07}}\)</span></td>
 </tr>
 <tr class="even">
 <td align="right">jSO</td>
-<td><span class="math inline">\(0.88\)</span></td>
-<td><span class="math inline">\(0.93\)</span></td>
-<td><span class="math inline">\(\mathbf{1.9 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.02}\)</span></td>
+<td><span class="math inline">\(8.75 \cdot 10^{-01}\)</span></td>
+<td><span class="math inline">\(9.32 \cdot 10^{-01}\)</span></td>
+<td><span class="math inline">\(\mathbf{1.89 \cdot 10^{-05}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.02 \cdot 10^{-02}}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="right">LSSPA</td>
-<td><span class="math inline">\(0.59\)</span></td>
-<td><span class="math inline">\(0.93\)</span></td>
-<td><span class="math inline">\(\mathbf{2 \cdot 10^{-07}}\)</span></td>
-<td align="left"><span class="math inline">\(0.77\)</span></td>
+<td><span class="math inline">\(5.87 \cdot 10^{-01}\)</span></td>
+<td><span class="math inline">\(9.32 \cdot 10^{-01}\)</span></td>
+<td><span class="math inline">\(\mathbf{1.95 \cdot 10^{-07}}\)</span></td>
+<td align="left"><span class="math inline">\(7.68 \cdot 10^{-01}\)</span></td>
 </tr>
 <tr class="even">
 <td align="right">MM</td>
-<td><span class="math inline">\(0.93\)</span></td>
-<td><span class="math inline">\(0.81\)</span></td>
-<td><span class="math inline">\(\mathbf{0.0052}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.027}\)</span></td>
+<td><span class="math inline">\(9.32 \cdot 10^{-01}\)</span></td>
+<td><span class="math inline">\(8.07 \cdot 10^{-01}\)</span></td>
+<td><span class="math inline">\(\mathbf{5.24 \cdot 10^{-03}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.71 \cdot 10^{-02}}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="right">MOS11</td>
-<td><span class="math inline">\(\mathbf{0.00027}\)</span></td>
-<td><span class="math inline">\(\mathbf{2.6 \cdot 10^{-08}}\)</span></td>
-<td><span class="math inline">\(0.91\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.7 \cdot 10^{-11}}\)</span></td>
+<td><span class="math inline">\(\mathbf{2.68 \cdot 10^{-04}}\)</span></td>
+<td><span class="math inline">\(\mathbf{2.63 \cdot 10^{-08}}\)</span></td>
+<td><span class="math inline">\(9.14 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.66 \cdot 10^{-11}}\)</span></td>
 </tr>
 <tr class="even">
 <td align="right">MOS12</td>
-<td><span class="math inline">\(\mathbf{0}\)</span></td>
-<td><span class="math inline">\(\mathbf{1 \cdot 10^{-14}}\)</span></td>
-<td><span class="math inline">\(0.16\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
+<td><span class="math inline">\(\mathbf{0.00 \cdot 10^{+00}}\)</span></td>
+<td><span class="math inline">\(\mathbf{1.04 \cdot 10^{-14}}\)</span></td>
+<td><span class="math inline">\(1.62 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{0.00 \cdot 10^{+00}}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="right">MOS13</td>
-<td><span class="math inline">\(\mathbf{6.6 \cdot 10^{-09}}\)</span></td>
-<td><span class="math inline">\(\mathbf{4.5 \cdot 10^{-11}}\)</span></td>
-<td><span class="math inline">\(0.55\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{4.1 \cdot 10^{-13}}\)</span></td>
+<td><span class="math inline">\(\mathbf{6.58 \cdot 10^{-09}}\)</span></td>
+<td><span class="math inline">\(\mathbf{4.47 \cdot 10^{-11}}\)</span></td>
+<td><span class="math inline">\(5.49 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{4.09 \cdot 10^{-13}}\)</span></td>
 </tr>
 <tr class="even">
 <td align="right">PPSO</td>
-<td><span class="math inline">\(\mathbf{3.5 \cdot 10^{-05}}\)</span></td>
-<td><span class="math inline">\(\mathbf{2.9 \cdot 10^{-09}}\)</span></td>
-<td><span class="math inline">\(0.55\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
+<td><span class="math inline">\(\mathbf{3.49 \cdot 10^{-05}}\)</span></td>
+<td><span class="math inline">\(\mathbf{2.95 \cdot 10^{-09}}\)</span></td>
+<td><span class="math inline">\(5.51 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{0.00 \cdot 10^{+00}}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="right">RBI</td>
-<td><span class="math inline">\(\mathbf{0.036}\)</span></td>
-<td><span class="math inline">\(0.18\)</span></td>
-<td><span class="math inline">\(\mathbf{0.029}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0073}\)</span></td>
+<td><span class="math inline">\(\mathbf{3.63 \cdot 10^{-02}}\)</span></td>
+<td><span class="math inline">\(1.76 \cdot 10^{-01}\)</span></td>
+<td><span class="math inline">\(\mathbf{2.90 \cdot 10^{-02}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{7.31 \cdot 10^{-03}}\)</span></td>
 </tr>
 <tr class="even">
 <td align="right">TFL</td>
-<td><span class="math inline">\(\mathbf{2.4 \cdot 10^{-09}}\)</span></td>
-<td><span class="math inline">\(\mathbf{6.1 \cdot 10^{-11}}\)</span></td>
-<td><span class="math inline">\(0.55\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
+<td><span class="math inline">\(\mathbf{2.45 \cdot 10^{-09}}\)</span></td>
+<td><span class="math inline">\(\mathbf{6.14 \cdot 10^{-11}}\)</span></td>
+<td><span class="math inline">\(5.51 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{0.00 \cdot 10^{+00}}\)</span></td>
 </tr>
 <tr class="odd">
 <td align="right">LSCNE</td>
-<td><span class="math inline">\(0.28\)</span></td>
-<td><span class="math inline">\(0.93\)</span></td>
-<td><span class="math inline">\(\mathbf{4 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(0.18\)</span></td>
+<td><span class="math inline">\(2.83 \cdot 10^{-01}\)</span></td>
+<td><span class="math inline">\(9.32 \cdot 10^{-01}\)</span></td>
+<td><span class="math inline">\(\mathbf{3.96 \cdot 10^{-05}}\)</span></td>
+<td align="left"><span class="math inline">\(1.83 \cdot 10^{-01}\)</span></td>
 </tr>
 <tr class="even">
 <td align="right">EBO</td>
@@ -455,8 +565,7 @@
 <div id="n-versus-n-scenario" class="section level3">
 <h3 class="hasAnchor">
 <a href="#n-versus-n-scenario" class="anchor"></a><span class="math inline">\(n\)</span> versus <span class="math inline">\(n\)</span> scenario</h3>
-<p>In the scenario of the statistical analysis of the results obtained during a competition, we would not focus in the comparison between the results of a single algorithm but we would make all the posible pairs, so we would not use the control algorithm.</p>
-<p>As in the scenario with a control algorithm, we could be interested in the global comparison between all the posible pairs of algorithm considering the results in the different dimensions as if they came from the same distribution or pay attention to the differences between the algorithms in the different contexts according to the dimension.</p>
+<p>In the scenario of the statistical analysis of the results obtained during a competition, we do not focus on the comparison of the results of a single algorithm, rather we would make all the posible pairs, and therfore we would not use the control algorithm.</p>
 <table class="table">
 <thead><tr class="header">
 <th></th>
@@ -479,1217 +588,472 @@
 <tr class="odd">
 <td>DES</td>
 <td align="left">NA</td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(0.22\)</span></td>
-<td align="left"><span class="math inline">\(0.17\)</span></td>
-<td align="left"><span class="math inline">\(0.77\)</span></td>
-<td align="left"><span class="math inline">\(0.057\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{9 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(0.86\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(0.75\)</span></td>
-<td align="left"><span class="math inline">\(0.99\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.004}\)</span></td>
+<td align="left"><span class="math inline">\(9.99 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(2.16 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(1.69 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(7.68 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(5.70 \cdot 10^{-02}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{9.02 \cdot 10^{-05}}\)</span></td>
+<td align="left"><span class="math inline">\(8.56 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(7.47 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(9.88 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{4.02 \cdot 10^{-03}}\)</span></td>
 </tr>
 <tr class="even">
 <td>DYYPO</td>
-<td align="left"><span class="math inline">\(1\)</span></td>
+<td align="left"><span class="math inline">\(9.99 \cdot 10^{-01}\)</span></td>
 <td align="left">NA</td>
-<td align="left"><span class="math inline">\(\mathbf{0.00084}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.00055}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.014}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{9.7 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(0.055\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(0.64\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(0.089\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2.3 \cdot 10^{-06}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{8.41 \cdot 10^{-04}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{5.53 \cdot 10^{-04}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.37 \cdot 10^{-02}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{9.65 \cdot 10^{-05}}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(5.48 \cdot 10^{-02}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(6.38 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(8.88 \cdot 10^{-02}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.34 \cdot 10^{-06}}\)</span></td>
 </tr>
 <tr class="odd">
 <td>IDEN</td>
-<td align="left"><span class="math inline">\(0.22\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.00084}\)</span></td>
+<td align="left"><span class="math inline">\(2.16 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{8.41 \cdot 10^{-04}}\)</span></td>
 <td align="left">NA</td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(0.097\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2 \cdot 10^{-13}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2.4 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.022}\)</span></td>
-<td align="left"><span class="math inline">\(0.95\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(9.71 \cdot 10^{-02}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.95 \cdot 10^{-13}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.42 \cdot 10^{-05}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.15 \cdot 10^{-02}}\)</span></td>
+<td align="left"><span class="math inline">\(9.51 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.05 \cdot 10^{-05}}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
 </tr>
 <tr class="even">
 <td>jSO</td>
-<td align="left"><span class="math inline">\(0.17\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.00055}\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
+<td align="left"><span class="math inline">\(1.69 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{5.53 \cdot 10^{-04}}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
 <td align="left">NA</td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(0.074\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.2 \cdot 10^{-13}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.5 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.015}\)</span></td>
-<td align="left"><span class="math inline">\(0.93\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{6.2 \cdot 10^{-06}}\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(7.40 \cdot 10^{-02}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.19 \cdot 10^{-13}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.46 \cdot 10^{-05}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.53 \cdot 10^{-02}}\)</span></td>
+<td align="left"><span class="math inline">\(9.26 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{6.25 \cdot 10^{-06}}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
 </tr>
 <tr class="odd">
 <td>LSSPA</td>
-<td align="left"><span class="math inline">\(0.77\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.014}\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
+<td align="left"><span class="math inline">\(7.68 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.37 \cdot 10^{-02}}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
 <td align="left">NA</td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(0.53\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{3.6 \cdot 10^{-11}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.00063}\)</span></td>
-<td align="left"><span class="math inline">\(0.18\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.00031}\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(0.99\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(5.31 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{3.59 \cdot 10^{-11}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{6.33 \cdot 10^{-04}}\)</span></td>
+<td align="left"><span class="math inline">\(1.83 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{3.08 \cdot 10^{-04}}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(9.88 \cdot 10^{-01}\)</span></td>
 </tr>
 <tr class="even">
 <td>MM</td>
-<td align="left"><span class="math inline">\(0.057\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{9.7 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
+<td align="left"><span class="math inline">\(5.70 \cdot 10^{-02}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{9.65 \cdot 10^{-05}}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
 <td align="left">NA</td>
-<td align="left"><span class="math inline">\(\mathbf{0.021}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2 \cdot 10^{-06}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0036}\)</span></td>
-<td align="left"><span class="math inline">\(0.68\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{7.9 \cdot 10^{-07}}\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.06 \cdot 10^{-02}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{0.00 \cdot 10^{+00}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.98 \cdot 10^{-06}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{3.56 \cdot 10^{-03}}\)</span></td>
+<td align="left"><span class="math inline">\(6.78 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{7.87 \cdot 10^{-07}}\)</span></td>
+<td align="left"><span class="math inline">\(9.97 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
 </tr>
 <tr class="odd">
 <td>MOS11</td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(0.097\)</span></td>
-<td align="left"><span class="math inline">\(0.074\)</span></td>
-<td align="left"><span class="math inline">\(0.53\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.021}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(9.71 \cdot 10^{-02}\)</span></td>
+<td align="left"><span class="math inline">\(7.40 \cdot 10^{-02}\)</span></td>
+<td align="left"><span class="math inline">\(5.31 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.06 \cdot 10^{-02}}\)</span></td>
 <td align="left">NA</td>
-<td align="left"><span class="math inline">\(\mathbf{0.00035}\)</span></td>
-<td align="left"><span class="math inline">\(0.97\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(0.93\)</span></td>
-<td align="left"><span class="math inline">\(0.93\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0012}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{3.55 \cdot 10^{-04}}\)</span></td>
+<td align="left"><span class="math inline">\(9.66 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(9.26 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(9.26 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.20 \cdot 10^{-03}}\)</span></td>
 </tr>
 <tr class="even">
 <td>MOS12</td>
-<td align="left"><span class="math inline">\(\mathbf{9 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(0.055\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2 \cdot 10^{-13}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.2 \cdot 10^{-13}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{3.6 \cdot 10^{-11}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.00035}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{9.02 \cdot 10^{-05}}\)</span></td>
+<td align="left"><span class="math inline">\(5.48 \cdot 10^{-02}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.95 \cdot 10^{-13}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.19 \cdot 10^{-13}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{3.59 \cdot 10^{-11}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{0.00 \cdot 10^{+00}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{3.55 \cdot 10^{-04}}\)</span></td>
 <td align="left">NA</td>
-<td align="left"><span class="math inline">\(0.41\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0026}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{3.4 \cdot 10^{-07}}\)</span></td>
-<td align="left"><span class="math inline">\(0.56\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.7 \cdot 10^{-09}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
+<td align="left"><span class="math inline">\(4.11 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.59 \cdot 10^{-03}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{3.37 \cdot 10^{-07}}\)</span></td>
+<td align="left"><span class="math inline">\(5.56 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.66 \cdot 10^{-09}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{0.00 \cdot 10^{+00}}\)</span></td>
 </tr>
 <tr class="odd">
 <td>MOS13</td>
-<td align="left"><span class="math inline">\(0.86\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2.4 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.5 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.00063}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2 \cdot 10^{-06}}\)</span></td>
-<td align="left"><span class="math inline">\(0.97\)</span></td>
-<td align="left"><span class="math inline">\(0.41\)</span></td>
+<td align="left"><span class="math inline">\(8.56 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.42 \cdot 10^{-05}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.46 \cdot 10^{-05}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{6.33 \cdot 10^{-04}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.98 \cdot 10^{-06}}\)</span></td>
+<td align="left"><span class="math inline">\(9.66 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(4.11 \cdot 10^{-01}\)</span></td>
 <td align="left">NA</td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(0.12\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0064}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2.8 \cdot 10^{-08}}\)</span></td>
+<td align="left"><span class="math inline">\(9.99 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(1.18 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{6.36 \cdot 10^{-03}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.83 \cdot 10^{-08}}\)</span></td>
 </tr>
 <tr class="even">
 <td>PPSO</td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.022}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.015}\)</span></td>
-<td align="left"><span class="math inline">\(0.18\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0036}\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0026}\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.15 \cdot 10^{-02}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.53 \cdot 10^{-02}}\)</span></td>
+<td align="left"><span class="math inline">\(1.83 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{3.56 \cdot 10^{-03}}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.59 \cdot 10^{-03}}\)</span></td>
+<td align="left"><span class="math inline">\(9.99 \cdot 10^{-01}\)</span></td>
 <td align="left">NA</td>
-<td align="left"><span class="math inline">\(0.99\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(0.61\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.00015}\)</span></td>
+<td align="left"><span class="math inline">\(9.94 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(9.97 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(6.14 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.54 \cdot 10^{-04}}\)</span></td>
 </tr>
 <tr class="odd">
 <td>RBI</td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(0.64\)</span></td>
-<td align="left"><span class="math inline">\(0.95\)</span></td>
-<td align="left"><span class="math inline">\(0.93\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(0.68\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{3.4 \cdot 10^{-07}}\)</span></td>
-<td align="left"><span class="math inline">\(0.12\)</span></td>
-<td align="left"><span class="math inline">\(0.99\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(6.38 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(9.51 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(9.26 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(6.78 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{3.37 \cdot 10^{-07}}\)</span></td>
+<td align="left"><span class="math inline">\(1.18 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(9.94 \cdot 10^{-01}\)</span></td>
 <td align="left">NA</td>
-<td align="left"><span class="math inline">\(0.074\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(0.15\)</span></td>
+<td align="left"><span class="math inline">\(7.40 \cdot 10^{-02}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(1.49 \cdot 10^{-01}\)</span></td>
 </tr>
 <tr class="even">
 <td>TFL</td>
-<td align="left"><span class="math inline">\(0.75\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{6.2 \cdot 10^{-06}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.00031}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{7.9 \cdot 10^{-07}}\)</span></td>
-<td align="left"><span class="math inline">\(0.93\)</span></td>
-<td align="left"><span class="math inline">\(0.56\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(0.074\)</span></td>
+<td align="left"><span class="math inline">\(7.47 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.05 \cdot 10^{-05}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{6.25 \cdot 10^{-06}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{3.08 \cdot 10^{-04}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{7.87 \cdot 10^{-07}}\)</span></td>
+<td align="left"><span class="math inline">\(9.26 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(5.56 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(9.97 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(7.40 \cdot 10^{-02}\)</span></td>
 <td align="left">NA</td>
-<td align="left"><span class="math inline">\(\mathbf{0.0034}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1 \cdot 10^{-08}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{3.37 \cdot 10^{-03}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.02 \cdot 10^{-08}}\)</span></td>
 </tr>
 <tr class="odd">
 <td>LSCNE</td>
-<td align="left"><span class="math inline">\(0.99\)</span></td>
-<td align="left"><span class="math inline">\(0.089\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(0.93\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.7 \cdot 10^{-09}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0064}\)</span></td>
-<td align="left"><span class="math inline">\(0.61\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0034}\)</span></td>
+<td align="left"><span class="math inline">\(9.88 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(8.88 \cdot 10^{-02}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(9.97 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(9.26 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.66 \cdot 10^{-09}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{6.36 \cdot 10^{-03}}\)</span></td>
+<td align="left"><span class="math inline">\(6.14 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{3.37 \cdot 10^{-03}}\)</span></td>
 <td align="left">NA</td>
-<td align="left"><span class="math inline">\(0.77\)</span></td>
+<td align="left"><span class="math inline">\(7.74 \cdot 10^{-01}\)</span></td>
 </tr>
 <tr class="even">
 <td>EBO</td>
-<td align="left"><span class="math inline">\(\mathbf{0.004}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2.3 \cdot 10^{-06}}\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(0.99\)</span></td>
-<td align="left"><span class="math inline">\(1\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0012}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2.8 \cdot 10^{-08}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.00015}\)</span></td>
-<td align="left"><span class="math inline">\(0.15\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1 \cdot 10^{-08}}\)</span></td>
-<td align="left"><span class="math inline">\(0.77\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{4.02 \cdot 10^{-03}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.34 \cdot 10^{-06}}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(9.88 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(1.00 \cdot 10^{+00}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.20 \cdot 10^{-03}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{0.00 \cdot 10^{+00}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{2.83 \cdot 10^{-08}}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.54 \cdot 10^{-04}}\)</span></td>
+<td align="left"><span class="math inline">\(1.49 \cdot 10^{-01}\)</span></td>
+<td align="left"><span class="math inline">\(\mathbf{1.02 \cdot 10^{-08}}\)</span></td>
+<td align="left"><span class="math inline">\(7.74 \cdot 10^{-01}\)</span></td>
 <td align="left">NA</td>
 </tr>
 </tbody>
 </table>
-<table class="table">
-<thead><tr class="header">
-<th></th>
-<th align="left">DES</th>
-<th align="left">DYYPO</th>
-<th align="left">IDEN</th>
-<th align="left">jSO</th>
-<th align="left">LSSPA</th>
-<th align="left">MM</th>
-<th align="left">MOS11</th>
-<th align="left">MOS12</th>
-<th align="left">MOS13</th>
-<th align="left">PPSO</th>
-<th align="left">RBI</th>
-<th align="left">TFL</th>
-<th align="left">LSCNE</th>
-<th align="left">EBO</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>DES</td>
-<td align="left">NA</td>
-<td align="left"><span class="math inline">\(0.18\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0049}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0036}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.032}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0011}\)</span></td>
-<td align="left"><span class="math inline">\(0.8\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.8 \cdot 10^{-06}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.043}\)</span></td>
-<td align="left"><span class="math inline">\(0.52\)</span></td>
-<td align="left"><span class="math inline">\(0.37\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.029}\)</span></td>
-<td align="left"><span class="math inline">\(0.1\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{7.7 \cdot 10^{-05}}\)</span></td>
-</tr>
-<tr class="even">
-<td>DYYPO</td>
-<td align="left"><span class="math inline">\(0.18\)</span></td>
-<td align="left">NA</td>
-<td align="left"><span class="math inline">\(\mathbf{1.6 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.1 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.00025}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2 \cdot 10^{-06}}\)</span></td>
-<td align="left"><span class="math inline">\(0.28\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.001}\)</span></td>
-<td align="left"><span class="math inline">\(0.52\)</span></td>
-<td align="left"><span class="math inline">\(0.49\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.021}\)</span></td>
-<td align="left"><span class="math inline">\(0.44\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0018}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{5.7 \cdot 10^{-08}}\)</span></td>
-</tr>
-<tr class="odd">
-<td>IDEN</td>
-<td align="left"><span class="math inline">\(\mathbf{0.0049}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.6 \cdot 10^{-05}}\)</span></td>
-<td align="left">NA</td>
-<td align="left"><span class="math inline">\(0.93\)</span></td>
-<td align="left"><span class="math inline">\(0.55\)</span></td>
-<td align="left"><span class="math inline">\(0.68\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.002}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{4 \cdot 10^{-14}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{5.4 \cdot 10^{-07}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0004}\)</span></td>
-<td align="left"><span class="math inline">\(0.069\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2.3 \cdot 10^{-07}}\)</span></td>
-<td align="left"><span class="math inline">\(0.3\)</span></td>
-<td align="left"><span class="math inline">\(0.32\)</span></td>
-</tr>
-<tr class="even">
-<td>jSO</td>
-<td align="left"><span class="math inline">\(\mathbf{0.0036}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.1 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(0.93\)</span></td>
-<td align="left">NA</td>
-<td align="left"><span class="math inline">\(0.5\)</span></td>
-<td align="left"><span class="math inline">\(0.74\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0014}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2.7 \cdot 10^{-14}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{3.3 \cdot 10^{-07}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.00028}\)</span></td>
-<td align="left"><span class="math inline">\(0.058\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.4 \cdot 10^{-07}}\)</span></td>
-<td align="left"><span class="math inline">\(0.26\)</span></td>
-<td align="left"><span class="math inline">\(0.35\)</span></td>
-</tr>
-<tr class="odd">
-<td>LSSPA</td>
-<td align="left"><span class="math inline">\(\mathbf{0.032}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.00025}\)</span></td>
-<td align="left"><span class="math inline">\(0.55\)</span></td>
-<td align="left"><span class="math inline">\(0.5\)</span></td>
-<td align="left">NA</td>
-<td align="left"><span class="math inline">\(0.33\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.015}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{3.3 \cdot 10^{-12}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.2 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.004}\)</span></td>
-<td align="left"><span class="math inline">\(0.23\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{6.1 \cdot 10^{-06}}\)</span></td>
-<td align="left"><span class="math inline">\(0.63\)</span></td>
-<td align="left"><span class="math inline">\(0.1\)</span></td>
-</tr>
-<tr class="even">
-<td>MM</td>
-<td align="left"><span class="math inline">\(\mathbf{0.0011}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2 \cdot 10^{-06}}\)</span></td>
-<td align="left"><span class="math inline">\(0.68\)</span></td>
-<td align="left"><span class="math inline">\(0.74\)</span></td>
-<td align="left"><span class="math inline">\(0.33\)</span></td>
-<td align="left">NA</td>
-<td align="left"><span class="math inline">\(\mathbf{0.00038}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{5 \cdot 10^{-08}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{6.8 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.024}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2.2 \cdot 10^{-08}}\)</span></td>
-<td align="left"><span class="math inline">\(0.14\)</span></td>
-<td align="left"><span class="math inline">\(0.53\)</span></td>
-</tr>
-<tr class="odd">
-<td>MOS11</td>
-<td align="left"><span class="math inline">\(0.8\)</span></td>
-<td align="left"><span class="math inline">\(0.28\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.002}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0014}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.015}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.00038}\)</span></td>
-<td align="left">NA</td>
-<td align="left"><span class="math inline">\(\mathbf{7.1 \cdot 10^{-06}}\)</span></td>
-<td align="left"><span class="math inline">\(0.079\)</span></td>
-<td align="left"><span class="math inline">\(0.69\)</span></td>
-<td align="left"><span class="math inline">\(0.26\)</span></td>
-<td align="left"><span class="math inline">\(0.058\)</span></td>
-<td align="left"><span class="math inline">\(0.058\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2.2 \cdot 10^{-05}}\)</span></td>
-</tr>
-<tr class="even">
-<td>MOS12</td>
-<td align="left"><span class="math inline">\(\mathbf{1.8 \cdot 10^{-06}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.001}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{4 \cdot 10^{-14}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2.7 \cdot 10^{-14}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{3.3 \cdot 10^{-12}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{7.1 \cdot 10^{-06}}\)</span></td>
-<td align="left">NA</td>
-<td align="left"><span class="math inline">\(\mathbf{0.011}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{4.9 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1 \cdot 10^{-08}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.017}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{8.8 \cdot 10^{-11}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
-</tr>
-<tr class="odd">
-<td>MOS13</td>
-<td align="left"><span class="math inline">\(\mathbf{0.043}\)</span></td>
-<td align="left"><span class="math inline">\(0.52\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{5.4 \cdot 10^{-07}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{3.3 \cdot 10^{-07}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.2 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{5 \cdot 10^{-08}}\)</span></td>
-<td align="left"><span class="math inline">\(0.079\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.011}\)</span></td>
-<td align="left">NA</td>
-<td align="left"><span class="math inline">\(0.18\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0024}\)</span></td>
-<td align="left"><span class="math inline">\(0.88\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.00012}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1 \cdot 10^{-09}}\)</span></td>
-</tr>
-<tr class="even">
-<td>PPSO</td>
-<td align="left"><span class="math inline">\(0.52\)</span></td>
-<td align="left"><span class="math inline">\(0.49\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0004}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.00028}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.004}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{6.8 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(0.69\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{4.9 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(0.18\)</span></td>
-<td align="left">NA</td>
-<td align="left"><span class="math inline">\(0.12\)</span></td>
-<td align="left"><span class="math inline">\(0.14\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.019}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{3.2 \cdot 10^{-06}}\)</span></td>
-</tr>
-<tr class="odd">
-<td>RBI</td>
-<td align="left"><span class="math inline">\(0.37\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.021}\)</span></td>
-<td align="left"><span class="math inline">\(0.069\)</span></td>
-<td align="left"><span class="math inline">\(0.058\)</span></td>
-<td align="left"><span class="math inline">\(0.23\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.024}\)</span></td>
-<td align="left"><span class="math inline">\(0.26\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1 \cdot 10^{-08}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0024}\)</span></td>
-<td align="left"><span class="math inline">\(0.12\)</span></td>
-<td align="left">NA</td>
-<td align="left"><span class="math inline">\(\mathbf{0.0014}\)</span></td>
-<td align="left"><span class="math inline">\(0.47\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0031}\)</span></td>
-</tr>
-<tr class="even">
-<td>TFL</td>
-<td align="left"><span class="math inline">\(\mathbf{0.029}\)</span></td>
-<td align="left"><span class="math inline">\(0.44\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2.3 \cdot 10^{-07}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1.4 \cdot 10^{-07}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{6.1 \cdot 10^{-06}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2.2 \cdot 10^{-08}}\)</span></td>
-<td align="left"><span class="math inline">\(0.058\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.017}\)</span></td>
-<td align="left"><span class="math inline">\(0.88\)</span></td>
-<td align="left"><span class="math inline">\(0.14\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0014}\)</span></td>
-<td align="left">NA</td>
-<td align="left"><span class="math inline">\(\mathbf{6.4 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{4.2 \cdot 10^{-10}}\)</span></td>
-</tr>
-<tr class="odd">
-<td>LSCNE</td>
-<td align="left"><span class="math inline">\(0.1\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0018}\)</span></td>
-<td align="left"><span class="math inline">\(0.3\)</span></td>
-<td align="left"><span class="math inline">\(0.26\)</span></td>
-<td align="left"><span class="math inline">\(0.63\)</span></td>
-<td align="left"><span class="math inline">\(0.14\)</span></td>
-<td align="left"><span class="math inline">\(0.058\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{8.8 \cdot 10^{-11}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.00012}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.019}\)</span></td>
-<td align="left"><span class="math inline">\(0.47\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{6.4 \cdot 10^{-05}}\)</span></td>
-<td align="left">NA</td>
-<td align="left"><span class="math inline">\(\mathbf{0.033}\)</span></td>
-</tr>
-<tr class="even">
-<td>EBO</td>
-<td align="left"><span class="math inline">\(\mathbf{7.7 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{5.7 \cdot 10^{-08}}\)</span></td>
-<td align="left"><span class="math inline">\(0.32\)</span></td>
-<td align="left"><span class="math inline">\(0.35\)</span></td>
-<td align="left"><span class="math inline">\(0.1\)</span></td>
-<td align="left"><span class="math inline">\(0.53\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{2.2 \cdot 10^{-05}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{1 \cdot 10^{-09}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{3.2 \cdot 10^{-06}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.0031}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{4.2 \cdot 10^{-10}}\)</span></td>
-<td align="left"><span class="math inline">\(\mathbf{0.033}\)</span></td>
-<td align="left">NA</td>
-</tr>
-</tbody>
-</table>
+<p>The results of the <span class="math inline">\(n \times n\)</span> comparison using a Friedman test and a Post-Hoc Holland adjust of the <span class="math inline">\(p\)</span>-values is shown in this table. Here, we can see that there is not a single algorithm whose equivalence with the rest of the algorithms is discarded (in the 10 dimension scenario). However, for a multiple comparison with a high number of algorithms, like in the competition used as example, the adjustment makes finding differences between the algorithms more difficult. If we observe the results of the best classified algorithms in the competition, like jSO and EBO, we see that there are significant differences with algorithms like MOS, PPSO or RBI but this difference is not significant for LSHADE variants or MM.</p>
+<p>The CD plot associated with the scenario of an <span class="math inline">\(n\)</span> vs. <span class="math inline">\(n\)</span> comparison and performed with the Nemenyi test provides an interesting visualization fo the significance of the observed paired differences. In the next figure, we show the results of this comparison, where the differences between the group of the first classified algorithms whose equivalence cannot be discarded includes up to the RBI algorithm (7th classified in the 10 Dimension scenario). This plot, with several overlapped groups that contain many algorithms, shows that the differences are hard to identify in algorithms that perform similarly. In the following code, the results have been multiplied by -1 in order to preserve the order with respect to the minimization objective, as the function was designed to be used with a maximization intention.</p>
+<p><img src="StatisticalAnalysis_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 </div>
 </div>
 <div id="convergence-test" class="section level2">
 <h2 class="hasAnchor">
 <a href="#convergence-test" class="anchor"></a>Convergence test</h2>
-<p>For the comparison of the convergence of two algorithms, we use the mean result acrossthe different runs for each benchmark function of two algorithms. This results could be equally extended using the convenient adjustments. It is relevant to note that the algorithms EBOwithCMAR (first classified) and LSHADE-cnEpSin (third classified) do not provide their partial results, so we compare here the convergence of the jSO and LSHADE_SPACMA algorithms in the competition for the 10 dimension scenario, where the null hypothesis of LSHADE_SPACMA cannot be rejected and 50 dimension scenario.</p>
-<p><img src="StatisticalAnalysis_files/figure-html/convergence-1.png" width="700"></p>
-<pre><code>## Warning in Ops.factor(left, right): '-' not meaningful for factors
-
-## Warning in Ops.factor(left, right): '-' not meaningful for factors</code></pre>
-<p><img src="StatisticalAnalysis_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
-<pre><code>## \begin{table}[] 
-## \centering
-## \caption{Page test} 
-## \begin{tabular}{lll} 
-## \hline
-## \multicolumn{3}{c}{Page} \\ \hline
-## 
-## \multirow{1}{*}{data.name}
-##   &amp;       &amp;  -convergence.comparison.lshade + convergence.comparison.jso-     \\ \hline
-## \multirow{1}{*}{statistic}
-##   &amp;  L    &amp;  24171.00     \\ \hline
-## \multirow{1}{*}{p.value}
-##   &amp;  Asymptotic pvalue    &amp;  4.372e-05    \\ \hline
-## \end{tabular}
-## \end{table}</code></pre>
-<pre><code>## $data.name
-## [1] "convergence.comparison.jso - convergence.comparison.dyypo-"
-## 
-## $statistic
-##     L 
-## 25730 
-## 
-## $p.value
-## Asymptotic pvalue 
-##                 0 
-## 
-## $method
-## [1] "Page"</code></pre>
-<pre><code>## $data.name
-## [1] "-convergence.comparison.jso + convergence.comparison.dyypo-"
-## 
-## $statistic
-##     L 
-## 19945 
-## 
-## $p.value
-## Asymptotic pvalue 
-##                 1 
-## 
-## $method
-## [1] "Page"</code></pre>
+<p>For the comparison of the convergence of two algorithms, we use the Page test with the mean result across the different runs for each benchmark function of two algorithms. These results could be equally extended using the convenient adjustments. It is relevant to note that the algorithms EBO (first classified) and LSCNE (third classified) do not provide their partial results.</p>
+<p>The results in the following table show the comparison of the convergence of the jSO and the LSSPA algorithms in the competition for the 10 and 100 dimension scenario. Here, the null hypothesis of the difference between LSSPA and jSO getting a positive trend cannot be rejected in the 50 dimension scenario. In the 100 dimension scenario, the test also detects an increasing trend in the ranks of the difference between jSO and DYYPO.</p>
 </div>
 <div id="confidence-intervals-and-confidence-curves" class="section level2">
 <h2 class="hasAnchor">
 <a href="#confidence-intervals-and-confidence-curves" class="anchor"></a>Confidence Intervals and Confidence Curves</h2>
-<p>In this Section we show the use of confidence intervals and confidence curves in the comparison of optimization results. First, we have to warn that these comparisons only take care of two algorithm at each time, and a post-hoc correction would be needed if the comparison involved a greater number of algorithms as we are going to see in the following examples.</p>
-<ul>
-<li>We suppose that we want to compare the final and mean results of the two first classified algorithms in the benchmark function for the 10 dimension. Then, we select in the dataset the corresponding data and obtain the following result.</li>
-</ul>
+<p>In this subsection we show the use of confidence intervals and confidence curves in the comparison of optimization results. First, we must advise that these comparisons only take care of two algorithms at a time, and a post-hoc correction would be needed if the comparison involved a greater number of algorithms, as we will see in the following examples.</p>
+<p>We perform the comparison of the final results of PPSO and jSO algorithms for the 10 dimension scenario.</p>
+<p>As the 0 effect is not included in the non-parametric confidence interval, the null hypothesis is then rejected. The interval is very wide, so we have not much certainty the true location of the parameter. If we only had done the Wilcoxon test, we would have obtained the associated <span class="math inline">\(p\)</span>-value, and the null hypothesis would also be rejected, so the difference between the medians are detected with both methods. If we look at the confidence curve, we can reject the classic null hypothesis if the interval bounded by the intersections of the horizontal line at the <span class="math inline">\(\alpha\)</span> value and the curve does not contain 0. The confidence curve associated with the previous test is plotted in the following figure, where we check that the null hypothesis can be rejected.</p>
+<pre><code>##         lb         ub 
+##   8.557851 233.709039</code></pre>
+<p><img src="StatisticalAnalysis_files/figure-html/confidence.intervals-1.png" width="700"></p>
 <p>As the 0 effect is not included in the Non-parametric confidence interval, the null hypothesis is then rejected, although the interval is very wide, so we have not much certainty about that. If we only had done the Wilcoxon test, we would have obtained the associated <span class="math inline">\(p\)</span>-value, and the null hypothesis would be also rejected, so the difference between the medians are detected with both methods. If we look at the confidence curve, we can reject the classic null hypothesis if the intersection of the vertical line at the 0 level and the horizontal line at the <span class="math inline">\(\alpha\)</span> value remains under the curve.</p>
-<pre><code>## \begin{table}[] 
-## \centering
-## \caption{Wilcoxon test} 
-## \begin{tabular}{lll} 
-## \hline
-## \multicolumn{3}{c}{Wilcoxon} \\ \hline
-## 
-## \multirow{1}{*}{data.name}
-##   &amp;       &amp;  conf.interval.matrix     \\ \hline
-## \multirow{2}{*}{statistic}
-##   &amp;  R+   &amp;  351.50  \\
-##       &amp;  R-   &amp;   83.50   \\ \hline
-## \multirow{6}{*}{p.value}
-##   &amp;  Exact Left pvalue    &amp;  0.9993005   \\
-##       &amp;  Exact Right pvalue   &amp;  0.0006995   \\
-##       &amp;  Exact Double pvalue  &amp;  0.0013990   \\
-##       &amp;  Asymptotic Left Tail     &amp;  0.9999550   \\
-##       &amp;  Asymptotic Right Tail    &amp;  0.0000497   \\
-##       &amp;  Asymptotic Double Tail   &amp;  0.0000994    \\ \hline
-## \end{tabular}
-## \end{table}</code></pre>
-<pre><code>## Error in ApproximateNPConfidenceInterval(x = conf.interval.matrix[, 1], : no se pudo encontrar la función "ApproximateNPConfidenceInterval"</code></pre>
+<pre><code>## [1] "\\begin{table}[] \n\\centering\n\\caption{Wilcoxon test} \n\\begin{tabular}{lll} \n\\hline\n\\multicolumn{3}{c}{Wilcoxon} \\\\ \\hline\n\n\\multirow{1}{*}{data.name}\n\t &amp; \t\t &amp; \tconf.interval.matrix\t \\\\ \\hline\n\\multirow{2}{*}{statistic}\n\t &amp; \tR+\t &amp; \t351.50\t\\\\\n \t &amp; \tR-\t &amp; \t 83.50\t \\\\ \\hline\n\\multirow{6}{*}{p.value}\n\t &amp; \tExact Left pvalue\t &amp; \t0.9993005\t\\\\\n \t &amp; \tExact Right pvalue\t &amp; \t0.0006995\t\\\\\n \t &amp; \tExact Double pvalue\t &amp; \t0.0013990\t\\\\\n \t &amp; \tAsymptotic Left Tail\t &amp; \t0.9999550\t\\\\\n \t &amp; \tAsymptotic Right Tail\t &amp; \t0.0000497\t\\\\\n \t &amp; \tAsymptotic Double Tail\t &amp; \t0.0000994\t \\\\ \\hline\n\\end{tabular}\n\\end{table}"</code></pre>
+<pre><code>##         lb         ub 
+##   8.557851 233.709039</code></pre>
 <p><img src="StatisticalAnalysis_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 </div>
 <div id="multiple-measures-test---glrt" class="section level2">
 <h2 class="hasAnchor">
 <a href="#multiple-measures-test---glrt" class="anchor"></a>Multiple measures test - GLRT</h2>
-<pre><code>## $data.name
-## [1] "x"
-## 
-## $statistic
-## $statistic$n.vector
-##    Configuration  Value
-## 1        &lt; &lt; &lt; &lt;  0.000
-## 2        &lt; &lt; &lt; &gt;  0.000
-## 3        &lt; &lt; &gt; &lt; 12.125
-## 4        &lt; &lt; &gt; &gt;  0.125
-## 5        &lt; &gt; &lt; &lt;  0.000
-## 6        &lt; &gt; &lt; &gt;  0.000
-## 7        &lt; &gt; &gt; &lt;  5.625
-## 8        &lt; &gt; &gt; &gt;  0.125
-## 9        &gt; &lt; &lt; &lt;  0.000
-## 10       &gt; &lt; &lt; &gt;  0.000
-## 11       &gt; &lt; &gt; &lt;  2.625
-## 12       &gt; &lt; &gt; &gt;  0.125
-## 13       &gt; &gt; &lt; &lt;  0.000
-## 14       &gt; &gt; &lt; &gt;  1.000
-## 15       &gt; &gt; &gt; &lt;  7.125
-## 16       &gt; &gt; &gt; &gt;  0.125
-## 
-## $statistic$lambda
-## [1] 0.5184786
-## 
-## 
-## $p.value
-## [1] 0.2517235
-## 
-## $method
-## [1] "GLRT Multiple Measures"</code></pre>
-<p>In order to perform the Non-Parametric Multiple Measures test, we consider that the results of the different dimensions as if they were different measures in the same benchmark function. We select the means of the executions of the two best algorithms and reshape them into a matrix with the results of each benchmark in the rows and the different dimensions in the columns. Then we use the test to see which hypothesis of dominance is the most probable and if we can state that the probability of this dominance statement is significant. According to the results, we obtain that the most observed dominance statement in the third position (which corresponds to the number 2, 0010 in binary) and the configuration <span class="math inline">\([&lt;,&lt;,&gt;,&lt;]\)</span>, it is, EBO-CMAR obtains a better result for the dimensions 10, 30 and 100 while jSO obtains better results in the 50 dimension scenario. However, the associated null hypothesis which states that the mentioned configuration is no more probable than the following one, obtain a <span class="math inline">\(p\)</span>-value of 0.25, so this hypothesis cannot be rejected. The second most probable configuration is in the 15th position (or number 14) and the configuration <span class="math inline">\([&gt;,&gt;,&gt;,&lt;]\)</span>, which means that EBO-CMAR obtains worse results in dimensions 10,30 and 50, so we cannot assure which is the most probable situation in the lower dimension scenarios.</p>
+<table class="table">
+<thead><tr class="header">
+<th align="left">Configuration</th>
+<th align="right">Value</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">&lt; &lt; &lt; &lt;</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">&lt; &lt; &lt; &gt;</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">&lt; &lt; &gt; &lt;</td>
+<td align="right">12.125</td>
+</tr>
+<tr class="even">
+<td align="left">&lt; &lt; &gt; &gt;</td>
+<td align="right">0.125</td>
+</tr>
+<tr class="odd">
+<td align="left">&lt; &gt; &lt; &lt;</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">&lt; &gt; &lt; &gt;</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">&lt; &gt; &gt; &lt;</td>
+<td align="right">5.625</td>
+</tr>
+<tr class="even">
+<td align="left">&lt; &gt; &gt; &gt;</td>
+<td align="right">0.125</td>
+</tr>
+<tr class="odd">
+<td align="left">&gt; &lt; &lt; &lt;</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">&gt; &lt; &lt; &gt;</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">&gt; &lt; &gt; &lt;</td>
+<td align="right">2.625</td>
+</tr>
+<tr class="even">
+<td align="left">&gt; &lt; &gt; &gt;</td>
+<td align="right">0.125</td>
+</tr>
+<tr class="odd">
+<td align="left">&gt; &gt; &lt; &lt;</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">&gt; &gt; &lt; &gt;</td>
+<td align="right">1.000</td>
+</tr>
+<tr class="odd">
+<td align="left">&gt; &gt; &gt; &lt;</td>
+<td align="right">7.125</td>
+</tr>
+<tr class="even">
+<td align="left">&gt; &gt; &gt; &gt;</td>
+<td align="right">0.125</td>
+</tr>
+</tbody>
+</table>
+<p>In some circumstances like the Multi-Objective Optimization we need to include different measures in the comparison. This is the scenario of application of the Non-Parametric Multiple Measures test. We select the means of the executions of the two best algorithms and reshape them into a matrix with the results of each benchmark in the rows and the different dimensions in the columns. Then we use the test to see which hypothesis of dominance is the most probable and if we can state that the probability of this dominance statement is significant. According to the results shown in this table, we obtain that the most observed dominance statement is the configuration <span class="math inline">\([&lt;,&lt;,&gt;,&lt;]\)</span>, it is, EBO-CMAR obtains a better result for the dimensions 10, 30 and 100 while jSO obtains better results in the 50 dimension scenario. However, the associated null hypothesis which states that the mentioned configuration is no more probable than the following one, obtain a <span class="math inline">\(p\)</span>-value of 0.25, so this hypothesis cannot be rejected. The second most probable configuration is <span class="math inline">\([&gt;,&gt;,&gt;,&lt;]\)</span>, which means that EBO-CMAR obtains worse results in dimensions 10,30 and 50, so we cannot be certain which is the most probable situation in the lower dimension scenarios. It is relevant to note that the number of observations can be a real value as the weight of an observation is divided between the possible configuration when there is a tie for any measure.</p>
 </div>
 </div>
 <div id="bayesian-tests" class="section level1">
 <h1 class="hasAnchor">
 <a href="#bayesian-tests" class="anchor"></a>Bayesian tests</h1>
-<p>In this section we illustrate the use of the proposed Bayesian tests. The considerations are analogous to the ones made in the frequentist case, as the described tests use the aggregations of the runs to compare the results of the different benchmark functions, or use these runs with the drawback of obtaining a restrained statement about the results in one single problem.</p>
+<p>In this section we illustrate the use of the described Bayesian tests. The considerations are analogous to the ones made in the frequentist case, as the described tests use the aggregations of the runs to compare the results of the different benchmark functions, or use these runs with the drawback of obtaining a restrained statement about the results in one single problem.</p>
 <div id="bayesian-friedman-test" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bayesian-friedman-test" class="anchor"></a>Bayesian Friedman test</h2>
-<p>We start with the Bayesian version of the Friedman test. In this test we do not obtain a single <span class="math inline">\(p\)</span>-value, but the accepted hypothesis. Due to the high number of contestant algorithms and the memory needed to allocate the covariance matrix of all the possible permutations, we perform here the imprecise version of the test. The null hypothesis of the equivalence of the mean ranks for the 10 dimension scenario is rejected.</p>
-<pre><code>##      [,1]
-## [1,]    1</code></pre>
-<pre><code>## % latex table generated in R 3.5.2 by xtable 1.8-3 package
-## % Tue Mar 12 10:49:17 2019
-## \begin{table}[ht]
-## \centering
-## \begin{tabular}{rr}
-##   \hline
-##  &amp; x \\ 
-##   \hline
-## DES &amp; 8.02 \\ 
-##   DYYPO &amp; 9.62 \\ 
-##   IDEN &amp; 4.82 \\ 
-##   jSO &amp; 4.72 \\ 
-##   LSSPA &amp; 5.52 \\ 
-##   MM &amp; 4.33 \\ 
-##   MOS11 &amp; 8.32 \\ 
-##   MOS12 &amp; 13.32 \\ 
-##   MOS13 &amp; 10.38 \\ 
-##   PPSO &amp; 8.78 \\ 
-##   RBI &amp; 6.95 \\ 
-##   TFL &amp; 10.55 \\ 
-##   LSCNE &amp; 6.08 \\ 
-##   EBO &amp; 3.60 \\ 
-##    \hline
-## \end{tabular}
-## \end{table}</code></pre>
+<p>We start with the Bayesian version of the Friedman test. In this test we do not obtain a single <span class="math inline">\(p\)</span>-value, but the accepted hypothesis. Due to the high number of contestant algorithms and the memory needed to allocate the covariance matrix of all the possible permutations, here we will perform the imprecise version of the test. The null hypothesis of the equivalence of the mean ranks for the 10 dimension scenario is rejected.</p>
 </div>
 <div id="bayesian-sign-and-signed-rank-test" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bayesian-sign-and-signed-rank-test" class="anchor"></a>Bayesian Sign and Signed-Rank test</h2>
-<p>The originial proposal of the use of the Bayesian Sign and Signed-Rank tests are destinated to the comparison of classification algorithms and the proposed region of practical equivalence is <span class="math inline">\([-0.01,0.01]\)</span> for a measure in the range <span class="math inline">\([0,1]\)</span>. In the scenario of optimization problems, we should be concern that the possible outcomes are lower-bounded by 0 but in many functions there is not an upper bound or the maximum is very high so we must follow another approach. As the difference in the 30 dimension comparison is between 0 and 1527, we state that the region of practical equivalence is <span class="math inline">\([-10,10]\)</span>.</p>
-<p><img src="StatisticalAnalysis_files/figure-html/bayesian.pair.test-1.png" width="700"><img src="StatisticalAnalysis_files/figure-html/bayesian.pair.test-2.png" width="700"></p>
-<p>The test compute the probability of the true location of <span class="math inline">\(\textrm{EBO-CMAR} - \textrm{jSO}\)</span> with respect to <span class="math inline">\(0\)</span>, so both tests’ results gives that the left region (jSO obtain worse results) a greater probability, although this is not significative. Rope probability is low in comparison with the right and left region, and this is because, although the number of wins and losses is similar for both algorithms, the number of benchmark functions where the results are quite similar is lower.</p>
-<p>We can see the posterior probability density of the parameter in the following plots, where each point represents an estimation of the probability of the parameter to belong to each region of interest. This means that we have repeatedly obtained the triplets of the probability of each region to be the true location of the difference between the two samples and then we have plotted these triplets to obtain the posterior distribution of the parameter. If we compare these results with a paired Wilcoxon test we see that the null hypothesis of the equivalence of the means cannot be rejected. However, using the Bayesian paradigm we cannot establish the dominance of one algorithm over the other either, but while in the frequentist paradigm we could be tempted to (erroneously) establish that there is no difference between these algorithms with these plots we obtain valuable information and we can see that here is not the same situation, as the probability of the rope is very low.</p>
-<pre><code>## Error in wilcox.test.default(jso, ebo.cmar, paired = T): objeto 'ebo.cmar' no encontrado</code></pre>
-<p><img src="StatisticalAnalysis_files/figure-html/plot.pair.bayesian.tests-1.png" width="700"><img src="StatisticalAnalysis_files/figure-html/plot.pair.bayesian.tests-2.png" width="700"></p>
+<p>The originial proposal of the use of the Bayesian Sign and Signed-Rank tests is the comparison of classification algorithms and the proposed  is <span class="math inline">\([-0.01,0.01]\)</span> for a measure in the range <span class="math inline">\([0,1]\)</span>. In the scenario of optimization problems, we should be concerned that the possible outcomes are lower-bounded by 0 but in many functions there is not an upper bound or the maximum is very high, so we must follow another approach. As the difference in the 30 dimension comparison is between 0 and 1527, we state that the region of practical equivalence is <span class="math inline">\([-10,10]\)</span>.</p>
+<p>The tests compute the probability of the true location of <span class="math inline">\(\textrm{EBO-CMAR} - \textrm{jSO}\)</span> with respect to <span class="math inline">\(0\)</span>, so both tests’ results shows that the left region (jSO obtain worse results) results in greater probability, although this is not significant. Rope probability is low in comparison with the right and left region, and this is because, although the number of wins and losses is similar for both algorithms, the number of benchmark functions where the results are quite similar is lower.</p>
+<p>We can see the posterior probability density of the parameter in the following figures, where each point represents an estimation of the probability of the parameter which belongs to each region of interest. The proportion of the location of the points is shown in the associated table. This means that we have repeatedly obtained the triplets of the probability of each region to be the true location of the difference between the two samples, and then we have plotted these triplets to obtain the posterior distribution of the parameter. If we compare these results with a paired Wilcoxon test, we see that the null hypothesis of the equivalence of the means cannot be rejected.</p>
+<p>However, using the Bayesian paradigm we cannot establish the dominance of one algorithm over the other either, while in the frequentist paradigm we could be tempted to (erroneously) establish that there is no difference between these algorithms. With these plots we can see this is not the same situation, as the probability of the rope is very low.</p>
+<p><img src="StatisticalAnalysis_files/figure-html/bayesian.pair.test-1.png" width="400px"></p>
+<p><img src="StatisticalAnalysis_files/figure-html/unnamed-chunk-8-1.png" width="400px"></p>
 </div>
 <div id="imprecise-dirichlet-process-test" class="section level2">
 <h2 class="hasAnchor">
 <a href="#imprecise-dirichlet-process-test" class="anchor"></a>Imprecise Dirichlet Process Test</h2>
-<p>The Imprecise Dirichlet Process consists in a more complex idea of the previous tests although the implications of the use of the Bayesian Tests could be clearer. In this test we try to not to introduce any prior distribution, not even the prior distribution where both algorithms have the same performance, but all the possible probability measures <span class="math inline">\(\alpha\)</span>, and then obtain an upper and a lower bounds for the probability in which we are interested. The input consits in the aggregated results among the different runs for all the benchmark functions for a single dimension. The other parameters of the function are the strong parameter <span class="math inline">\(s\)</span> and the pseudo-observation <span class="math inline">\(c\)</span>. With these data, we obtain two bounds for the posterior probability of the first algorithm outperforming the second one, i.e. the probability of <span class="math inline">\(P(X \leq Y) \geq 0.5\)</span>. These are the possible scenarios:</p>
+<p>The Imprecise Dirichlet Process consists in a more complex idea of the previous tests although the implications of the use of the Bayesian Tests could be clearer. In this test we try to not introduce any prior distribution, not even the prior distribution where both algorithms have the same performance, but all the possible probability measures <span class="math inline">\(\alpha\)</span>, and then obtain an upper and a lower bounds for the probability in which we are interested. The input consists of the aggregated results among the different runs for all the benchmark functions for a single dimension. The other parameters of the function are the strong parameter <span class="math inline">\(s\)</span> and the pseudo-observation <span class="math inline">\(c\)</span>. With these data, we obtain two bounds for the posterior probability of the first algorithm outperforming the second one, i.e.~the probability of <span class="math inline">\(P(X \leq Y) \geq 0.5\)</span>. These are the possible scenarios:</p>
 <ul>
-<li>Both bounds are greater than 0.95: Then we can say that the first algorithm outperforms the second algorithm with a 95% of probability.</li>
-<li>Both bounds are lower than 0.05: This is the inverse case. In this situation, the second algorithm outperforms the first algorithm with a 95% of probability.</li>
+<li>Both bounds are greater than 0.95: Then we can say that the first algorithm outperforms the second algorithm with 95% probability.</li>
+<li>Both bounds are lower than 0.05: This is the inverse case. In this situation, the second algorithm outperforms the first algorithm with 95% probability.</li>
 <li>Both bounds are between 0.05 and 0.95: Then we can say that the probability of one algorithm outperforming the other is lower than the desired probability of 0.95.</li>
-<li>Finally, if only one of the bounds is greater than 0.95 or lower than 0.05, the situation is indetermined and we cannot decide.</li>
+<li>Finally, if only one of the bounds is greater than 0.95 or lower than 0.05, the situation is undetermined and we cannot decide.</li>
 </ul>
-<p><img src="StatisticalAnalysis_files/figure-html/bayesian.imprecise-1.png" width="700"></p>
-<p>According to the results of the Bayesian Imprecise Dirichlet Process, the probability <span class="math inline">\(\mathcal{P}[P(EBO-CMAR \leq jSO) \geq 0.5]\)</span>, that is the probability of EBO-CMAR outperforming jSO, is between 0.92 and 0.96, so there is an indetermination and we cannot say that there is a probability greater than 0.95 of EBO-CMAR outperforming jSO, nor there is not such probability. These numbers represent the area under the curve of the upper and lower distributions when <span class="math inline">\(P(X \leq Y) \geq 0.5\)</span></p>
+<pre><code>## Error in bayesian.imprecise(jso, ebo.cmar): objeto 'ebo.cmar' no encontrado</code></pre>
+<pre><code>## Error in plot(bayesian.imprecise.results): objeto 'bayesian.imprecise.results' no encontrado</code></pre>
+<p>According to the results of the Bayesian Imprecise Dirichlet Process test, the probability under the Dirichlet Process of <span class="math inline">\(P(EBO \leq jSO) \geq 0.5\)</span>, that is the probability of EBO-CMAR outperforming jSO, is between 0.92 and 0.96, so there is an indetermination, and we cannot say that there is a probability greater than 0.95 of EBO-CMAR outperforming jSO, nor that there is no such probability. These numbers represent the area under the curve of the upper and lower distributions when <span class="math inline">\(P(X \leq Y) \geq 0.5\)</span>. In the last figure we can see both posterior distributions.</p>
 </div>
 <div id="bayesian-multiple-measures-test" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bayesian-multiple-measures-test" class="anchor"></a>Bayesian Multiple Measures Test</h2>
-<p>In the Bayesian version of the Multiple Measures test the results are analogous to the frequentist version. The most probable configuration is also the dominance of the EBO-CMAR in the 10,30 and 100 dimensions while the algorithm jSO obtains better results in the 50 dimension according to this test, but the posterior probability is 0.841, so we cannot say that the difference with respect the remaining configurations is determinative.</p>
-<pre><code>## Error in ncol(x): objeto 'a' no encontrado</code></pre>
-<pre><code>## Error in eval(expr, envir, enclos): objeto 'bayesianmultipleconditions.results' no encontrado</code></pre>
-</div>
-<div id="plackettluce" class="section level2">
-<h2 class="hasAnchor">
-<a href="#plackettluce" class="anchor"></a>PlackettLuce</h2>
-<pre><code>## Error: &lt;text&gt;:11:65: inesperado ')'
-## 10:   summarise(r_ij = n(),
-## 11:             w_ij = sum(vars(ends_with(".x")), any_vars(. == 0))))
-##                                                                     ^</code></pre>
-</div>
-</div>
-<div id="appendix" class="section level1">
-<h1 class="hasAnchor">
-<a href="#appendix" class="anchor"></a>Appendix</h1>
+<p>In the Bayesian version of the Multiple Measures test the results are analogous to the frequentist version shown previously. We use the same matrices with the results of each algorithm arranged by dimensions. Here we obtain that the most probable configuration is also the dominance of EBO in the 10, 30 and 100 dimensions while the algorithm jSO obtains better results in the 50 dimension according to this test, but the posterior probability is 0.84, as is shown in the following table, so we cannot say that the difference with respect to the remaining configurations is determinative.</p>
 <table class="table">
 <thead><tr class="header">
-<th align="right">Benchmark</th>
-<th align="right">DES</th>
-<th align="right">DYYPO</th>
-<th align="right">IDEN</th>
-<th align="right">jSO</th>
-<th align="right">LSSPA</th>
-<th align="right">MM</th>
-<th align="right">MOS11</th>
-<th align="right">MOS12</th>
-<th align="right">MOS13</th>
-<th align="right">PPSO</th>
-<th align="right">RBI</th>
-<th align="right">TFL</th>
-<th align="right">LSCNE</th>
-<th align="right">EBO</th>
+<th align="left">Configuration</th>
+<th align="right">Probability</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="right">1</td>
-<td align="right">1.000000e-07</td>
-<td align="right">2.855618e+03</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.000000e+00</td>
-<td align="right">6.915513e+02</td>
-<td align="right">2.891971e+03</td>
-<td align="right">3.916212e+03</td>
-<td align="right">239.2537645</td>
-<td align="right">0.0000000</td>
-<td align="right">2.022580e+03</td>
-<td align="right">0.000000e+00</td>
+<td align="left">&lt; &lt; &lt; &lt;</td>
 <td align="right">0.0000</td>
 </tr>
 <tr class="even">
-<td align="right">3</td>
-<td align="right">0.000000e+00</td>
-<td align="right">1.170000e-05</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.000000e+00</td>
-<td align="right">0.000000e+00</td>
-<td align="right">0.000000e+00</td>
-<td align="right">0.000000e+00</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">1.111000e-04</td>
-<td align="right">0.000000e+00</td>
+<td align="left">&lt; &lt; &lt; &gt;</td>
 <td align="right">0.0000</td>
 </tr>
 <tr class="odd">
-<td align="right">4</td>
-<td align="right">0.000000e+00</td>
-<td align="right">2.068475e+00</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.000000e+00</td>
-<td align="right">6.260000e-04</td>
-<td align="right">1.360900e-03</td>
-<td align="right">2.456000e-04</td>
-<td align="right">1.2012186</td>
-<td align="right">0.0000000</td>
-<td align="right">3.031892e+00</td>
-<td align="right">0.000000e+00</td>
-<td align="right">0.0000</td>
+<td align="left">&lt; &lt; &gt; &lt;</td>
+<td align="right">0.8397</td>
 </tr>
 <tr class="even">
-<td align="right">5</td>
-<td align="right">1.541211e+00</td>
-<td align="right">1.119832e+01</td>
-<td align="right">3.2775151</td>
-<td align="right">1.7558115</td>
-<td align="right">1.3485696</td>
-<td align="right">1.112013e+00</td>
-<td align="right">6.944510e+00</td>
-<td align="right">6.475490e+01</td>
-<td align="right">1.641588e+01</td>
-<td align="right">18.0848094</td>
-<td align="right">1.5802286</td>
-<td align="right">8.754015e+00</td>
-<td align="right">1.685054e+00</td>
+<td align="left">&lt; &lt; &gt; &gt;</td>
 <td align="right">0.0000</td>
 </tr>
 <tr class="odd">
-<td align="right">6</td>
-<td align="right">1.171081e-01</td>
-<td align="right">6.360000e-05</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.000000e+00</td>
-<td align="right">0.000000e+00</td>
-<td align="right">5.074224e+01</td>
-<td align="right">1.091900e-03</td>
-<td align="right">0.2258642</td>
-<td align="right">0.0000002</td>
-<td align="right">1.000000e-07</td>
-<td align="right">0.000000e+00</td>
+<td align="left">&lt; &gt; &lt; &lt;</td>
 <td align="right">0.0000</td>
 </tr>
 <tr class="even">
-<td align="right">7</td>
-<td align="right">1.192944e+01</td>
-<td align="right">2.180442e+01</td>
-<td align="right">12.8896661</td>
-<td align="right">11.7916490</td>
-<td align="right">10.9540957</td>
-<td align="right">1.152303e+01</td>
-<td align="right">1.895686e+01</td>
-<td align="right">4.850980e+01</td>
-<td align="right">2.772745e+01</td>
-<td align="right">16.9119282</td>
-<td align="right">10.1103601</td>
-<td align="right">2.763555e+01</td>
-<td align="right">1.197959e+01</td>
-<td align="right">10.6000</td>
-</tr>
-<tr class="odd">
-<td align="right">8</td>
-<td align="right">1.560720e+00</td>
-<td align="right">1.324662e+01</td>
-<td align="right">2.8873348</td>
-<td align="right">1.9509104</td>
-<td align="right">1.0358262</td>
-<td align="right">1.112013e+00</td>
-<td align="right">6.966177e+00</td>
-<td align="right">6.502549e+01</td>
-<td align="right">1.422039e+01</td>
-<td align="right">9.9495838</td>
-<td align="right">1.9704083</td>
-<td align="right">1.228461e+01</td>
-<td align="right">1.796884e+00</td>
-<td align="right">0.0000</td>
-</tr>
-<tr class="even">
-<td align="right">9</td>
-<td align="right">0.000000e+00</td>
-<td align="right">1.957210e-02</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.000000e+00</td>
-<td align="right">2.391000e-04</td>
-<td align="right">2.622078e+03</td>
-<td align="right">0.000000e+00</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">8.908300e-03</td>
-<td align="right">0.000000e+00</td>
+<td align="left">&lt; &gt; &lt; &gt;</td>
 <td align="right">0.0000</td>
 </tr>
 <tr class="odd">
-<td align="right">10</td>
-<td align="right">5.663175e+00</td>
-<td align="right">3.670341e+02</td>
-<td align="right">190.4202042</td>
-<td align="right">35.8974238</td>
-<td align="right">10.5115286</td>
-<td align="right">1.789361e+01</td>
-<td align="right">3.602578e+02</td>
-<td align="right">1.335451e+03</td>
-<td align="right">6.103922e+02</td>
-<td align="right">503.0896379</td>
-<td align="right">435.4250527</td>
-<td align="right">9.546153e+02</td>
-<td align="right">4.302540e+01</td>
-<td align="right">37.2000</td>
+<td align="left">&lt; &gt; &gt; &lt;</td>
+<td align="right">0.0443</td>
 </tr>
 <tr class="even">
-<td align="right">11</td>
-<td align="right">1.170540e-01</td>
-<td align="right">9.279416e+00</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0000000</td>
-<td align="right">0.0195090</td>
-<td align="right">0.000000e+00</td>
-<td align="right">2.542314e+00</td>
-<td align="right">3.253353e+01</td>
-<td align="right">7.180196e+00</td>
-<td align="right">16.8898374</td>
-<td align="right">0.1711793</td>
-<td align="right">4.116799e+00</td>
-<td align="right">0.000000e+00</td>
+<td align="left">&lt; &gt; &gt; &gt;</td>
 <td align="right">0.0000</td>
 </tr>
 <tr class="odd">
-<td align="right">12</td>
-<td align="right">4.408368e+02</td>
-<td align="right">1.349201e+04</td>
-<td align="right">2.4368329</td>
-<td align="right">2.6620534</td>
-<td align="right">113.6777450</td>
-<td align="right">1.015993e+02</td>
-<td align="right">1.104904e+04</td>
-<td align="right">1.505237e+04</td>
-<td align="right">1.228325e+04</td>
-<td align="right">4551.4206215</td>
-<td align="right">110.4614150</td>
-<td align="right">6.556215e+04</td>
-<td align="right">1.012800e+02</td>
-<td align="right">90.2000</td>
+<td align="left">&gt; &lt; &lt; &lt;</td>
+<td align="right">0.0000</td>
 </tr>
 <tr class="even">
-<td align="right">13</td>
-<td align="right">3.313797e+00</td>
-<td align="right">5.079252e+03</td>
-<td align="right">0.8373968</td>
-<td align="right">2.9644184</td>
-<td align="right">3.3696956</td>
-<td align="right">4.187166e+00</td>
-<td align="right">3.293929e+03</td>
-<td align="right">1.195120e+04</td>
-<td align="right">4.367380e+03</td>
-<td align="right">1391.1402239</td>
-<td align="right">4.1702334</td>
-<td align="right">2.447821e+03</td>
-<td align="right">3.656971e+00</td>
-<td align="right">2.1700</td>
+<td align="left">&gt; &lt; &lt; &gt;</td>
+<td align="right">0.0000</td>
 </tr>
 <tr class="odd">
-<td align="right">14</td>
-<td align="right">1.225103e+01</td>
-<td align="right">2.066503e+01</td>
-<td align="right">0.0000124</td>
-<td align="right">0.0585270</td>
-<td align="right">0.0531392</td>
-<td align="right">8.798730e-02</td>
-<td align="right">1.582790e+02</td>
-<td align="right">7.602908e+03</td>
-<td align="right">2.758179e+02</td>
-<td align="right">37.3092995</td>
-<td align="right">15.9325018</td>
-<td align="right">6.728118e+01</td>
-<td align="right">7.803600e-02</td>
-<td align="right">0.0605</td>
+<td align="left">&gt; &lt; &gt; &lt;</td>
+<td align="right">0.0018</td>
 </tr>
 <tr class="even">
-<td align="right">15</td>
-<td align="right">3.251607e+00</td>
-<td align="right">4.364027e+01</td>
-<td align="right">0.0076048</td>
-<td align="right">0.2208353</td>
-<td align="right">0.4112424</td>
-<td align="right">6.708410e-02</td>
-<td align="right">8.949673e+01</td>
-<td align="right">5.916639e+03</td>
-<td align="right">4.085355e+02</td>
-<td align="right">53.2742927</td>
-<td align="right">0.4909027</td>
-<td align="right">1.258996e+02</td>
-<td align="right">3.238894e-01</td>
-<td align="right">0.1090</td>
+<td align="left">&gt; &lt; &gt; &gt;</td>
+<td align="right">0.0000</td>
 </tr>
 <tr class="odd">
-<td align="right">16</td>
-<td align="right">6.087392e+00</td>
-<td align="right">4.383531e+01</td>
-<td align="right">0.4906230</td>
-<td align="right">0.5688390</td>
-<td align="right">0.6419951</td>
-<td align="right">2.528743e-01</td>
-<td align="right">3.446820e+01</td>
-<td align="right">4.969529e+02</td>
-<td align="right">1.351173e+01</td>
-<td align="right">82.9795413</td>
-<td align="right">97.0977416</td>
-<td align="right">8.905950e+00</td>
-<td align="right">5.372199e-01</td>
-<td align="right">0.4170</td>
+<td align="left">&gt; &gt; &lt; &lt;</td>
+<td align="right">0.0000</td>
 </tr>
 <tr class="even">
-<td align="right">17</td>
-<td align="right">2.104308e+01</td>
-<td align="right">1.408920e+01</td>
-<td align="right">0.7886461</td>
-<td align="right">0.5022676</td>
-<td align="right">1.5429326</td>
-<td align="right">5.634680e-02</td>
-<td align="right">2.891415e+00</td>
-<td align="right">2.104571e+02</td>
-<td align="right">2.221949e+01</td>
-<td align="right">24.5876500</td>
-<td align="right">52.4610203</td>
-<td align="right">3.829807e+01</td>
-<td align="right">3.072312e-01</td>
-<td align="right">0.1470</td>
+<td align="left">&gt; &gt; &lt; &gt;</td>
+<td align="right">0.0001</td>
 </tr>
 <tr class="odd">
-<td align="right">18</td>
-<td align="right">2.913416e+01</td>
-<td align="right">8.757308e+03</td>
-<td align="right">0.0484074</td>
-<td align="right">0.3080004</td>
-<td align="right">1.9742502</td>
-<td align="right">9.687572e-01</td>
-<td align="right">1.401916e+03</td>
-<td align="right">9.489176e+03</td>
-<td align="right">6.393552e+03</td>
-<td align="right">878.2572173</td>
-<td align="right">19.7224800</td>
-<td align="right">6.150510e+03</td>
-<td align="right">3.859152e+00</td>
-<td align="right">0.7000</td>
+<td align="left">&gt; &gt; &gt; &lt;</td>
+<td align="right">0.1141</td>
 </tr>
 <tr class="even">
-<td align="right">19</td>
-<td align="right">2.518426e+00</td>
-<td align="right">9.267460e+01</td>
-<td align="right">0.0105634</td>
-<td align="right">0.0107034</td>
-<td align="right">0.0812733</td>
-<td align="right">3.795700e-03</td>
-<td align="right">9.447800e+00</td>
-<td align="right">5.658601e+03</td>
-<td align="right">1.093146e+03</td>
-<td align="right">22.4802033</td>
-<td align="right">1.8157840</td>
-<td align="right">6.059469e+01</td>
-<td align="right">4.465340e-02</td>
-<td align="right">0.0150</td>
-</tr>
-<tr class="odd">
-<td align="right">20</td>
-<td align="right">1.216657e+01</td>
-<td align="right">8.009799e+00</td>
-<td align="right">0.0000000</td>
-<td align="right">0.3427783</td>
-<td align="right">0.1836313</td>
-<td align="right">6.733150e-02</td>
-<td align="right">2.754900e-02</td>
-<td align="right">2.814039e+02</td>
-<td align="right">7.703196e+00</td>
-<td align="right">27.8235586</td>
-<td align="right">106.0455083</td>
-<td align="right">1.461416e+01</td>
-<td align="right">2.570839e-01</td>
-<td align="right">0.1470</td>
-</tr>
-<tr class="even">
-<td align="right">21</td>
-<td align="right">2.015812e+02</td>
-<td align="right">1.003725e+02</td>
-<td align="right">149.2322549</td>
-<td align="right">132.3776471</td>
-<td align="right">153.6939984</td>
-<td align="right">1.040722e+02</td>
-<td align="right">1.730588e+02</td>
-<td align="right">2.785882e+02</td>
-<td align="right">1.472745e+02</td>
-<td align="right">104.3300321</td>
-<td align="right">137.3508603</td>
-<td align="right">1.424018e+02</td>
-<td align="right">1.463637e+02</td>
-<td align="right">114.0000</td>
-</tr>
-<tr class="odd">
-<td align="right">22</td>
-<td align="right">1.000000e+02</td>
-<td align="right">9.746535e+01</td>
-<td align="right">96.0784314</td>
-<td align="right">100.0000000</td>
-<td align="right">100.0190908</td>
-<td align="right">1.000170e+02</td>
-<td align="right">8.796471e+01</td>
-<td align="right">1.260216e+03</td>
-<td align="right">9.956863e+01</td>
-<td align="right">96.7305603</td>
-<td align="right">99.2594798</td>
-<td align="right">9.331404e+01</td>
-<td align="right">1.000136e+02</td>
-<td align="right">98.5000</td>
-</tr>
-<tr class="even">
-<td align="right">23</td>
-<td align="right">3.014558e+02</td>
-<td align="right">3.094400e+02</td>
-<td align="right">301.9113529</td>
-<td align="right">301.2055882</td>
-<td align="right">302.0449606</td>
-<td align="right">2.984180e+02</td>
-<td align="right">3.119216e+02</td>
-<td align="right">3.685098e+02</td>
-<td align="right">3.181569e+02</td>
-<td align="right">342.1468971</td>
-<td align="right">275.0244573</td>
-<td align="right">3.068671e+02</td>
-<td align="right">3.020022e+02</td>
-<td align="right">300.0000</td>
-</tr>
-<tr class="odd">
-<td align="right">24</td>
-<td align="right">3.030401e+02</td>
-<td align="right">1.168543e+02</td>
-<td align="right">292.9701176</td>
-<td align="right">296.5981961</td>
-<td align="right">292.3530037</td>
-<td align="right">1.039337e+02</td>
-<td align="right">2.762353e+02</td>
-<td align="right">3.450588e+02</td>
-<td align="right">3.013333e+02</td>
-<td align="right">226.6338910</td>
-<td align="right">197.5780460</td>
-<td align="right">3.103786e+02</td>
-<td align="right">3.158258e+02</td>
-<td align="right">166.0000</td>
-</tr>
-<tr class="even">
-<td align="right">25</td>
-<td align="right">4.076549e+02</td>
-<td align="right">4.229872e+02</td>
-<td align="right">413.9093529</td>
-<td align="right">405.9628627</td>
-<td align="right">425.6127510</td>
-<td align="right">4.140458e+02</td>
-<td align="right">4.150196e+02</td>
-<td align="right">4.336667e+02</td>
-<td align="right">4.305098e+02</td>
-<td align="right">404.1013535</td>
-<td align="right">402.2697656</td>
-<td align="right">4.255234e+02</td>
-<td align="right">4.255561e+02</td>
-<td align="right">412.0000</td>
-</tr>
-<tr class="odd">
-<td align="right">26</td>
-<td align="right">2.960784e+02</td>
-<td align="right">3.033770e+02</td>
-<td align="right">300.0000000</td>
-<td align="right">300.0000000</td>
-<td align="right">300.0000000</td>
-<td align="right">2.941176e+02</td>
-<td align="right">2.547824e+02</td>
-<td align="right">1.149078e+03</td>
-<td align="right">2.560196e+02</td>
-<td align="right">266.6666675</td>
-<td align="right">272.6912172</td>
-<td align="right">3.008897e+02</td>
-<td align="right">3.000000e+02</td>
-<td align="right">265.0000</td>
-</tr>
-<tr class="even">
-<td align="right">27</td>
-<td align="right">3.957199e+02</td>
-<td align="right">3.964936e+02</td>
-<td align="right">392.8037059</td>
-<td align="right">389.3874902</td>
-<td align="right">388.2803188</td>
-<td align="right">3.895023e+02</td>
-<td align="right">3.926667e+02</td>
-<td align="right">4.520784e+02</td>
-<td align="right">3.961765e+02</td>
-<td align="right">426.5179650</td>
-<td align="right">394.8625633</td>
-<td align="right">3.925106e+02</td>
-<td align="right">3.894980e+02</td>
-<td align="right">392.0000</td>
-</tr>
-<tr class="odd">
-<td align="right">28</td>
-<td align="right">5.260689e+02</td>
-<td align="right">3.009808e+02</td>
-<td align="right">322.8050392</td>
-<td align="right">339.0758431</td>
-<td align="right">362.5444014</td>
-<td align="right">3.368138e+02</td>
-<td align="right">3.685686e+02</td>
-<td align="right">5.158039e+02</td>
-<td align="right">3.666275e+02</td>
-<td align="right">294.1176477</td>
-<td align="right">402.2597204</td>
-<td align="right">4.469810e+02</td>
-<td align="right">3.848847e+02</td>
-<td align="right">307.0000</td>
-</tr>
-<tr class="even">
-<td align="right">29</td>
-<td align="right">2.360798e+02</td>
-<td align="right">2.603070e+02</td>
-<td align="right">236.6541176</td>
-<td align="right">234.1960392</td>
-<td align="right">230.4884120</td>
-<td align="right">2.356783e+02</td>
-<td align="right">2.694510e+02</td>
-<td align="right">5.596667e+02</td>
-<td align="right">2.804510e+02</td>
-<td align="right">277.8661779</td>
-<td align="right">265.8314334</td>
-<td align="right">2.744956e+02</td>
-<td align="right">2.284069e+02</td>
-<td align="right">231.0000</td>
-</tr>
-<tr class="odd">
-<td align="right">30</td>
-<td align="right">1.540023e+05</td>
-<td align="right">6.701906e+03</td>
-<td align="right">403.7932157</td>
-<td align="right">394.5192941</td>
-<td align="right">229.5841682</td>
-<td align="right">5.693819e+04</td>
-<td align="right">2.172341e+04</td>
-<td align="right">4.572112e+05</td>
-<td align="right">6.096314e+04</td>
-<td align="right">2993.2483883</td>
-<td align="right">2045.9851906</td>
-<td align="right">2.789989e+05</td>
-<td align="right">1.761843e+04</td>
-<td align="right">407.0000</td>
+<td align="left">&gt; &gt; &gt; &gt;</td>
+<td align="right">0.0000</td>
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+<div id="summary-of-results-in-cec2017" class="section level1">
+<h1 class="hasAnchor">
+<a href="#summary-of-results-in-cec2017" class="anchor"></a>Summary of results in CEC’2017</h1>
+<p>pIn this section we include a summary of the statistical analysis performed within the context of the CEC’2017.</p>
+<p>The following table shows the official results of the algorithms in their scoring system and the scores computed following the indications of the report of the problem definition for the competition with the available raw results of the algorithms. The difference between the two scores may reside in the aggregation method for the results of the different iterations. In this paper we have used the mean result, while the organisers of the competition may have selected the best result. There are some relevant differences, specially with respect to the first score, that generate discrepancies in the classification of the algorithms, for example LSHADE variants are benefited by the aggregation of the raw results in detriment of EBO and jSO. In the official CEC’17 summary, the results of the MOS12 algorithm are not included, so we have excluded them in the analyses of this section.</p>
+
+<p>The classic statistical analysis that should be made in the context of a competition would involve a non-parametric test with post-hoc test for a <span class="math inline">\(n\)</span> versus <span class="math inline">\(n\)</span> scenario, as we do not have a preference for the results of comparison of any specific algorithm. In order to preserve the relative importance of the results in the different dimension scenarios, we show the plots of the critical difference explained in for the four scenarios.</p>
+<p>As we can see in the following figures, summary scores are consistent with Critical Differences plots, as the first classified algorithms are also in the first positions of the graphical representation. However, the statistical tests make it possible to address the fact that there is a group of algorithms in the lead group in every dimension scenario whose associated hypothesis of equivalence cannot be discarded. These algorithms are: LSSPA, DES, LSCNE, MM and jSO, which contradicts the fact that EBO won the competition. EBO has the lowest mean rank in Dimension 10, 30 and 100, but the hypotheses of equivalence with the first classified in Dimension 50 (LSSPA) cannot be rejected.</p>
+<embed src="img/cd-plot-dim10.pdf" width="200px" type="application/pdf"></embed><embed src="img/cd-plot-dim30.pdf" width="200px" type="application/pdf"></embed><embed src="img/cd-plot-dim50.pdf" width="200px" type="application/pdf"></embed><embed src="img/cd-plot-dim100.pdf" width="200px" type="application/pdf"></embed><p>In the Bayesian paradigm, after having rejected the equivalence of all the mean ranks of the algorithms with the Friedman tests, we repeatedly perform the Bayesian Signed-Rank for every pair of algorithms in each dimension scenario. The results are summarized in the following figures. Specially in lower dimensions there is less certainty than there was in the non-parametric analysis concerning the dominance of an algorithm over the other in each comparison, although from the Bayesian perspective we can state where there is a tie between a pair of algorithms and the direction of the difference, while the equivalence with NHST cannot be assured. In this case, as we are interested in the minimization of the result, an algorithm wins when the difference between the results is in the left region. This is represented by the color red, while the probability represents the opacity of the tile.</p>
+<p><img src="img/bayesian-multiple-dim10.eps" width="500px"></p>
+<p>As the error obtained in the competition increases, more comparisons are marked as significant and less ties between algorithms are detected. In this figure we see how in the comparison of the first classified algorithms the most probable situation is a tie. This group starts to win with a greater probability in the 30 Dimension scenario, while the ties persist within the lead group.</p>
+<p><img src="img/bayesian-multiple-dim30.eps" width="500px"></p>
+<p>The results of the 50 dimension scenario, shown in the following figure, coincide with the conclusions obtained in the non-parametric analysis, whilst the EBO algorithm, the winner of the competition, obtains worse results (with a probability above 0.8) than the lead group comprised of the DES, jSO, LSSPA, LSCNE and MM algorithms. Finally in 100 dimension scenario, EBO wins in the comparisons with all the remaining algorithms, with probabilities between 0.64 in the comparison versus DES and 0.96 versus DYYPO.</p>
+<p><img src="img/bayesian-multiple-dim50.eps" width="500px"><img src="img/bayesian-multiple-dim100.eps" width="500px"></p>
 </div>
   </div>
 
@@ -1718,10 +1082,9 @@
       <li><a href="#bayesian-sign-and-signed-rank-test">Bayesian Sign and Signed-Rank test</a></li>
       <li><a href="#imprecise-dirichlet-process-test">Imprecise Dirichlet Process Test</a></li>
       <li><a href="#bayesian-multiple-measures-test">Bayesian Multiple Measures Test</a></li>
-      <li><a href="#plackettluce">PlackettLuce</a></li>
       </ul>
 </li>
-      <li><a href="#appendix">Appendix</a></li>
+      <li><a href="#summary-of-results-in-cec2017">Summary of results in CEC’2017</a></li>
       </ul>
 </div>
       </div>
