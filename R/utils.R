@@ -37,7 +37,7 @@ getDiff <- function(x, y){
       stop("X and Y must be of the same length")
    else
       diff <- x - y
-   
+
    if(length(dim(x)) == 2){
       if(ncol(x) == 2)
          diff <- x[,1]-x[,2]
@@ -103,7 +103,7 @@ htest2Tex.list <- function(test){
      test$post.dist.lower <- NULL
      test$post.dist.upper <- NULL
    }
-   
+
    names.items <- names(test)
    tex.items <- lapply(1:max(c(1,length(test)-1)),
                        function(i){
@@ -164,7 +164,7 @@ occurencesDominanceConfiguration <- function(x, y){
   # Build the dominance matrix
   dominance.matrix <- heaviside(x-y)
   n.measures <- ncol(dominance.matrix)
-  
+
   weights.vector <- t(apply(dominance.matrix, 1, function(dominance.statement){
     weights <- numeric(length = 2^length(dominance.statement))
     occurrence.dominance.configuration <- create.permutations(dominance.statement)
@@ -181,7 +181,7 @@ occurencesDominanceConfiguration <- function(x, y){
 #' @title Create Permutations
 #'
 #' @description Auxiliar method for create permutations with the different possible results for a heaviside vector
-#' @param x Vector 
+#' @param x Vector
 #' @return Data frame with all the different permutations.
 create.permutations <- function(x){
   tie.location <- x == 0.5
@@ -209,7 +209,7 @@ create.permutations <- function(x){
 AdjustFormatTable <- function(table, rownames=NULL, colnames=NULL, type = "latex", print.code = FALSE, ...){
   if(!is.null(rownames)){ rownames(table) <- rownames }
   if(!is.null(colnames)){ colnames(table) <- colnames }
-  
+
   if(type == "latex"){
     formated.table <- mutate_all(as.data.frame(table),
                                  function(x){
@@ -245,4 +245,19 @@ AdjustFormatTable <- function(table, rownames=NULL, colnames=NULL, type = "latex
           include.rownames=TRUE, sanitize.text.function = identity,
           type = "html")
   }
+}
+
+
+apply.paired.bayesian <- function(matrix.dataset, test,...){
+   m <- ncol(matrix.dataset)
+   comb <- utils::combn(m, 2)
+
+   test.result <- apply(comb, 2, function(c){
+      single.result <- do.call(test, list(x = matrix.dataset[ ,c], ...))$probabilities
+      return(single.result)
+   }) %>%
+      t %>% as.data.frame() %>%
+      dplyr::mutate(Algorithm.1 = as.factor(colnames(matrix.dataset)[comb[1, ]]),
+                    Algorithm.2 = as.factor(colnames(matrix.dataset)[comb[2, ]]))
+   return(test.result)
 }
