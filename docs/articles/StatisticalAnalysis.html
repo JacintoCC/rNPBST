@@ -835,6 +835,19 @@
 <a href="#convergence-test" class="anchor"></a>Convergence test</h2>
 <p>For the comparison of the convergence of two algorithms, we use the Page test with the mean result across the different runs for each benchmark function of two algorithms. These results could be equally extended using the convenient adjustments. It is relevant to note that the algorithms EBO (first classified) and LSCNE (third classified) do not provide their partial results.</p>
 <p>The results in the following table show the comparison of the convergence of the jSO and the LSSPA algorithms in the competition for the 10 and 100 dimension scenario. Here, the null hypothesis of the difference between LSSPA and jSO getting a positive trend cannot be rejected in the 50 dimension scenario. In the 100 dimension scenario, the test also detects an increasing trend in the ranks of the difference between jSO and DYYPO.</p>
+<pre><code>## $data.name
+## [1] "-convergence.comparison.lshade + convergence.comparison.jso-"
+## 
+## $statistic
+##     L 
+## 24171 
+## 
+## $p.value
+## Asymptotic pvalue 
+##      4.372146e-05 
+## 
+## $method
+## [1] "Page"</code></pre>
 </div>
 <div id="confidence-intervals-and-confidence-curves" class="section level2">
 <h2 class="hasAnchor">
@@ -945,6 +958,12 @@
 <p>The tests compute the probability of the true location of <span class="math inline">\(\textrm{EBO-CMAR} - \textrm{jSO}\)</span> with respect to <span class="math inline">\(0\)</span>, so both tests’ results shows that the left region (jSO obtain worse results) results in greater probability, although this is not significant. Rope probability is low in comparison with the right and left region, and this is because, although the number of wins and losses is similar for both algorithms, the number of benchmark functions where the results are quite similar is lower.</p>
 <p>We can see the posterior probability density of the parameter in the following figures, where each point represents an estimation of the probability of the parameter which belongs to each region of interest. The proportion of the location of the points is shown in the associated table. This means that we have repeatedly obtained the triplets of the probability of each region to be the true location of the difference between the two samples, and then we have plotted these triplets to obtain the posterior distribution of the parameter. If we compare these results with a paired Wilcoxon test, we see that the null hypothesis of the equivalence of the means cannot be rejected.</p>
 <p>However, using the Bayesian paradigm we cannot establish the dominance of one algorithm over the other either, while in the frequentist paradigm we could be tempted to (erroneously) establish that there is no difference between these algorithms. With these plots we can see this is not the same situation, as the probability of the rope is very low.</p>
+<pre><code>## Registered S3 methods overwritten by 'ggtern':
+##   method           from   
+##   +.gg             ggplot2
+##   grid.draw.ggplot ggplot2
+##   plot.ggplot      ggplot2
+##   print.ggplot     ggplot2</code></pre>
 <p><img src="StatisticalAnalysis_files/figure-html/bayesian.pair.test-1.png" width="400px"></p>
 <p><img src="StatisticalAnalysis_files/figure-html/unnamed-chunk-8-1.png" width="400px"></p>
 </div>
@@ -958,8 +977,7 @@
 <li>Both bounds are between 0.05 and 0.95: Then we can say that the probability of one algorithm outperforming the other is lower than the desired probability of 0.95.</li>
 <li>Finally, if only one of the bounds is greater than 0.95 or lower than 0.05, the situation is undetermined and we cannot decide.</li>
 </ul>
-<pre><code>## Error in bayesian.imprecise(jso, ebo.cmar): objeto 'ebo.cmar' no encontrado</code></pre>
-<pre><code>## Error in plot(bayesian.imprecise.results): objeto 'bayesian.imprecise.results' no encontrado</code></pre>
+<p><img src="StatisticalAnalysis_files/figure-html/bayesian.imprecise-1.png" width="400px"></p>
 <p>According to the results of the Bayesian Imprecise Dirichlet Process test, the probability under the Dirichlet Process of <span class="math inline">\(P(EBO \leq jSO) \geq 0.5\)</span>, that is the probability of EBO-CMAR outperforming jSO, is between 0.92 and 0.96, so there is an indetermination, and we cannot say that there is a probability greater than 0.95 of EBO-CMAR outperforming jSO, nor that there is no such probability. These numbers represent the area under the curve of the upper and lower distributions when <span class="math inline">\(P(X \leq Y) \geq 0.5\)</span>. In the last figure we can see both posterior distributions.</p>
 </div>
 <div id="bayesian-multiple-measures-test" class="section level2">
@@ -982,7 +1000,7 @@
 </tr>
 <tr class="odd">
 <td align="left">&lt; &lt; &gt; &lt;</td>
-<td align="right">0.8397</td>
+<td align="right">0.8494</td>
 </tr>
 <tr class="even">
 <td align="left">&lt; &lt; &gt; &gt;</td>
@@ -990,7 +1008,7 @@
 </tr>
 <tr class="odd">
 <td align="left">&lt; &gt; &lt; &lt;</td>
-<td align="right">0.0000</td>
+<td align="right">0.0001</td>
 </tr>
 <tr class="even">
 <td align="left">&lt; &gt; &lt; &gt;</td>
@@ -998,7 +1016,7 @@
 </tr>
 <tr class="odd">
 <td align="left">&lt; &gt; &gt; &lt;</td>
-<td align="right">0.0443</td>
+<td align="right">0.0403</td>
 </tr>
 <tr class="even">
 <td align="left">&lt; &gt; &gt; &gt;</td>
@@ -1014,7 +1032,7 @@
 </tr>
 <tr class="odd">
 <td align="left">&gt; &lt; &gt; &lt;</td>
-<td align="right">0.0018</td>
+<td align="right">0.0020</td>
 </tr>
 <tr class="even">
 <td align="left">&gt; &lt; &gt; &gt;</td>
@@ -1026,11 +1044,11 @@
 </tr>
 <tr class="even">
 <td align="left">&gt; &gt; &lt; &gt;</td>
-<td align="right">0.0001</td>
+<td align="right">0.0000</td>
 </tr>
 <tr class="odd">
 <td align="left">&gt; &gt; &gt; &lt;</td>
-<td align="right">0.1141</td>
+<td align="right">0.1082</td>
 </tr>
 <tr class="even">
 <td align="left">&gt; &gt; &gt; &gt;</td>
@@ -1048,12 +1066,10 @@
 
 <p>The classic statistical analysis that should be made in the context of a competition would involve a non-parametric test with post-hoc test for a <span class="math inline">\(n\)</span> versus <span class="math inline">\(n\)</span> scenario, as we do not have a preference for the results of comparison of any specific algorithm. In order to preserve the relative importance of the results in the different dimension scenarios, we show the plots of the critical difference explained in for the four scenarios.</p>
 <p>As we can see in the following figures, summary scores are consistent with Critical Differences plots, as the first classified algorithms are also in the first positions of the graphical representation. However, the statistical tests make it possible to address the fact that there is a group of algorithms in the lead group in every dimension scenario whose associated hypothesis of equivalence cannot be discarded. These algorithms are: LSSPA, DES, LSCNE, MM and jSO, which contradicts the fact that EBO won the competition. EBO has the lowest mean rank in Dimension 10, 30 and 100, but the hypotheses of equivalence with the first classified in Dimension 50 (LSSPA) cannot be rejected.</p>
-<embed src="img/cd-plot-dim10.pdf" width="200px" type="application/pdf"></embed><embed src="img/cd-plot-dim30.pdf" width="200px" type="application/pdf"></embed><embed src="img/cd-plot-dim50.pdf" width="200px" type="application/pdf"></embed><embed src="img/cd-plot-dim100.pdf" width="200px" type="application/pdf"></embed><p>In the Bayesian paradigm, after having rejected the equivalence of all the mean ranks of the algorithms with the Friedman tests, we repeatedly perform the Bayesian Signed-Rank for every pair of algorithms in each dimension scenario. The results are summarized in the following figures. Specially in lower dimensions there is less certainty than there was in the non-parametric analysis concerning the dominance of an algorithm over the other in each comparison, although from the Bayesian perspective we can state where there is a tie between a pair of algorithms and the direction of the difference, while the equivalence with NHST cannot be assured. In this case, as we are interested in the minimization of the result, an algorithm wins when the difference between the results is in the left region. This is represented by the color red, while the probability represents the opacity of the tile.</p>
-<p><img src="img/bayesian-multiple-dim10.eps" width="500px"></p>
-<p>As the error obtained in the competition increases, more comparisons are marked as significant and less ties between algorithms are detected. In this figure we see how in the comparison of the first classified algorithms the most probable situation is a tie. This group starts to win with a greater probability in the 30 Dimension scenario, while the ties persist within the lead group.</p>
-<p><img src="img/bayesian-multiple-dim30.eps" width="500px"></p>
-<p>The results of the 50 dimension scenario, shown in the following figure, coincide with the conclusions obtained in the non-parametric analysis, whilst the EBO algorithm, the winner of the competition, obtains worse results (with a probability above 0.8) than the lead group comprised of the DES, jSO, LSSPA, LSCNE and MM algorithms. Finally in 100 dimension scenario, EBO wins in the comparisons with all the remaining algorithms, with probabilities between 0.64 in the comparison versus DES and 0.96 versus DYYPO.</p>
-<p><img src="img/bayesian-multiple-dim50.eps" width="500px"><img src="img/bayesian-multiple-dim100.eps" width="500px"></p>
+<embed src="img/cd-plot-dim10.pdf" width="40%" type="application/pdf"></embed><embed src="img/cd-plot-dim30.pdf" width="40%" type="application/pdf"></embed><embed src="img/cd-plot-dim50.pdf" width="40%" type="application/pdf"></embed><embed src="img/cd-plot-dim100.pdf" width="40%" type="application/pdf"></embed><p>In the Bayesian paradigm, after having rejected the equivalence of all the mean ranks of the algorithms with the Friedman tests, we repeatedly perform the Bayesian Signed-Rank for every pair of algorithms in each dimension scenario. The results are summarized in the following figures. Specially in lower dimensions there is less certainty than there was in the non-parametric analysis concerning the dominance of an algorithm over the other in each comparison, although from the Bayesian perspective we can state where there is a tie between a pair of algorithms and the direction of the difference, while the equivalence with NHST cannot be assured. In this case, as we are interested in the minimization of the result, an algorithm wins when the difference between the results is in the left region. This is represented by the color red, while the probability represents the opacity of the tile.</p>
+<embed src="img/bayesian-multiple-dim10-eps-converted-to.pdf" width="500px" type="application/pdf"></embed><p>As the error obtained in the competition increases, more comparisons are marked as significant and less ties between algorithms are detected. In this figure we see how in the comparison of the first classified algorithms the most probable situation is a tie. This group starts to win with a greater probability in the 30 Dimension scenario, while the ties persist within the lead group.</p>
+<embed src="img/bayesian-multiple-dim30-eps-converted-to.pdf" width="500px" type="application/pdf"></embed><p>The results of the 50 dimension scenario, shown in the following figure, coincide with the conclusions obtained in the non-parametric analysis, whilst the EBO algorithm, the winner of the competition, obtains worse results (with a probability above 0.8) than the lead group comprised of the DES, jSO, LSSPA, LSCNE and MM algorithms. Finally in 100 dimension scenario, EBO wins in the comparisons with all the remaining algorithms, with probabilities between 0.64 in the comparison versus DES and 0.96 versus DYYPO.</p>
+<p><embed src="img/bayesian-multiple-dim50-eps-converted-to.pdf"></embed><!-- --><embed src="img/bayesian-multiple-dim100-eps-converted-to.pdf" width="500px" type="application/pdf"></embed></p>
 </div>
   </div>
 

@@ -387,6 +387,7 @@ convergence.comparison <- rbind(convergence.comparison.jso,
 convergence.comparison.jso <- select(convergence.comparison.jso, -Benchmark, -Algorithm)
 convergence.comparison.lshade <- select(convergence.comparison.lshade, -Benchmark, -Algorithm)
 page.results <- rNPBST::page.test(-convergence.comparison.lshade+convergence.comparison.jso)
+page.results
 ```
 
 
@@ -622,7 +623,7 @@ $P(X \leq Y) \geq 0.5$. These are the possible scenarios:
   than 0.05, the situation is undetermined and we cannot decide.
 
 ```{r bayesian.imprecise, out.width = "400px"}
-bayesian.imprecise.results <- bayesian.imprecise(jso, ebo.cmar)
+bayesian.imprecise.results <- bayesian.imprecise(jso, ebo)
 plot(bayesian.imprecise.results) + ggplot2::ggtitle("JSO vs. EBO-CMAR")
 ```
 
@@ -720,12 +721,13 @@ the lowest mean rank in Dimension 10, 30 and 100, but the hypotheses
 of equivalence with the first classified in Dimension 50 (LSSPA)
 cannot be rejected.
 
-```{r, out.width = "200px"}
+
+```{r cd-plots, out.width = "40%"}
 knitr::include_graphics("img/cd-plot-dim10.pdf")
 knitr::include_graphics("img/cd-plot-dim30.pdf")
 ```
 
-```{r, out.width = "200px"}
+```{r cd-plots-2, out.width = "40%"}
 knitr::include_graphics("img/cd-plot-dim50.pdf")
 knitr::include_graphics("img/cd-plot-dim100.pdf")
 ```
@@ -747,7 +749,7 @@ represented by the color red, while the probability represents the
 opacity of the tile.
  
 ```{r, out.width = "500px"}
-knitr::include_graphics("img/bayesian-multiple-dim10.eps")
+knitr::include_graphics("img/bayesian-multiple-dim10-eps-converted-to.pdf")
 ```
 
 As the error obtained in the competition increases, more comparisons
@@ -758,7 +760,7 @@ starts to win with a greater probability in the 30 Dimension scenario,
 while the ties persist within the lead group.
 
 ```{r, out.width = "500px"}
-knitr::include_graphics("img/bayesian-multiple-dim30.eps")
+knitr::include_graphics("img/bayesian-multiple-dim30-eps-converted-to.pdf")
 ```
 
 The results of the 50 dimension scenario, shown in
@@ -770,9 +772,9 @@ and MM algorithms. Finally in 100 dimension scenario, EBO wins in the
 comparisons with all the remaining algorithms, with probabilities
 between 0.64 in the comparison versus DES and 0.96 versus DYYPO.
 
-```{r, out.width = "500px"}
-knitr::include_graphics("img/bayesian-multiple-dim50.eps")
+```{r}
+knitr::include_graphics("img/bayesian-multiple-dim50-eps-converted-to.pdf")
 ```
 ```{r, out.width = "500px"}
-knitr::include_graphics("img/bayesian-multiple-dim100.eps")
+knitr::include_graphics("img/bayesian-multiple-dim100-eps-converted-to.pdf")
 ```
