@@ -855,11 +855,29 @@
 <p>In this subsection we show the use of confidence intervals and confidence curves in the comparison of optimization results. First, we must advise that these comparisons only take care of two algorithms at a time, and a post-hoc correction would be needed if the comparison involved a greater number of algorithms, as we will see in the following examples.</p>
 <p>We perform the comparison of the final results of PPSO and jSO algorithms for the 10 dimension scenario.</p>
 <p>As the 0 effect is not included in the non-parametric confidence interval, the null hypothesis is then rejected. The interval is very wide, so we have not much certainty the true location of the parameter. If we only had done the Wilcoxon test, we would have obtained the associated <span class="math inline">\(p\)</span>-value, and the null hypothesis would also be rejected, so the difference between the medians are detected with both methods. If we look at the confidence curve, we can reject the classic null hypothesis if the interval bounded by the intersections of the horizontal line at the <span class="math inline">\(\alpha\)</span> value and the curve does not contain 0. The confidence curve associated with the previous test is plotted in the following figure, where we check that the null hypothesis can be rejected.</p>
-<pre><code>##         lb         ub 
-##   8.557851 233.709039</code></pre>
 <p><img src="StatisticalAnalysis_files/figure-html/confidence.intervals-1.png" width="700"></p>
 <p>As the 0 effect is not included in the Non-parametric confidence interval, the null hypothesis is then rejected, although the interval is very wide, so we have not much certainty about that. If we only had done the Wilcoxon test, we would have obtained the associated <span class="math inline">\(p\)</span>-value, and the null hypothesis would be also rejected, so the difference between the medians are detected with both methods. If we look at the confidence curve, we can reject the classic null hypothesis if the intersection of the vertical line at the 0 level and the horizontal line at the <span class="math inline">\(\alpha\)</span> value remains under the curve.</p>
-<pre><code>## [1] "\\begin{table}[] \n\\centering\n\\caption{Wilcoxon test} \n\\begin{tabular}{lll} \n\\hline\n\\multicolumn{3}{c}{Wilcoxon} \\\\ \\hline\n\n\\multirow{1}{*}{data.name}\n\t &amp; \t\t &amp; \tconf.interval.matrix\t \\\\ \\hline\n\\multirow{2}{*}{statistic}\n\t &amp; \tR+\t &amp; \t351.50\t\\\\\n \t &amp; \tR-\t &amp; \t 83.50\t \\\\ \\hline\n\\multirow{6}{*}{p.value}\n\t &amp; \tExact Left pvalue\t &amp; \t0.9993005\t\\\\\n \t &amp; \tExact Right pvalue\t &amp; \t0.0006995\t\\\\\n \t &amp; \tExact Double pvalue\t &amp; \t0.0013990\t\\\\\n \t &amp; \tAsymptotic Left Tail\t &amp; \t0.9999550\t\\\\\n \t &amp; \tAsymptotic Right Tail\t &amp; \t0.0000497\t\\\\\n \t &amp; \tAsymptotic Double Tail\t &amp; \t0.0000994\t \\\\ \\hline\n\\end{tabular}\n\\end{table}"</code></pre>
+<pre><code>## \begin{table}[] 
+## \centering
+## \caption{Wilcoxon test} 
+## \begin{tabular}{lll} 
+## \hline
+## \multicolumn{3}{c}{Wilcoxon} \\ \hline
+## 
+## \multirow{1}{*}{data.name}
+##   &amp;       &amp;  conf.interval.matrix     \\ \hline
+## \multirow{2}{*}{statistic}
+##   &amp;  R+   &amp;  351.50  \\
+##       &amp;  R-   &amp;   83.50   \\ \hline
+## \multirow{6}{*}{p.value}
+##   &amp;  Exact Left pvalue    &amp;  0.9993005   \\
+##       &amp;  Exact Right pvalue   &amp;  0.0006995   \\
+##       &amp;  Exact Double pvalue  &amp;  0.0013990   \\
+##       &amp;  Asymptotic Left Tail     &amp;  0.9999550   \\
+##       &amp;  Asymptotic Right Tail    &amp;  0.0000497   \\
+##       &amp;  Asymptotic Double Tail   &amp;  0.0000994    \\ \hline
+## \end{tabular}
+## \end{table}</code></pre>
 <pre><code>##         lb         ub 
 ##   8.557851 233.709039</code></pre>
 <p><img src="StatisticalAnalysis_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
@@ -1000,7 +1018,7 @@
 </tr>
 <tr class="odd">
 <td align="left">&lt; &lt; &gt; &lt;</td>
-<td align="right">0.8494</td>
+<td align="right">0.8443</td>
 </tr>
 <tr class="even">
 <td align="left">&lt; &lt; &gt; &gt;</td>
@@ -1008,7 +1026,7 @@
 </tr>
 <tr class="odd">
 <td align="left">&lt; &gt; &lt; &lt;</td>
-<td align="right">0.0001</td>
+<td align="right">0.0000</td>
 </tr>
 <tr class="even">
 <td align="left">&lt; &gt; &lt; &gt;</td>
@@ -1016,7 +1034,7 @@
 </tr>
 <tr class="odd">
 <td align="left">&lt; &gt; &gt; &lt;</td>
-<td align="right">0.0403</td>
+<td align="right">0.0426</td>
 </tr>
 <tr class="even">
 <td align="left">&lt; &gt; &gt; &gt;</td>
@@ -1032,7 +1050,7 @@
 </tr>
 <tr class="odd">
 <td align="left">&gt; &lt; &gt; &lt;</td>
-<td align="right">0.0020</td>
+<td align="right">0.0034</td>
 </tr>
 <tr class="even">
 <td align="left">&gt; &lt; &gt; &gt;</td>
@@ -1048,7 +1066,7 @@
 </tr>
 <tr class="odd">
 <td align="left">&gt; &gt; &gt; &lt;</td>
-<td align="right">0.1082</td>
+<td align="right">0.1097</td>
 </tr>
 <tr class="even">
 <td align="left">&gt; &gt; &gt; &gt;</td>
@@ -1069,7 +1087,7 @@
 <embed src="img/cd-plot-dim10.pdf" width="40%" type="application/pdf"></embed><embed src="img/cd-plot-dim30.pdf" width="40%" type="application/pdf"></embed><embed src="img/cd-plot-dim50.pdf" width="40%" type="application/pdf"></embed><embed src="img/cd-plot-dim100.pdf" width="40%" type="application/pdf"></embed><p>In the Bayesian paradigm, after having rejected the equivalence of all the mean ranks of the algorithms with the Friedman tests, we repeatedly perform the Bayesian Signed-Rank for every pair of algorithms in each dimension scenario. The results are summarized in the following figures. Specially in lower dimensions there is less certainty than there was in the non-parametric analysis concerning the dominance of an algorithm over the other in each comparison, although from the Bayesian perspective we can state where there is a tie between a pair of algorithms and the direction of the difference, while the equivalence with NHST cannot be assured. In this case, as we are interested in the minimization of the result, an algorithm wins when the difference between the results is in the left region. This is represented by the color red, while the probability represents the opacity of the tile.</p>
 <embed src="img/bayesian-multiple-dim10-eps-converted-to.pdf" width="500px" type="application/pdf"></embed><p>As the error obtained in the competition increases, more comparisons are marked as significant and less ties between algorithms are detected. In this figure we see how in the comparison of the first classified algorithms the most probable situation is a tie. This group starts to win with a greater probability in the 30 Dimension scenario, while the ties persist within the lead group.</p>
 <embed src="img/bayesian-multiple-dim30-eps-converted-to.pdf" width="500px" type="application/pdf"></embed><p>The results of the 50 dimension scenario, shown in the following figure, coincide with the conclusions obtained in the non-parametric analysis, whilst the EBO algorithm, the winner of the competition, obtains worse results (with a probability above 0.8) than the lead group comprised of the DES, jSO, LSSPA, LSCNE and MM algorithms. Finally in 100 dimension scenario, EBO wins in the comparisons with all the remaining algorithms, with probabilities between 0.64 in the comparison versus DES and 0.96 versus DYYPO.</p>
-<p><embed src="img/bayesian-multiple-dim50-eps-converted-to.pdf"></embed><!-- --><embed src="img/bayesian-multiple-dim100-eps-converted-to.pdf" width="500px" type="application/pdf"></embed></p>
+<embed src="img/bayesian-multiple-dim50-eps-converted-to.pdf" width="500px" type="application/pdf"></embed><embed src="img/bayesian-multiple-dim100-eps-converted-to.pdf" width="500px" type="application/pdf"></embed>
 </div>
   </div>
 
