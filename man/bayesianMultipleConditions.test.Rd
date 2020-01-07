@@ -4,8 +4,12 @@
 \alias{bayesianMultipleConditions.test}
 \title{Bayesian Test for Multiple Performance Measures Comparison}
 \usage{
-bayesianMultipleConditions.test(x, y, n.samples = 10000,
-  prior = rep(2^-ncol(x), 2^ncol(x)))
+bayesianMultipleConditions.test(
+  x,
+  y,
+  n.samples = 10000,
+  prior = rep(2^-ncol(x), 2^ncol(x))
+)
 }
 \arguments{
 \item{x}{Performance matrix of first algorithm}
