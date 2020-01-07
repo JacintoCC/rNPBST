@@ -4,31 +4,15 @@ language: R
 sudo: false
 cache: packages
 
-
-before_install:
-  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
-  - chmod 755 ./travis-tool.sh
-install:
-  - ./travis-tool.sh install_r rJava
-  - ./travis-tool.sh install_r MCMCpack
-  - ./travis-tool.sh install_r ggplot2
-  - ./travis-tool.sh install_r dplyr
-  - ./travis-tool.sh install_r magrittr
-  - ./travis-tool.sh install_r ggtern
-  - ./travis-tool.sh install_r XML
-  - ./travis-tool.sh install_r EnvStats
-  - ./travis-tool.sh install_r rmutil
-  - ./travis-tool.sh install_r devtools
-  - ./travis-tool.sh install_r KernSmooth
-  - ./travis-tool.sh install_r pracma
-  - ./travis-tool.sh install_r rlang
-  - ./travis-tool.sh install_r xtable
-  - ./travis-tool.sh install_r knitr
-  - ./travis-tool.sh install_r rmarkdown
-  - ./travis-tool.sh install_bioc Rgraphviz
-  - ./travis-tool.sh install_bioc graph
-  - ./travis-tool.sh install_r scmamp
-  - ./travis-tool.sh install_r reshape2
-  - ./travis-tool.sh install_r tidyr
-  - ./travis-tool.sh install_r lawstat
-  - ./travis-tool.sh install_r mvShapiroTest
+script:
+  - R CMD build . --compact-vignettes=gs+qpdf
+  - R CMD check *tar.gz --as-cran
+r_github_packages:
+  - r-lib/pkgdown
+bioc_packages:
+  - Rgraphviz
+  - graph
+after_success:
+  - tar -C .. -xf $PKG_TARBALL
+  - rm -rf RTest.Rcheck
+  - Rscript -e 'pkgdown::build_site()'

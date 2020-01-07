@@ -1,6 +1,15 @@
 ---
 title: "Statistical Analysis"
 output: rmarkdown::html_vignette
+resource_files:
+  - img/cd-plot-dim10.pdf
+  - img/cd-plot-dim30.pdf
+  - img/cd-plot-dim50.pdf
+  - img/cd-plot-dim100.pdf
+  - img/bayesian-multiple-dim10-eps-converted-to.pdf
+  - img/bayesian-multiple-dim30-eps-converted-to.pdf
+  - img/bayesian-multiple-dim50-eps-converted-to.pdf
+  - img/bayesian-multiple-dim100-eps-converted-to.pdf
 vignette: >
   %\VignetteIndexEntry{Statistical Analysis}
   %\VignetteEngine{knitr::rmarkdown}
@@ -380,14 +389,12 @@ convergence.comparison.jso <- filter(cec17.mean,
 convergence.comparison <- rbind(convergence.comparison.jso,
                                 convergence.comparison.lshade) %>%
   as.data.frame() %>% reshape2::melt(id.vars = c("Algorithm", "Benchmark"), value.name = "Result") %>%
-  transform(Perc.Iterations = as.numeric(gsub("perc.completion.", "", variable))) %>% select(-variable)
-```
+  transform(Perc.Iterations = as.numeric(gsub("perc.completion.", "", variable))) %>% select(-variable) 
 
-```{r}
 convergence.comparison.jso <- select(convergence.comparison.jso, -Benchmark, -Algorithm)
 convergence.comparison.lshade <- select(convergence.comparison.lshade, -Benchmark, -Algorithm)
-page.results <- rNPBST::page.test(-convergence.comparison.lshade+convergence.comparison.jso)
-page.results
+page.results <- rNPBST::page.test(convergence.comparison.jso - convergence.comparison.lshade)
+page.results %>% htest2Tex() %>% cat()
 ```
 
 
@@ -436,9 +443,9 @@ conf.interval.jSO <- filter(cec17.final,Algorithm == "jSO",
                            Dimension == 10) %>%
     select(Result)
 
-rNPBST::NP.ApproximateConfidenceInterval(x = conf.interval.PPSO[,1],
-                                        y = conf.interval.jSO[,1], 
-                                        paired = T)
+np.ci.results <- rNPBST::NP.ApproximateConfidenceInterval(x = conf.interval.PPSO[,1],
+                                                          y = conf.interval.jSO[,1], 
+                                                          paired = T)
 
 rNPBST::PlotConfidenceCurve(x = conf.interval.PPSO[,1],
                             y = conf.interval.jSO[,1], 
@@ -458,7 +465,9 @@ the horizontal line at the $\alpha$ value remains under the curve.
 ```{r confidence.curve}
 conf.interval.matrix <- cbind(conf.interval.PPSO, conf.interval.jSO)
 colnames(conf.interval.matrix) <- c("PPSO", "jSO")
-rNPBST::htest2Tex(rNPBST::wilcoxon.test(conf.interval.matrix))
+rNPBST::wilcoxon.test(conf.interval.matrix) %>%
+   htest2Tex() %>%
+   cat()
 ```
 
 ```{r}
@@ -772,9 +781,11 @@ and MM algorithms. Finally in 100 dimension scenario, EBO wins in the
 comparisons with all the remaining algorithms, with probabilities
 between 0.64 in the comparison versus DES and 0.96 versus DYYPO.
 
-```{r}
+```{r, out.width = "500px"}
 knitr::include_graphics("img/bayesian-multiple-dim50-eps-converted-to.pdf")
 ```
+
+
 ```{r, out.width = "500px"}
 knitr::include_graphics("img/bayesian-multiple-dim100-eps-converted-to.pdf")
 ```
