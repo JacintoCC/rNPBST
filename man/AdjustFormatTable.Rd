@@ -4,14 +4,8 @@
 \alias{AdjustFormatTable}
 \title{Adjust Format Table}
 \usage{
-AdjustFormatTable(
-  table,
-  rownames = NULL,
-  colnames = NULL,
-  type = "latex",
-  print.code = FALSE,
-  ...
-)
+AdjustFormatTable(table, rownames = NULL, colnames = NULL,
+  type = "latex", print.code = FALSE, ...)
 }
 \arguments{
 \item{table}{Table with p-values}

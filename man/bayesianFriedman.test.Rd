@@ -4,14 +4,8 @@
 \alias{bayesianFriedman.test}
 \title{Bayesian Friedman Test}
 \usage{
-bayesianFriedman.test(
-  dataset,
-  s = 1,
-  gamma = 0.05,
-  ties = "average",
-  n.samples = 10000,
-  imprecise = FALSE
-)
+bayesianFriedman.test(dataset, s = 1, gamma = 0.05, ties = "average",
+  n.samples = 10000, imprecise = FALSE)
 }
 \arguments{
 \item{dataset}{Matrix observations with treatments by columns and observations by rows}

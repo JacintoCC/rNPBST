@@ -75,17 +75,19 @@ cec17.extended <- transform(cec17.extended,
                             Dimension = factor(trimws(Dimension), levels = trimws(levels(Dimension)))) %>%
    mutate_at(vars(starts_with("perc.")), as.numeric)
 cec17.extended$Iteration <- rep(1:51, 116)
+cec17.extended <- as.data.frame(cec17.extended)
 
 # Average between iterations
 cec17.mean <- select(cec17.extended, -Iteration) %>%
    group_by(Algorithm, Benchmark, Dimension) %>%
-   summarise_all(mean, na.rm=T)
+   summarise_all(mean, na.rm=T) %>%
+   as.data.frame()
 
 # Results at final steps of execution
 cec17.extended.final <- dplyr::select(cec17.extended,
                                       c(Algorithm, Benchmark,Dimension,Iteration,perc.completion.100))
 colnames(cec17.extended.final)[5] <- "Result"
-
+cec17.extended.final <- as.data.frame(cec17.extended.final)
 
 ## Aggregation of aditional algorithms
 
@@ -115,7 +117,7 @@ lshade.cnepsin <- transform(lshade.cnepsin,
 cec17.final <- dplyr::select(cec17.mean,
                              c(Algorithm, Benchmark,Dimension,perc.completion.100))
 colnames(cec17.final)[4] <- "Result"
-cec17.final <- rbind(cec17.final, lshade.cnepsin)
+cec17.final <- rbind(cec17.final, lshade.cnepsin) %>% as.data.frame()
 
 # Save data
 usethis::use_data(cec17.extended, overwrite = T)

@@ -78,7 +78,7 @@ shapiro.test <- split(cec17.final, cec17.final$Dimension) %>%
 
 AdjustFormatTable(shapiro.test, 
                   colnames = paste("Dim.", levels(cec17.final$Dimension)),
-                  rownames = levels(cec17.final$Algorithm), print.code = FALSE,
+                  rownames = levels(cec17.final$Algorithm), print.code = TRUE,
                   digits = -2)
 ```
 
@@ -108,17 +108,17 @@ satisfied.
 sapply(split(cec17.final, cec17.final$Algorithm), 
        function(x){
           test <- x %>%
-            select(-Algorithm) %>% 
-            tidyr::spread(Dimension, Result) %>%
- 	    select(-Benchmark)  %>%
-            as.matrix() %>%
-            mvShapiroTest::mvShapiro.Test()
+             select(-Algorithm) %>% 
+             tidyr::spread(Dimension, Result) %>%
+             select(-Benchmark)  %>%
+             as.matrix() %>%
+             mvShapiroTest::mvShapiro.Test()
           return(test$p.value)
        }) %>% 
-       matrix(ncol = 1, 
-              dimnames = list(levels(cec17.final$Algorithm),
-                              "p-value")) %>%
-  AdjustFormatTable(print.code = FALSE)
+   matrix(ncol = 1, 
+          dimnames = list(levels(cec17.final$Algorithm),
+                          "p-value")) %>%
+   AdjustFormatTable(print.code = TRUE)
 ```
 
 # Non-parametric tests
@@ -178,7 +178,7 @@ results.nppairwise <- matrix(c(results.sign, results.wilcoxon,results.wilcoxonRS
                              dimnames = list(c("Sign","Wilcoxon", "Wilcoxon Rank-Sum"), 
                                              paste("Dim.", levels(cec17.final$Dimension)))) %>%
     AdjustFormatTable(caption = "Non-parametric pairwise comparison between EBO and jSO",
-                      label = "tab:np-pairwise", print.code = FALSE)
+                      label = "tab:np-pairwise", print.code = TRUE)
 ```
 
 ### Multiple comparison
@@ -214,7 +214,7 @@ AdjustFormatTable(non.parametric,
                   colnames = paste("Dim.", levels(cec17.final$Dimension)),
                   rownames = c("Friedman" ,"Friedman AR", "Iman-Davenport", "Quade"),
                   caption = "Non-Parametric tests",
-                  label = "tab:np-tests")
+                  label = "tab:np-tests", print.code = T)
 ```
 
 We can see in this table how the tests that involve multiple
@@ -273,13 +273,11 @@ results.post.quade <- ApplyNPTestPostHoc(cec17.final, scmamp::quadePost,
 
 results.post.global.holland <- rbind(results.post.friedman,
                                     results.post.friedmanAR,
-                                    results.post.quade) %>% t 
-results.post.global.holland <- cbind(rownames(results.post.global.holland),
-                                    results.post.global.holland) %>% as.data.frame()
-rownames(results.post.global.holland) <- NULL
-colnames(results.post.global.holland) <- c("Algorithm","Friedman","FriedmanAR","Quade") 
+                                    results.post.quade) %>% t
+colnames(results.post.global.holland) <- c("Friedman","FriedmanAR","Quade") 
 
-knitr::kable(results.post.global.holland)
+# knitr::kable(results.post.global.holland)
+AdjustFormatTable(results.post.global.holland, print.code = TRUE)
 ```
 
 - If we wanted to show that the differences between the algorithms
@@ -304,7 +302,7 @@ post.hoc.grouped <- ApplyNPTestPostHoc.Grouped(cec17.final,
                                                scmamp::adjustHolland,
                                                control = "EBO")
 
-AdjustFormatTable(post.hoc.grouped,
+AdjustFormatTable(post.hoc.grouped, print.code = TRUE,
                   colnames = paste("Dim", colnames(post.hoc.grouped)),
                   rownames = levels(cec17.final$Algorithm),
                   caption = "Results grouped by dimension. Friedman test + Holland adjust.",
@@ -323,7 +321,7 @@ ApplyNPTestPostHoc(cec17.final.10,
                    scmamp::friedmanPost,
                    scmamp::adjustHolland)  %>%
   AdjustFormatTable(caption = "Results $n$ vs $n$. Friedman test + Holland adjust.",
-                    label = "tab:nvsn-friedman-holland")
+                    label = "tab:nvsn-friedman-holland", print.code = TRUE)
 ```
 
 The results of the $n \times n$ comparison using a Friedman test and a
@@ -353,10 +351,33 @@ to the minimization objective, as the function was designed to be used
 with a maximization intention.
 
 ```{r}
-results.matrix.10 <- filter(cec17.final, Dimension == 10) %>% 
+results.matrix.10 <- filter(cec17.final, Dimension == 10, Algorithm != "MOS12") %>% 
 	tidyr::spread("Algorithm", "Result") %>% 
 	dplyr::select(-Benchmark, -Dimension)
 scmamp::plotCD(-results.matrix.10)
+```
+
+```{r}
+results.matrix.30 <- filter(cec17.final, Dimension == 30, Algorithm != "MOS12") %>% 
+	tidyr::spread("Algorithm", "Result") %>% 
+	dplyr::select(-Benchmark, -Dimension)
+scmamp::plotCD(-results.matrix.30)
+```
+
+
+```{r}
+results.matrix.50 <- filter(cec17.final, Dimension == 50, Algorithm != "MOS12") %>% 
+	tidyr::spread("Algorithm", "Result") %>% 
+	dplyr::select(-Benchmark, -Dimension)
+scmamp::plotCD(-results.matrix.50)
+```
+
+
+```{r}
+results.matrix.100 <- filter(cec17.final, Dimension == 100, Algorithm != "MOS12") %>% 
+	tidyr::spread("Algorithm", "Result") %>% 
+	dplyr::select(-Benchmark, -Dimension)
+scmamp::plotCD(-results.matrix.100)
 ```
 
 ## Convergence test
@@ -393,7 +414,7 @@ convergence.comparison <- rbind(convergence.comparison.jso,
 
 convergence.comparison.jso <- select(convergence.comparison.jso, -Benchmark, -Algorithm)
 convergence.comparison.lshade <- select(convergence.comparison.lshade, -Benchmark, -Algorithm)
-page.results <- rNPBST::page.test(convergence.comparison.jso - convergence.comparison.lshade)
+page.results <- rNPBST::page.test(-convergence.comparison.jso + convergence.comparison.lshade)
 page.results %>% htest2Tex() %>% cat()
 ```
 
@@ -407,7 +428,8 @@ convergence.comparison.dyypo <- filter(cec17.mean,
                                 Algorithm == "DYYPO",
                                 Dimension == 100) %>%
     select(-Algorithm, -Benchmark, -Dimension)
-page.results <- rNPBST::page.test(convergence.comparison.jso - convergence.comparison.dyypo)
+page.results <- rNPBST::page.test(-convergence.comparison.jso + convergence.comparison.dyypo)
+page.results
 ```
 
 ## Confidence Intervals and Confidence Curves
@@ -537,7 +559,7 @@ rejected.
 
 ```{r bayesian.friedman.test}
 spread.final.10 <- tidyr::spread(cec17.final.10, Algorithm, Result) %>% 
-	select(-Benchmark)
+	select(-Benchmark, -Dimension)
 bft.results <- bayesianFriedman.test(spread.final.10, imprecise = TRUE, 
                                     n.samples = 200)
 ```
@@ -583,9 +605,9 @@ low.
 
 
 ```{r bayesian.pair.test, out.width = "400px"}
-jso <- filter(cec17.final, Algorithm == "jSO", Dimension == 10) %>%
+jso <- filter(cec17.final, Algorithm == "jSO", Dimension == 100) %>%
     select(Result) %>% unlist()
-ebo <- filter(cec17.final, Algorithm == "EBO", Dimension == 10) %>%
+ebo <- filter(cec17.final, Algorithm == "EBO", Dimension == 100) %>%
     select(Result) %>% unlist()
 
 bst.results <- rNPBST::bayesianSign.test(ebo, jso,
@@ -593,10 +615,16 @@ bst.results <- rNPBST::bayesianSign.test(ebo, jso,
 plot(bst.results, num.points = 10000) +
     ggplot2::labs(x = "jSO", z = "EBO") + 
    theme(text = element_text(size=18))
+
 ```
 
 
 ```{r, out.width = "400px"}
+jso <- filter(cec17.final, Algorithm == "jSO", Dimension == 100) %>%
+    select(Result) %>% unlist()
+ebo <- filter(cec17.final, Algorithm == "EBO", Dimension == 100) %>%
+    select(Result) %>% unlist()
+
 bsrt.results <- rNPBST::bayesianSignedRank.test(ebo, jso,
                                               rope.min = -10, rope.max = 10)
 plot(bsrt.results, num.points = 10000) +
@@ -967,3 +995,47 @@ knitr::include_graphics("img/bayesian-multiple-dim50-eps-converted-to.pdf")
 ```{r, out.width = "500px"}
 knitr::include_graphics("img/bayesian-multiple-dim100-eps-converted-to.pdf")
 ```
+
+
+# Appendix
+
+```{r}
+rNPBST::cec17.final %>% 
+   filter(Dimension == 10) %>% 
+   select(-Dimension) %>%
+   tidyr::spread(Algorithm, Result) %>%
+   xtable::xtable()
+```
+
+
+```{r}
+aux.S1 <- rNPBST::cec17.final %>% 
+   filter(Algorithm != "MOS12") %>%
+   group_by(Algorithm, Dimension) %>%
+   summarise(SE_dim = sum(Result)) %>%
+   tidyr::spread(Dimension, SE_dim, sep=".") %>%
+   mutate(SE = sum(0.1* Dimension.10, 0.2*Dimension.30, 0.3*Dimension.50, 0.4*Dimension.100)) %>%
+   select(Algorithm, SE)
+S1 <- aux.S1 %>%
+   mutate(S1 = 50*min(aux.S1$SE)/SE) %>% select(-SE)
+
+aux.S2 <- rNPBST::cec17.final %>% 
+   filter(Algorithm != "MOS12") %>%
+   group_by(Benchmark, Dimension) %>%
+   mutate(Rank = rank(Result)) %>% 
+   ungroup() %>%
+   select(Algorithm, Dimension, Rank) %>%
+   group_by(Algorithm, Dimension) %>%
+   summarise(SE_dim = sum(Rank)) %>%
+   tidyr::spread(Dimension, SE_dim, sep=".") %>%
+   mutate(SE = sum(0.1* Dimension.10, 0.2*Dimension.30, 0.3*Dimension.50, 0.4*Dimension.100)) %>%
+   select(Algorithm, SE)
+S2 <- aux.S2 %>%
+   mutate(S2 = 50*min(aux.S2$SE)/SE) %>% select(-SE)
+```
+
+```{r}
+FinalScore <- inner_join(S1, S2) %>% mutate(Final = S1+S2) %>% arrange(desc(Final))
+```
+
+

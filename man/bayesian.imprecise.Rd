@@ -4,7 +4,8 @@
 \alias{bayesian.imprecise}
 \title{Bayesian Imprecise Dirichlet Prior}
 \usage{
-bayesian.imprecise(x, y, s = sqrt(2) - 1, c = 0.5, mc.samples = 10000)
+bayesian.imprecise(x, y, s = sqrt(2) - 1, c = 0.5,
+  mc.samples = 10000)
 }
 \arguments{
 \item{x}{First vector of observations}

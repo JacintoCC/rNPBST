@@ -11,7 +11,7 @@ NP.ApproximateConfidenceInterval(x, y, alpha = 0.05, paired = FALSE)
 
 \item{y}{Second algorithm's results}
 
-\item{alpha}{100(1-alpha)\\% level of significance}
+\item{alpha}{100(1-alpha)\% level of significance}
 
 \item{paired}{Boolean that indicates if the samples are paired}
 }

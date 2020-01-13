@@ -16,5 +16,5 @@ This function plots the posterior distribution of the parameter
 }
 \examples{
 cbt <- bayesianCorrelatedT.test(results.rf[1, ], results.knn[1, ])
-plot(cbt) + ggplot2::ggtitle("Random Forest vs. KNN \nDataset: abalone")
+plot(cbt) + ggplot2::ggtitle("Random Forest vs. KNN \\nDataset: abalone")
 }

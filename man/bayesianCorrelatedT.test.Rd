@@ -4,13 +4,8 @@
 \alias{bayesianCorrelatedT.test}
 \title{Bayesian Correlayed t-test}
 \usage{
-bayesianCorrelatedT.test(
-  x,
-  y = NULL,
-  rho = 1/length(x),
-  rope.min = -0.01,
-  rope.max = 0.01
-)
+bayesianCorrelatedT.test(x, y = NULL, rho = 1/length(x),
+  rope.min = -0.01, rope.max = 0.01)
 }
 \arguments{
 \item{x}{First vector of observations}
