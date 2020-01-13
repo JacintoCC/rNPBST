@@ -924,6 +924,7 @@ ggplot(bsr.results.dim100.df,
    scale_y_discrete(limits = rev(levels(bsr.results.dim100.df$Algorithm.1))) +
    geom_tile(aes(alpha = Max.Prob)) +
    geom_text(aes(label=format(Max.Prob, digits = 2)), alpha = 1) +
+   scale_fill_discrete(drop = FALSE) +
    labs(title = "Dimension 100",
         x = "Algorithm 2",
         y = "Algorithm 1") +
