@@ -39,6 +39,6 @@ Suggests:
 Remote: bioc::3.8/Rgraphviz, bioc::3.8/graph 
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Depends: R (>= 2.10)
 LazyData: true
