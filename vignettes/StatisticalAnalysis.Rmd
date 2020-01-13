@@ -591,7 +591,8 @@ ebo <- filter(cec17.final, Algorithm == "EBO", Dimension == 10) %>%
 bst.results <- rNPBST::bayesianSign.test(ebo, jso,
                                        rope.min = -10, rope.max = 10)
 plot(bst.results, num.points = 10000) +
-    ggplot2::labs(x = "jSO", z = "EBO")
+    ggplot2::labs(x = "jSO", z = "EBO") + 
+   theme(text = element_text(size=18))
 ```
 
 
@@ -599,7 +600,8 @@ plot(bst.results, num.points = 10000) +
 bsrt.results <- rNPBST::bayesianSignedRank.test(ebo, jso,
                                               rope.min = -10, rope.max = 10)
 plot(bsrt.results, num.points = 10000) +
-    ggplot2::labs(x = "jSO", z = "EBO", y = "rope")
+    ggplot2::labs(x = "jSO", z = "EBO", y = "rope") +
+   theme(text = element_text(size=18))
 
 ```
 
@@ -756,7 +758,182 @@ are interested in the minimization of the result, an algorithm wins
 when the difference between the results is in the left region. This is
 represented by the color red, while the probability represents the
 opacity of the tile.
- 
+
+## Dim 10
+```{r}
+bsr.results.dim10 <- cec17.final %>%
+   filter(Dimension == 10, Algorithm != "MOS12") %>% select(-Dimension) %>%
+   tidyr::spread("Algorithm", "Result") %>%
+   select(-Benchmark) %>%
+   apply.paired.bayesian(rNPBST::bayesianSignedRank.test, rope.min = -10, rope.max = 10)
+```
+
+```{r}
+bsr.results.dim10.df <- bsr.results.dim10 %>%
+   mutate(Winner = case_when(left > rope & left > right ~ "Alg. 1",
+                             rope > left & rope > right ~ "rope",
+                             right > left & right > rope ~ "Alg. 2"),
+          Max.Prob = pmax(left, rope, right)) %>%
+   select(Algorithm.1, Algorithm.2, Winner, Max.Prob)
+
+bsr.results.dim10.df.rev <- bsr.results.dim10.df %>%
+   transform(Algorithm.1 = Algorithm.2, Algorithm.2 = Algorithm.1,
+             Winner = case_when(Winner == "Alg. 1" ~ "Alg. 2",
+                                Winner == "Alg. 2" ~ "Alg. 1",
+                                TRUE ~ "rope"))
+
+bsr.results.dim10.df <- rbind.data.frame(bsr.results.dim10.df, bsr.results.dim10.df.rev) %>%
+   mutate(Algorithm.1 = as.character(Algorithm.1),
+          Algorithm.2 = as.character(Algorithm.2),
+          Algorithm.1 = as.factor(Algorithm.1),
+          Algorithm.2 = as.factor(Algorithm.2))
+
+ggplot(bsr.results.dim10.df, 
+       aes(x = Algorithm.2, y = Algorithm.1, fill = Winner)) +
+   scale_x_discrete(limits = levels(bsr.results.dim10.df$Algorithm.1)) +
+   scale_y_discrete(limits = rev(levels(bsr.results.dim10.df$Algorithm.1))) +
+   geom_tile(aes(alpha = Max.Prob)) +
+   geom_text(aes(label=format(Max.Prob, digits = 2)), alpha = 1) +
+   labs(title = "Dimension 10",
+        x = "Algorithm 2",
+        y = "Algorithm 1") +
+   scale_alpha(guide = "none")
+```
+
+
+## Dim 30
+
+```{r}
+bsr.results.dim30 <- cec17.final %>%
+   filter(Dimension == 30, Algorithm != "MOS12") %>% select(-Dimension) %>%
+   tidyr::spread("Algorithm", "Result") %>%
+   select(-Benchmark) %>%
+   apply.paired.bayesian(rNPBST::bayesianSignedRank.test, rope.min = -10, rope.max = 10)
+```
+
+```{r}
+bsr.results.dim30.df <- bsr.results.dim30 %>%
+   mutate(Winner = case_when(left > rope & left > right ~ "Alg. 1",
+                             rope > left & rope > right ~ "rope",
+                             right > left & right > rope ~ "Alg. 2"),
+          Max.Prob = pmax(left, rope, right)) %>%
+   select(Algorithm.1, Algorithm.2, Winner, Max.Prob)
+
+bsr.results.dim30.df.rev <- bsr.results.dim30.df %>%
+   transform(Algorithm.1 = Algorithm.2, Algorithm.2 = Algorithm.1,
+             Winner = case_when(Winner == "Alg. 1" ~ "Alg. 2",
+                                Winner == "Alg. 2" ~ "Alg. 1",
+                                TRUE ~ "rope"))
+
+bsr.results.dim30.df <- rbind.data.frame(bsr.results.dim30.df, bsr.results.dim30.df.rev) %>%
+   mutate(Algorithm.1 = as.character(Algorithm.1),
+          Algorithm.2 = as.character(Algorithm.2),
+          Algorithm.1 = as.factor(Algorithm.1),
+          Algorithm.2 = as.factor(Algorithm.2))
+
+ggplot(bsr.results.dim30.df, 
+       aes(x = Algorithm.2, y = Algorithm.1, fill = Winner)) +
+   scale_x_discrete(limits = levels(bsr.results.dim10.df$Algorithm.1)) +
+   scale_y_discrete(limits = rev(levels(bsr.results.dim10.df$Algorithm.1))) +
+   geom_tile(aes(alpha = Max.Prob)) +
+   geom_text(aes(label=format(Max.Prob, digits = 2)), alpha = 1) +
+   labs(title = "Dimension 30",
+        x = "Algorithm 2",
+        y = "Algorithm 1") +
+   scale_alpha(guide = "none")
+```
+
+## Dim 50
+
+
+```{r}
+bsr.results.dim50 <- cec17.final %>%
+   filter(Dimension == 50, Algorithm != "MOS12") %>% select(-Dimension) %>%
+   tidyr::spread("Algorithm", "Result") %>%
+   select(-Benchmark) %>%
+   apply.paired.bayesian(rNPBST::bayesianSignedRank.test, rope.min = -10, rope.max = 10)
+```
+
+```{r}
+bsr.results.dim50.df <- bsr.results.dim50 %>%
+   mutate(Winner = case_when(left > rope & left > right ~ "Alg. 1",
+                             rope > left & rope > right ~ "rope",
+                             right > left & right > rope ~ "Alg. 2"),
+          Max.Prob = pmax(left, rope, right)) %>%
+   select(Algorithm.1, Algorithm.2, Winner, Max.Prob)
+
+bsr.results.dim50.df.rev <- bsr.results.dim50.df %>%
+   transform(Algorithm.1 = Algorithm.2, Algorithm.2 = Algorithm.1,
+             Winner = case_when(Winner == "Alg. 1" ~ "Alg. 2",
+                                Winner == "Alg. 2" ~ "Alg. 1",
+                                TRUE ~ "rope"))
+
+bsr.results.dim50.df <- rbind.data.frame(bsr.results.dim50.df, bsr.results.dim50.df.rev) %>%
+   mutate(Algorithm.1 = as.character(Algorithm.1),
+          Algorithm.2 = as.character(Algorithm.2),
+          Algorithm.1 = as.factor(Algorithm.1),
+          Algorithm.2 = as.factor(Algorithm.2))
+
+ggplot(bsr.results.dim50.df, 
+       aes(x = Algorithm.2, y = Algorithm.1, fill = Winner)) +
+   scale_x_discrete(limits = levels(bsr.results.dim50.df$Algorithm.1)) +
+   scale_y_discrete(limits = rev(levels(bsr.results.dim50.df$Algorithm.1))) +
+   geom_tile(aes(alpha = Max.Prob)) +
+   geom_text(aes(label=format(Max.Prob, digits = 2)), alpha = 1) +
+   labs(title = "Dimension 50",
+        x = "Algorithm 2",
+        y = "Algorithm 1") +
+   scale_alpha(guide = "none")
+```
+
+## Dim 100
+
+
+```{r}
+bsr.results.dim100 <- cec17.final %>%
+   filter(Dimension == 100, Algorithm != "MOS12") %>% select(-Dimension) %>%
+   tidyr::spread("Algorithm", "Result") %>%
+   select(-Benchmark) %>%
+   apply.paired.bayesian(rNPBST::bayesianSignedRank.test, rope.min = -10, rope.max = 10)
+```
+
+```{r}
+bsr.results.dim100.df <- bsr.results.dim100 %>%
+   mutate(Winner = factor(case_when(left > rope & left > right ~ "Alg. 1",
+                             rope > left & rope > right ~ "rope",
+                             right > left & right > rope ~ "Alg. 2"),
+                          levels = c("Alg. 1", "Alg. 2", "rope")),
+          Max.Prob = pmax(left, rope, right)) %>%
+   select(Algorithm.1, Algorithm.2, Winner, Max.Prob)
+
+bsr.results.dim100.df.rev <- bsr.results.dim100.df %>%
+   transform(Algorithm.1 = Algorithm.2, Algorithm.2 = Algorithm.1,
+             Winner = case_when(Winner == "Alg. 1" ~ "Alg. 2",
+                                Winner == "Alg. 2" ~ "Alg. 1",
+                                TRUE ~ "rope"))
+
+bsr.results.dim100.df <- rbind.data.frame(bsr.results.dim100.df, bsr.results.dim100.df.rev) %>%
+   mutate(Algorithm.1 = as.character(Algorithm.1),
+          Algorithm.2 = as.character(Algorithm.2),
+          Algorithm.1 = as.factor(Algorithm.1),
+          Algorithm.2 = as.factor(Algorithm.2))
+
+ggplot(bsr.results.dim100.df, 
+       aes(x = Algorithm.2, y = Algorithm.1, fill = Winner)) +
+   scale_x_discrete(limits = levels(bsr.results.dim100.df$Algorithm.1)) +
+   scale_y_discrete(limits = rev(levels(bsr.results.dim100.df$Algorithm.1))) +
+   geom_tile(aes(alpha = Max.Prob)) +
+   geom_text(aes(label=format(Max.Prob, digits = 2)), alpha = 1) +
+   labs(title = "Dimension 100",
+        x = "Algorithm 2",
+        y = "Algorithm 1") +
+   scale_alpha(guide = "none")
+```
+
+
+
+
+
 ```{r, out.width = "500px"}
 knitr::include_graphics("img/bayesian-multiple-dim10-eps-converted-to.pdf")
 ```
