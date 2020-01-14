@@ -78,7 +78,7 @@ shapiro.test <- split(cec17.final, cec17.final$Dimension) %>%
 
 AdjustFormatTable(shapiro.test, 
                   colnames = paste("Dim.", levels(cec17.final$Dimension)),
-                  rownames = levels(cec17.final$Algorithm), print.code = TRUE,
+                  rownames = levels(cec17.final$Algorithm), print.code = FALSE,
                   digits = -2)
 ```
 
@@ -118,7 +118,7 @@ sapply(split(cec17.final, cec17.final$Algorithm),
    matrix(ncol = 1, 
           dimnames = list(levels(cec17.final$Algorithm),
                           "p-value")) %>%
-   AdjustFormatTable(print.code = TRUE)
+   AdjustFormatTable(print.code = FALSE)
 ```
 
 # Non-parametric tests
@@ -178,7 +178,7 @@ results.nppairwise <- matrix(c(results.sign, results.wilcoxon,results.wilcoxonRS
                              dimnames = list(c("Sign","Wilcoxon", "Wilcoxon Rank-Sum"), 
                                              paste("Dim.", levels(cec17.final$Dimension)))) %>%
     AdjustFormatTable(caption = "Non-parametric pairwise comparison between EBO and jSO",
-                      label = "tab:np-pairwise", print.code = TRUE)
+                      label = "tab:np-pairwise", print.code = FALSE)
 ```
 
 ### Multiple comparison
@@ -214,7 +214,7 @@ AdjustFormatTable(non.parametric,
                   colnames = paste("Dim.", levels(cec17.final$Dimension)),
                   rownames = c("Friedman" ,"Friedman AR", "Iman-Davenport", "Quade"),
                   caption = "Non-Parametric tests",
-                  label = "tab:np-tests", print.code = T)
+                  label = "tab:np-tests", print.code = FALSE)
 ```
 
 We can see in this table how the tests that involve multiple
@@ -277,7 +277,7 @@ results.post.global.holland <- rbind(results.post.friedman,
 colnames(results.post.global.holland) <- c("Friedman","FriedmanAR","Quade") 
 
 # knitr::kable(results.post.global.holland)
-AdjustFormatTable(results.post.global.holland, print.code = TRUE)
+AdjustFormatTable(results.post.global.holland, print.code = FALSE)
 ```
 
 - If we wanted to show that the differences between the algorithms
@@ -302,7 +302,7 @@ post.hoc.grouped <- ApplyNPTestPostHoc.Grouped(cec17.final,
                                                scmamp::adjustHolland,
                                                control = "EBO")
 
-AdjustFormatTable(post.hoc.grouped, print.code = TRUE,
+AdjustFormatTable(post.hoc.grouped, print.code = FALSE,
                   colnames = paste("Dim", colnames(post.hoc.grouped)),
                   rownames = levels(cec17.final$Algorithm),
                   caption = "Results grouped by dimension. Friedman test + Holland adjust.",
@@ -321,7 +321,7 @@ ApplyNPTestPostHoc(cec17.final.10,
                    scmamp::friedmanPost,
                    scmamp::adjustHolland)  %>%
   AdjustFormatTable(caption = "Results $n$ vs $n$. Friedman test + Holland adjust.",
-                    label = "tab:nvsn-friedman-holland", print.code = TRUE)
+                    label = "tab:nvsn-friedman-holland", print.code = FALSE)
 ```
 
 The results of the $n \times n$ comparison using a Friedman test and a
@@ -1036,6 +1036,7 @@ S2 <- aux.S2 %>%
 
 ```{r}
 FinalScore <- inner_join(S1, S2) %>% mutate(Final = S1+S2) %>% arrange(desc(Final))
+FinalScore
 ```
 
 
