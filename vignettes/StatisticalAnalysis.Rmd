@@ -151,7 +151,7 @@ jSO <- unlist(select(filter(cec17.final, Algorithm == "jSO", Dimension == 10), R
 
 ```{r}
 sign.results <- rNPBST::binomialSign.test(cbind(EBO, jSO))
-wilcoxon.results <- rNPBST::wilcoxon.test(cbind(EBO, jSO))
+wilcoxon.results <- rNPBST::wilcoxñon.test(cbind(EBO, jSO))
 wilcoxonRS.results <- rNPBST::wilcoxonRankSum.test(cbind(EBO, jSO))
 
 p.values <- sapply(list(sign.results,wilcoxon.results, wilcoxonRS.results), function(x) x$p.value[3])
@@ -512,7 +512,7 @@ matrix.jSO <-  filter(cec17.final, Algorithm == "jSO") %>%
     select(-Benchmark)
 
 glrt.results <- rNPBST::multipleMeasuresGLRT(matrix.EBO, matrix.jSO)
-knitr::kable(glrt.results$statistic$n.vector)
+xtable::xtable(glrt.results$statistic$n.vector) %>% print(include.rownames =FALSE)
 ```
 
 In some circumstances like the Multi-Objective Optimization we need to
@@ -520,6 +520,7 @@ include different measures in the comparison.  This is the scenario of
 application of the Non-Parametric Multiple Measures test. We select
 the means of the executions of the two best algorithms and reshape
 them into a matrix with the results of each benchmark in the rows and
+
 the different dimensions in the columns. Then we use the test to see
 which hypothesis of dominance is the most probable and if we can state
 that the probability of this dominance statement is
@@ -691,7 +692,7 @@ the remaining configurations is determinative.
 
 ```{r bayesian.multiple}
 bmultiple.results <- bayesianMultipleConditions.test(matrix.EBO, matrix.jSO)
-knitr::kable(bmultiple.results$probabilities)
+xtable::xtable(bmultiple.results$probabilities) %>% print(include.rownames = F)
 ```
 
 # Summary of results in CEC'2017
