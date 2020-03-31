@@ -4,7 +4,9 @@
 \name{results.lr}
 \alias{results.lr}
 \title{Dataset with CV results of logistic regression algorithm in different datasets}
-\format{An data frame with 29 rows and 5 columns}
+\format{
+An data frame with 29 rows and 5 columns
+}
 \usage{
 results.lr
 }

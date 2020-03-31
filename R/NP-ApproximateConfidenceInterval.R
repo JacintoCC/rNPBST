@@ -3,7 +3,7 @@
 #' Approximate and Non-Parametric approach to the computation of the Confidence Interval for the comparison of two algorihms
 #' @param x First algorithm's results
 #' @param y Second algorithm's results
-#' @param alpha 100(1-alpha)\% level of significance
+#' @param alpha 100(1-alpha)percent level of significance
 #' @param paired Boolean that indicates if the samples are paired
 #' @return NP confidence interval
 #' @export

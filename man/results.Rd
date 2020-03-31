@@ -4,7 +4,9 @@
 \name{results}
 \alias{results}
 \title{Dataset with CV mean results of some algorithms in different datasets}
-\format{An data frame with 29 rows and 5 columns}
+\format{
+An data frame with 29 rows and 5 columns
+}
 \usage{
 results
 }

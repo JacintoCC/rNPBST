@@ -4,7 +4,9 @@
 \name{results.rf}
 \alias{results.rf}
 \title{Dataset with CV results of Random Forest algorithm in different datasets}
-\format{An data frame with 29 rows and 5 columns}
+\format{
+An data frame with 29 rows and 5 columns
+}
 \usage{
 results.rf
 }

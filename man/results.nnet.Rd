@@ -4,7 +4,9 @@
 \name{results.nnet}
 \alias{results.nnet}
 \title{Dataset with CV results of neural network algorithm in different datasets}
-\format{An data frame with 29 rows and 5 columns}
+\format{
+An data frame with 29 rows and 5 columns
+}
 \usage{
 results.nnet
 }

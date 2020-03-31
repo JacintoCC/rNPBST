@@ -4,7 +4,9 @@
 \name{results.nb}
 \alias{results.nb}
 \title{Dataset with CV results of Naive Bayes algorithm in different datasets}
-\format{An data frame with 29 rows and 5 columns}
+\format{
+An data frame with 29 rows and 5 columns
+}
 \usage{
 results.nb
 }

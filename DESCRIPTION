@@ -14,10 +14,9 @@ License: GPL-2
 Imports:
    rJava,
    MCMCpack,
-   ggplot2,
+   ggplot2 (== 3.2.1),
    dplyr,
    magrittr,
-   ggtern,
    XML,
    EnvStats,
    rmutil,
@@ -29,6 +28,7 @@ Imports:
    rlang,
    xtable
 Suggests: 
+  ggtern,
   knitr, 
   rmarkdown, 
   scmamp, 
@@ -39,6 +39,6 @@ Suggests:
 Remote: bioc::3.8/Rgraphviz, bioc::3.8/graph 
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Depends: R (>= 2.10)
 LazyData: true
