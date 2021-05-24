@@ -14,7 +14,7 @@ License: GPL-2
 Imports:
    rJava,
    MCMCpack,
-   ggplot2 (== 3.2.1),
+   ggplot2,
    dplyr,
    magrittr,
    XML,
@@ -23,20 +23,17 @@ Imports:
    devtools,
    KernSmooth,
    pracma,
-   Rgraphviz,
-   graph,
    rlang,
    xtable
 Suggests: 
   ggtern,
   knitr, 
   rmarkdown, 
-  scmamp, 
   reshape2, 
   mvShapiroTest,
   tidyr, 
   lawstat
-Remote: bioc::3.8/Rgraphviz, bioc::3.8/graph 
+Remote: bioc::3.8/Rgraphviz, bioc::3.8/graph, github::b0rxa/scmamp
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
