@@ -794,7 +794,7 @@ bsr.results.dim10 <- cec17.final %>%
    filter(Dimension == 10, Algorithm != "MOS12") %>% select(-Dimension) %>%
    tidyr::spread("Algorithm", "Result") %>%
    select(-Benchmark) %>%
-   apply.paired.bayesian(rNPBST::bayesianSignedRank.test, rope.min = -10, rope.max = 10)
+   rNPBST:::apply.paired.bayesian(rNPBST::bayesianSignedRank.test, rope.min = -10, rope.max = 10)
 ```
 
 ```{r}
@@ -837,7 +837,7 @@ bsr.results.dim30 <- cec17.final %>%
    filter(Dimension == 30, Algorithm != "MOS12") %>% select(-Dimension) %>%
    tidyr::spread("Algorithm", "Result") %>%
    select(-Benchmark) %>%
-   apply.paired.bayesian(rNPBST::bayesianSignedRank.test, rope.min = -10, rope.max = 10)
+   rNPBST:::apply.paired.bayesian(rNPBST::bayesianSignedRank.test, rope.min = -10, rope.max = 10)
 ```
 
 ```{r}
@@ -880,7 +880,7 @@ bsr.results.dim50 <- cec17.final %>%
    filter(Dimension == 50, Algorithm != "MOS12") %>% select(-Dimension) %>%
    tidyr::spread("Algorithm", "Result") %>%
    select(-Benchmark) %>%
-   apply.paired.bayesian(rNPBST::bayesianSignedRank.test, rope.min = -10, rope.max = 10)
+   rNPBST:::apply.paired.bayesian(rNPBST::bayesianSignedRank.test, rope.min = -10, rope.max = 10)
 ```
 
 ```{r}
@@ -923,7 +923,7 @@ bsr.results.dim100 <- cec17.final %>%
    filter(Dimension == 100, Algorithm != "MOS12") %>% select(-Dimension) %>%
    tidyr::spread("Algorithm", "Result") %>%
    select(-Benchmark) %>%
-   apply.paired.bayesian(rNPBST::bayesianSignedRank.test, rope.min = -10, rope.max = 10)
+   rNPBST:::apply.paired.bayesian(rNPBST::bayesianSignedRank.test, rope.min = -10, rope.max = 10)
 ```
 
 ```{r}
